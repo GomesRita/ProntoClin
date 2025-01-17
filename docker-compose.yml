@@ -6,10 +6,11 @@ services:
     image: postgres:latest
     container_name: cnprontoclin
     environment:
+      POSTGRES_DB: dbprontoclin
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: dbprontclin
+      POSTGRES_USER: prontoclin@gmail.com
     ports:
-      - "5433:5432" 
+      - "5432:5432" 
     networks:
       - my-networks  
     restart: always  
@@ -18,8 +19,9 @@ services:
     image: dpage/pgadmin4
     container_name: pgadminprontoclin
     environment:
-      PGADMIN_DEFAULT_EMAIL: prontoclin@gmail
+      PGADMIN_DEFAULT_EMAIL: prontoclin@gmail.com
       PGADMIN_DEFAULT_PASSWORD: postgres 
+
     ports:
       - "15432:80"  
     networks:
@@ -32,16 +34,17 @@ services:
       dockerfile: ./dockerfile  # Caminho para o Dockerfile
     container_name: springprontoclin
     ports:
-      - "8080:8080"  # Mapeia a porta 8080 no host para a porta 8080 no container
+
+      - "8081:8081"  # Mapeia a porta 8080 no host para a porta 8080 no container
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://cnprontoclin:5432/dbprontclin  # URL de conexão com o banco
-      SPRING_DATASOURCE_USERNAME: prontoclin@gmail  
+      SPRING_DATASOURCE_URL: jdbc:postgresql://cnprontoclin:5432/dbprontoclin  # URL de conexão com o banco
+      SPRING_DATASOURCE_USERNAME: prontoclin@gmail.com 
       SPRING_DATASOURCE_PASSWORD: postgres 
     networks:
       - my-networks 
     depends_on:
-      - cnprontoclin 
-
+      - cnprontoclin
+    restart: always
 networks:
   my-networks:
     driver: bridge 
