@@ -1,13 +1,14 @@
 package com.application.SpringProntoClin.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
-@Setter
+@Setter@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "idConsulta")
 @Entity (name = "Consulta")
 @Table (name = "tbConsulta")
 public class Consulta {

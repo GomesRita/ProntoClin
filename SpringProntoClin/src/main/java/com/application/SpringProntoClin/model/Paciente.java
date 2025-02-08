@@ -2,13 +2,15 @@ package com.application.SpringProntoClin.model;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "idPaciente")
 @Entity (name = "Paciente")
 @Table(name = "tbPaciente")
 public class Paciente {
@@ -21,6 +23,7 @@ public class Paciente {
     private String telefonePaciente;
     private String cpfPaciente;
     private Date dataNascimento;
+    private String sexoPaciente;
     private String senha;
     private String email;
 }

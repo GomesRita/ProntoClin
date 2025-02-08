@@ -2,11 +2,13 @@ package com.application.SpringProntoClin.model;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "idDiagnostico")
 @Entity (name = "Diagnostico")
 @Table(name = "tbDiagnostico")
 public class Diagnostico {
