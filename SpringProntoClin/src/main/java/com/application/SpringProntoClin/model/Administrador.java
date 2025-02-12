@@ -13,7 +13,7 @@ import lombok.*;
 public class Administrador {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idAdministrador;
+    private Long idAdministrador;
     private String nomeAdministrador;
     private String cpfAdministrador;
     private String senha;

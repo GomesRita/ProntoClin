@@ -16,8 +16,8 @@ public class ExamesResultados {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idExameResultado;
-    private int idProntuario;
+    private Long idExameResultado;
+    private Long idProntuario;
     private String tipo;
     private Date dataRealizacao;
     private String exame;

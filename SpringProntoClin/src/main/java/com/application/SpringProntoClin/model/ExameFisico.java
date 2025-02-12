@@ -13,8 +13,8 @@ import lombok.*;
 public class ExameFisico {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idExameFisico;
-    private int idProntuario;
+    private Long idExameFisico;
+    private Long idProntuario;
     private float pressaoArterial;
     private float frequenciaCardiaca;
     private float temperatura;

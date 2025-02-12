@@ -13,7 +13,7 @@ import lombok.*;
 public class ProfissionalSaude {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idProfissionalSaude;
+    private Long idProfissionalSaude;
     private String nomeProfissionalSaude;
     private String cpfProfissionalSaude;
     private String especialidadeMedica;

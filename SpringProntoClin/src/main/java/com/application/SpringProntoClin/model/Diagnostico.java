@@ -15,8 +15,8 @@ public class Diagnostico {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idDiagnostico;
-    private int idProntuario;
+    private Long idDiagnostico;
+    private Long idProntuario;
     private String diagnostico;
     private String outrosDiagnosticos;
 }

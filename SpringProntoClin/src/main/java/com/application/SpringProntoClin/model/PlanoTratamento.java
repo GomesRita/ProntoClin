@@ -13,8 +13,8 @@ import lombok.*;
 public class PlanoTratamento {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idPlanoTratamento;
-    private int idProntuario;
+    private Long idPlanoTratamento;
+    private Long idProntuario;
     private String encaminhamentos;
     private String orientacoes;
 

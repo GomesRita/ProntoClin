@@ -6,7 +6,8 @@ import lombok.*;
 import java.util.Date;
 
 @Getter
-@Setter@NoArgsConstructor
+@Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "idConsulta")
 @Entity (name = "Consulta")
@@ -15,9 +16,9 @@ public class Consulta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idConsulta;
-    private int idPaciente;
-    private int idProfissionalSaude;
+    private Long idConsulta;
+    private Long idPaciente;
+    private Long idProfissionalSaude;
     private String nomeProssionalSaude;
     private String nomePaciente;
     private Date dataConsulta;

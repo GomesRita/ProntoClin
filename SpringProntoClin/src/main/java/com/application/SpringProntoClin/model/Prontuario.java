@@ -16,8 +16,8 @@ public class Prontuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idProntuario;
-    private int idPaciente;
+    private Long idProntuario;
+    private Long idPaciente;
     private Date dataCriacao;
     private Date dataUltimaAtualizacao;
 }

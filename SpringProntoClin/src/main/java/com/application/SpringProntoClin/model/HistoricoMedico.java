@@ -13,8 +13,8 @@ import lombok.*;
 public class HistoricoMedico {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idHistoricoMedico;
-    private int idProntuario;
+    private Long idHistoricoMedico;
+    private Long idProntuario;
     private String sintomas;
     private String historicoDoencas;
     private String alergias;
