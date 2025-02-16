@@ -5,6 +5,6 @@ import com.application.SpringProntoClin.domain.ProfissionalSaude;
 public record ProfissionalSaudeResponseDTO(Long idProfissionalSaude, String nomeProfissionalSaude, String cpfProfissionalSaude, String especialidadeMedica, String telefoneProfissionalSaude, String CRM, String senha, String email) {
 
     public ProfissionalSaudeResponseDTO(ProfissionalSaude profissionalSaude) {
-        this(profissionalSaude.getIdProfissionalSaude(), profissionalSaude.getNomeProfissionalSaude(), profissionalSaude.getCpfProfissionalSaude(), profissionalSaude.getEspecialidadeMedica(), profissionalSaude.getTelefoneProfissionalSaude(), profissionalSaude.getCRM(), profissionalSaude.getSenha(), profissionalSaude.getEmail());
+        this(profissionalSaude.getIdprofissionalsaude(), profissionalSaude.getNomeprofissionalsaude(), profissionalSaude.getCpfprofissionalsaude(), profissionalSaude.getEspecialidademedica(), profissionalSaude.getTelefoneprofissionalsaude(), profissionalSaude.getCRM(), profissionalSaude.getSenha(), profissionalSaude.getEmail());
     }
 }

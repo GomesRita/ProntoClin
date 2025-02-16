@@ -1,11 +1,13 @@
-CREATE TABLE IF NOT EXISTS "tbPaciente" (
-	"idPaciente" int NOT NULL UNIQUE,
-	"nomePaciente" varchar(100) NOT NULL,
-	"nomeSocial" varchar(100) NOT NULL,
-	"telefonePaciente" int NOT NULL,
-	"cpfPaciente" varchar(100) NOT NULL,
-	"dataNascimento" date NOT NULL,
-	"email" varchar(100) NOT NULL,
-	"senha" varchar(100) NOT NULL,
-	PRIMARY KEY ("idPaciente")
+CREATE  SEQUENCE paciente_seq START WITH 1 INCREMENT BY 1;
+
+
+CREATE TABLE IF NOT EXISTS paciente (
+	idpaciente bigint DEFAULT nextval('paciente_seq') PRIMARY KEY,
+	nomepaciente varchar(100) NOT NULL,
+	nomesocial varchar(100) NOT NULL,
+	telefonepaciente int NOT NULL,
+	cpfpaciente varchar(100) NOT NULL,
+	datanascimento date NOT NULL,
+	emailpaciente varchar(100) NOT NULL,
+	senha varchar(100) NOT NULL
 );

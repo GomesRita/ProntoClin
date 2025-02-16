@@ -1,19 +1,20 @@
+CREATE  SEQUENCE consulta_seq START WITH 1 INCREMENT BY 1;
 
-CREATE TABLE IF NOT EXISTS "tbConsulta" (
-	"idConsulta" int NOT NULL UNIQUE,
-	"idPaciente" int NOT NULL,
-	"idProfissionalSaude" int NOT NULL,
-	"nomeProfissionalSaude" varchar(100) NOT NULL,
-	"nomePaciente" varchar(100) NOT NULL,
-	"dataConsulta" timestamp with time zone NOT NULL,
-	"especialidadeMedica" varchar(100) NOT NULL,
-	PRIMARY KEY ("idConsulta"),
-    CONSTRAINT "dPaciente"
-        FOREIGN KEY ("idPaciente")
-        REFERENCES "tbPaciente"("idPaciente") 
+CREATE TABLE IF NOT EXISTS consulta (
+	idconsulta bigint DEFAULT nextval('consulta_seq') PRIMARY KEY,
+	idpaciente int NOT NULL,
+	idprofissionalsaude int NOT NULL,
+	nomeprofissionalsaude varchar(100) NOT NULL,
+	nomepaciente varchar(100) NOT NULL,
+    nomesocial varchar(100),
+	dataconsulta timestamp with time zone NOT NULL,
+	especialidademedica varchar(100) NOT NULL,
+    CONSTRAINT idpaciente
+        FOREIGN KEY (idpaciente)
+        REFERENCES paciente(idpaciente)
         ON DELETE CASCADE,
-    CONSTRAINT "idProfissionalSaude" 
-        FOREIGN KEY ("idProfissionalSaude")
-        REFERENCES "tbProfissionalSaude"("idProfissionalSaude")
+    CONSTRAINT idprofissionalsaude
+        FOREIGN KEY (idprofissionalsaude)
+        REFERENCES profissionalsaude(idprofissionalsaude)
         ON DELETE CASCADE 
 );

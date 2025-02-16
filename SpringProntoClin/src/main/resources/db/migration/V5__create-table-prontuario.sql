@@ -1,7 +1,12 @@
-CREATE TABLE IF NOT EXISTS "tbProntuario" (
-	"idProntuario" int NOT NULL UNIQUE,
-	"idPaciente" int NOT NULL,
-	"dataCriacao" date NOT NULL,
-	"dataUltimaAtualizacao" date NOT NULL,
-	PRIMARY KEY ("idProntuario")
+CREATE  SEQUENCE prontuario_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE IF NOT EXISTS prontuario (
+	idprontuario bigint DEFAULT nextval('prontuario_seq') PRIMARY KEY,
+	idpaciente int NOT NULL,
+	datacriacao date NOT NULL,
+	dataultimaatualizacao date NOT NULL,
+    CONSTRAINT idpaciente
+        FOREIGN KEY (idpaciente)
+        REFERENCES paciente(idpaciente)
+        ON DELETE CASCADE
 );

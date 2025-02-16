@@ -7,6 +7,6 @@ import java.util.Date;
 public record PacienteResponseDTO(Long idPaciente, String nomePaciente, String nomeSocial, String telefonePaciente, String cpfPaciente, Date dataNascimento, String sexoPaciente, String senha, String email) {
 
     public PacienteResponseDTO(Paciente paciente) {
-        this(paciente.getIdPaciente(), paciente.getNomePaciente(), paciente.getNomeSocial(), paciente.getTelefonePaciente(), paciente.getCpfPaciente(), paciente.getDataNascimento(), paciente.getSexoPaciente(), paciente.getSenha(), paciente.getEmail());
+        this(paciente.getIdpaciente(), paciente.getNomepaciente(), paciente.getNomesocial(), paciente.getTelefonepaciente(), paciente.getCpfpaciente(), paciente.getDatanascimento(), paciente.getSexopaciente(), paciente.getSenha(), paciente.getEmailpaciente());
     }
 }

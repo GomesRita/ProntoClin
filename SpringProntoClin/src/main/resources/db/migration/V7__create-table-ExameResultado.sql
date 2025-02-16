@@ -1,13 +1,14 @@
-CREATE TABLE IF NOT EXISTS "tbExamesResultados" (
-	"idExameResultado" int NOT NULL UNIQUE,
-	"idProntuario" int NOT NULL,
-	"tipoExame" varchar(100) NOT NULL,
-	"dataRealizacao" date,
-	"exame" varchar(255),
-	"resultado" varchar(255),
-	PRIMARY KEY ("idExameResultado"),
-    CONSTRAINT "idProntuario" 
-        FOREIGN KEY ("idProntuario")
-        REFERENCES "tbProntuario"("idProntuario") 
-        ON DELETE CASCADE 
+CREATE  SEQUENCE exameresultados_seq START WITH 1 INCREMENT BY 1;
+
+CREATE TABLE IF NOT EXISTS  examesresultados  (
+     idexameresultado bigint DEFAULT nextval('exameresultados_seq') PRIMARY KEY,
+     idprontuario int NOT NULL,
+     tipoexame varchar(100) NOT NULL,
+     datarealizacao  date,
+     exame varchar(255),
+     resultado varchar(255),
+    CONSTRAINT  idprontuario
+        FOREIGN KEY ( idprontuario )
+        REFERENCES  prontuario ( idprontuario )
+        ON DELETE CASCADE
 );

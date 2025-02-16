@@ -7,18 +7,28 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "idProfissionalSaude")
-@Entity (name = "ProfissionalSaude")
-@Table (name = "tbProfissionalSaude")
-public class ProfissionalSaude {
+@EqualsAndHashCode(of = "idprofissionalsaude ")
+@Entity(name = "profissionalsaude ")
+@Table(name = "profissionalsaude ")
+public class ProfissionalSaude  {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idProfissionalSaude;
-    private String nomeProfissionalSaude;
-    private String cpfProfissionalSaude;
-    private String especialidadeMedica;
-    private String telefoneProfissionalSaude;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "profissionalsaude_seq_generator")
+    @SequenceGenerator(name = "profissionalsaude_seq_generator", sequenceName = "profissionalsaude_SEQ", allocationSize = 1)
+    private Long idprofissionalsaude ;
+    
+    private String nomeprofissionalsaude ;
+    
+    @Column(unique = true)
+    private String cpfprofissionalsaude ;
+    private String especialidademedica;
+    
+    private String telefoneprofissionalsaude ;
+
+    @Column(unique = true)
     private String CRM;
     private String senha;
+
+    @Column(unique = true)
     private String email;
 }

@@ -9,14 +9,16 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "idExameResultado")
-@Entity (name = "ExamesResultados")
-@Table(name = "tbExamesResultados")
+@EqualsAndHashCode(of = "idexameresultado")
+@Entity (name = "examesresultados")
+@Table(name = "examesresultados")
 public class ExamesResultados {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "exameresultado_seq_generator")
+    @SequenceGenerator(name = "exameresultado_seq_generator", sequenceName = "exameresultado_SEQ", allocationSize = 1)
     private Long idExameResultado;
+
     private Long idProntuario;
     private String tipo;
     private Date dataRealizacao;

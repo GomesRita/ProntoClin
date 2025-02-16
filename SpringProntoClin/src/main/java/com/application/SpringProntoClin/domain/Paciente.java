@@ -10,20 +10,29 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity(name = "paciente")
+@Table(name = "paciente")
 @EqualsAndHashCode(of = "idPaciente")
-@Entity (name = "Paciente")
-@Table(name = "tbPaciente")
 public class Paciente {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPaciente;
-    private String nomePaciente;
-    private String nomeSocial;
-    private String telefonePaciente;
-    private String cpfPaciente;
-    private Date dataNascimento;
-    private String sexoPaciente;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paciente_seq_generator")
+    @SequenceGenerator(name = "paciente_seq_generator", sequenceName = "paciente_SEQ", allocationSize = 1)
+    private Long idpaciente;
+
+    private String nomepaciente;
+    private String nomesocial;
+
+    @Column(unique = true)
+    private String telefonepaciente;
+
+    @Column(unique = true)
+    private String cpfpaciente;
+
+    private Date datanascimento;
+    private String sexopaciente;
     private String senha;
-    private String email;
+
+    @Column(unique = true)
+    private String emailpaciente;
 }
