@@ -1,1 +1,25 @@
-/home/rita/Área de Trabalho/prontoclin/projetoIntegrador-prontoclin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/SpringProntoClinApplication.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/AdministradorResponseDTO.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/ConsultaResponseDTO.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/PacienteResponseDTO.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/ProfissionalSaudeResponseDTO.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/SpringProntoClinApplication.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/Administrador.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/Consulta.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/Diagnostico.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/ExameFisico.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/ExamesResultados.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/HistoricoMedico.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/Paciente.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/PlanoTratamento.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/ProfissionalSaude.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/model/Prontuario.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/AdmRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/ConsultaRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/DiagnosticoRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/ExameFisicoRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/ExamesResultadosRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/HistoricoRepostory.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/PacienteRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/PlanoTratamentoRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/ProfissionalSaudeRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/ProntuarioRepository.java
