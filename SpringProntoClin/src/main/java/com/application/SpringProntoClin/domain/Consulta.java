@@ -1,5 +1,6 @@
 package com.application.SpringProntoClin.domain;
 
+import com.application.SpringProntoClin.DTO.RequestConsulta;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,11 +20,25 @@ public class Consulta {
     @SequenceGenerator(name = "consulta_seq_generator", sequenceName = "consulta_SEQ", allocationSize = 1)
     private Long idconsulta;
     private Long idpaciente;
+
     private Long idprofissionalsaude;
     private String nomeprossionalsaude;
+
     private String nomepaciente;
     private String nomesocial;
+
     private Date dataconsulta;
     private String especialidademedica;
+
+    public Consulta(RequestConsulta requestConsulta) {
+        this.idconsulta = requestConsulta.idConsulta();
+        this.idpaciente = requestConsulta.idPaciente();
+        this.idprofissionalsaude = requestConsulta.idProfissionalSaude();
+        this.nomeprossionalsaude = requestConsulta.nomeProfissionalSaude();
+        this.nomepaciente = requestConsulta.nomePaciente();
+        this.nomesocial = requestConsulta.nomeSocial();
+        this.dataconsulta = requestConsulta.dataConsulta();
+        this.especialidademedica = requestConsulta.especialidadeMedica();
+    }
 
 }

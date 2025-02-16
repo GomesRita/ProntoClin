@@ -1,6 +1,7 @@
 package com.application.SpringProntoClin.domain;
 
 
+import com.application.SpringProntoClin.DTO.RequestPaciente;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity(name = "paciente")
 @Table(name = "paciente")
-@EqualsAndHashCode(of = "idPaciente")
+@EqualsAndHashCode(of = "idpaciente")
 public class Paciente {
 
     @Id
@@ -35,4 +36,16 @@ public class Paciente {
 
     @Column(unique = true)
     private String emailpaciente;
+
+    public Paciente(RequestPaciente requestPaciente) {
+        this.idpaciente = requestPaciente.idPaciente();
+        this.nomepaciente = requestPaciente.nomePaciente();
+        this.nomesocial = requestPaciente.nomeSocial();
+        this.telefonepaciente = requestPaciente.telefonePaciente();
+        this.cpfpaciente = requestPaciente.cpfPaciente();
+        this.datanascimento = requestPaciente.dataNascimento();
+        this.sexopaciente = requestPaciente.sexoPaciente();
+        this.senha = requestPaciente.senha();
+        this.emailpaciente = requestPaciente.emailPaciente();
+    }
 }

@@ -1,5 +1,6 @@
 package com.application.SpringProntoClin.domain;
 
+import com.application.SpringProntoClin.DTO.RequestProfissionalSaude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,9 +8,9 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "idprofissionalsaude ")
-@Entity(name = "profissionalsaude ")
-@Table(name = "profissionalsaude ")
+@Entity(name = "profissionalsaude")
+@Table(name = "profissionalsaude")
+@EqualsAndHashCode(of = "idprofissionalsaude")
 public class ProfissionalSaude  {
 
     @Id
@@ -31,4 +32,15 @@ public class ProfissionalSaude  {
 
     @Column(unique = true)
     private String email;
+
+    public ProfissionalSaude(RequestProfissionalSaude requestProfissionalSaude) {
+        this.idprofissionalsaude = requestProfissionalSaude.idProfissionalSaude();
+        this.nomeprofissionalsaude = requestProfissionalSaude.nomeProfissionalSaude();
+        this.cpfprofissionalsaude = requestProfissionalSaude.cpfProfissionalSaude();
+        this.especialidademedica = requestProfissionalSaude.especialidadeMedica();
+        this.telefoneprofissionalsaude = requestProfissionalSaude.telefoneProfissionalSaude();
+        this.CRM = requestProfissionalSaude.CRM();
+        this.senha = requestProfissionalSaude.senha();
+        this.email = requestProfissionalSaude.email();
+    }
 }

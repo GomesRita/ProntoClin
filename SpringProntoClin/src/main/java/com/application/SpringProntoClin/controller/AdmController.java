@@ -17,10 +17,9 @@ public class AdmController {
     private AdmRepository admRepository;
 
     @PostMapping
-    public ResponseEntity<Administrador> registrarAdm(@RequestBody RequestAdministrador data){
-        Administrador newAdministrador = new Administrador(data);
+    public ResponseEntity<Administrador> registrarAdm(@RequestBody RequestAdministrador administrador){
+        Administrador newAdministrador = new Administrador(administrador);
         admRepository.save(newAdministrador);
-        System.out.println(data);
         return new ResponseEntity<>(newAdministrador,HttpStatus.CREATED);
     }
 

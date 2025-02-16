@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS profissionalsaude (
 	 nomeprofissionalsaude varchar(100) NOT NULL,
 	 cpfprofissionalsaude varchar(100) NOT NULL,
 	 especialidademedica varchar(100) NOT NULL,
-	 telefone  int NOT NULL,
+	 telefoneprofissionalsaude  varchar(100) NOT NULL,
 	 CRM  varchar(100) NOT NULL,
 	 senha  varchar(100) NOT NULL,
 	 email  varchar(100) NOT NULL
