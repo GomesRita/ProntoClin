@@ -17,8 +17,10 @@ public class ConsultaController {
 
     @PostMapping
     public ResponseEntity<Consulta> registrarConsulta(@RequestBody RequestConsulta consulta) {
+        System.out.println("Consulta " + consulta);
         Consulta newConsulta = new Consulta(consulta);
         consultaRepository.save(newConsulta);
+        System.out.println("New Consulta " + newConsulta);
         return new ResponseEntity<>(newConsulta, HttpStatus.CREATED);
     }
     @GetMapping("/{idconsulta}")
