@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_DB: dbprontoclin
       POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: prontoclin@gmail.com
+      POSTGRES_USER: prontoclin
     ports:
       - "5432:5432" 
     networks:
@@ -37,7 +37,7 @@ services:
       - "8081:8081"  # Mapeia a porta 8080 no host para a porta 8080 no container
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://cnprontoclin:5432/dbprontoclin  # URL de conexão com o banco
-      SPRING_DATASOURCE_USERNAME: prontoclin@gmail.com 
+      SPRING_DATASOURCE_USERNAME: prontoclin
       SPRING_DATASOURCE_PASSWORD: postgres 
     networks:
       - my-networks 
