@@ -1,4 +1,4 @@
-/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/AdministradorResponseDTO.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/AdministradorDTO.java
 /home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/ConsultaResponseDTO.java
 /home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/PacienteResponseDTO.java
 /home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/DTO/ProfissionalSaudeResponseDTO.java
@@ -23,3 +23,4 @@
 /home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/PlanoTratamentoRepository.java
 /home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/ProfissionalSaudeRepository.java
 /home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/repository/ProntuarioRepository.java
+/home/rita/Downloads/ProntoClin/SpringProntoClin/src/main/java/com/application/SpringProntoClin/service/AdmService.java

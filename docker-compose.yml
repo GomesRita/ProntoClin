@@ -38,7 +38,8 @@ services:
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://cnprontoclin:5432/dbprontoclin  # URL de conexão com o banco
       SPRING_DATASOURCE_USERNAME: prontoclin
-      SPRING_DATASOURCE_PASSWORD: postgres 
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_PROFILES_ACTIVE: prod
     networks:
       - my-networks 
     depends_on:

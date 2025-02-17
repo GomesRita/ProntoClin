@@ -12,9 +12,9 @@ com/application/SpringProntoClin/model/PlanoTratamento.class
 com/application/SpringProntoClin/DTO/ProfissionalSaudeResponseDTO.class
 com/application/SpringProntoClin/repository/ProntuarioRepository.class
 com/application/SpringProntoClin/repository/ExamesResultadosRepository.class
-com/application/SpringProntoClin/DTO/AdministradorResponseDTO.class
 com/application/SpringProntoClin/model/Administrador.class
 com/application/SpringProntoClin/repository/HistoricoRepostory.class
+com/application/SpringProntoClin/service/AdmService.class
 com/application/SpringProntoClin/repository/ExameFisicoRepository.class
 com/application/SpringProntoClin/model/ProfissionalSaude.class
 com/application/SpringProntoClin/repository/AdmRepository.class
@@ -23,3 +23,4 @@ com/application/SpringProntoClin/model/Paciente.class
 com/application/SpringProntoClin/model/Consulta.class
 com/application/SpringProntoClin/repository/PacienteRepository.class
 com/application/SpringProntoClin/model/Prontuario.class
+com/application/SpringProntoClin/DTO/AdministradorDTO.class
