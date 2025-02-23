@@ -1,10 +1,11 @@
 package com.application.SpringProntoClin.DTO;
 
 import com.application.SpringProntoClin.domain.Paciente;
+import com.application.SpringProntoClin.enums.UsuarioRole;
 
 import java.util.Date;
 
-public record RequestPaciente(Long iduser, String nomePaciente, String nomeSocial, String telefonePaciente, String cpfPaciente, Date dataNascimento, String sexoPaciente, String email, String senha, String userrole) {
+public record RequestPaciente(Long iduser, String nomePaciente, String nomeSocial, String telefonePaciente, String cpfPaciente, Date dataNascimento, String sexoPaciente, String email, String senha, UsuarioRole userrole) {
 
     public RequestPaciente(Paciente paciente) {
         this(

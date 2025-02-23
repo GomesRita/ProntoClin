@@ -1,8 +1,9 @@
 package com.application.SpringProntoClin.DTO;
 
 import com.application.SpringProntoClin.domain.ProfissionalSaude;
+import com.application.SpringProntoClin.enums.UsuarioRole;
 
-public record RequestProfissionalSaude(Long idProfissionalSaude, String nomeProfissionalSaude, String cpfProfissionalSaude, String especialidadeMedica, String telefoneProfissionalSaude, String CRM, String email, String senha, String userrole) {
+public record RequestProfissionalSaude(Long iduser, String nomeProfissionalSaude, String cpfProfissionalSaude, String especialidadeMedica, String telefoneProfissionalSaude, String CRM, String email, String senha, UsuarioRole userrole) {
 
     public RequestProfissionalSaude(ProfissionalSaude profissionalSaude) {
         this(
