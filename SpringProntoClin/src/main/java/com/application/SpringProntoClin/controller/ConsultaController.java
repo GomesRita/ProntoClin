@@ -51,18 +51,31 @@ public class ConsultaController {
         return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("/profissional/{idprofissionalSaude}")
-    public ResponseEntity<List<Consulta>> getConsultasByProfissionalId(@PathVariable Long idprofissionalSaude) {
-        List<Consulta> consultas = consultaRepository.findConsultaByIdprofissionalsaude(idprofissionalSaude);
+    @GetMapping("/profissional/consultas")
+    public ResponseEntity<List<Consulta>> getConsultasByProfissionalId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        ProfissionalSaude profissionalSaude = (ProfissionalSaude) principal;
+        List<Consulta> consultas = consultaRepository.findConsultaByIdprofissionalsaude(profissionalSaude.getIduser());
         if (consultas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(consultas);
     }
-
-    @GetMapping("/paciente/{idPaciente}")
-    public ResponseEntity<List<Consulta>> getConsultasByPacienteId(@PathVariable Long idPaciente) {
-        List<Consulta> consultas = consultaRepository.findConsultaByIdpaciente(idPaciente);
+    @GetMapping("/profissional/{}")
+    public ResponseEntity<List<Consulta>> getAgendaProfissional(@RequestBody nomeProfissionalSaude ) {
+        List<Consulta> consultas = consultaRepository.findConsultaByIdprofissionalsaude(profissionalSaude.getIduser());
+        if (consultas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(consultas);
+    }
+    @GetMapping("/paciente/consultas")
+    public ResponseEntity<List<Consulta>> getConsultasByPacienteId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        Paciente paciente = (Paciente) principal;
+        List<Consulta> consultas = consultaRepository.findConsultaByIdpaciente(paciente.getIduser());
         if (consultas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -70,15 +83,27 @@ public class ConsultaController {
     }
 
     @PutMapping("/{idconsulta}")
-    public Consulta getConsulta(@PathVariable Long idconsulta, @RequestBody Consulta consulta) {
+    public ResponseEntity<Object> getConsulta(@PathVariable Long idconsulta, @RequestBody Consulta consulta) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        Paciente paciente = (Paciente) principal;
+        if (!consulta.getIdpaciente().equals(paciente.getIduser())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         Consulta Consulta = consultaRepository.findById(idconsulta).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
         Consulta.setDataconsulta(consulta.getDataconsulta());
-        return consultaRepository.save(Consulta);
+        return ResponseEntity.ok().body(consultaRepository.save(Consulta));
     }
 
     @DeleteMapping("/{idconsulta}")
     public ResponseEntity<Void> deleteConsulta(@PathVariable Long idconsulta) {
         Consulta consulta = consultaRepository.findById(idconsulta).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        Paciente paciente = (Paciente) principal;
+        if (!consulta.getIdpaciente().equals(paciente.getIduser())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         consultaRepository.delete(consulta);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
