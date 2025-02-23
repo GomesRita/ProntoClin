@@ -10,29 +10,19 @@ import lombok.*;
 @AllArgsConstructor
 @Entity(name = "administrador")
 @Table(name = "administrador")
-@EqualsAndHashCode(of = "id")
-public class Administrador {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "administrador_seq_generator")
-    @SequenceGenerator(name = "administrador_seq_generator", sequenceName = "administrador_SEQ", allocationSize = 1)
-    private Long id;
+@PrimaryKeyJoinColumn(name="iduser")
+public class Administrador extends Usuario {
 
     @Column
     private String nome;
 
     @Column(unique = true)
     private String cpf;
-    private String senha;
-    private String email;
 
     public Administrador(RequestAdministrador requestAdministrador) {
-        this.id = requestAdministrador.id();
+        super(requestAdministrador.email(), requestAdministrador.senha(), requestAdministrador.userrole());
         this.nome = requestAdministrador.nome();
         this.cpf = requestAdministrador.cpf();
-        this.senha = requestAdministrador.senha();
-        this.email = requestAdministrador.email();
-
     }
 
 }

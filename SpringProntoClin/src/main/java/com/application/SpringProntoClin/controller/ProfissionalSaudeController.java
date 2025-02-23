@@ -37,8 +37,6 @@ public class ProfissionalSaudeController {
         ProfissionalSaude profSaude = profissionalSaudeRepository.findById(idprofissionalSaude).orElseThrow(() -> new RuntimeException("Profissional de saúde não encontrado"));
         profSaude.setEspecialidademedica(profissionalSaude.getEspecialidademedica());
         profSaude.setTelefoneprofissionalsaude(profissionalSaude.getTelefoneprofissionalsaude());
-        profSaude.setSenha(profissionalSaude.getSenha());
-        profSaude.setEmail(profissionalSaude.getEmail());
 
         return profissionalSaudeRepository.save(profSaude);
     }

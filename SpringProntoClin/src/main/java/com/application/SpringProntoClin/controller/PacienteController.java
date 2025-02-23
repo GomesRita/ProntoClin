@@ -32,8 +32,6 @@ public class PacienteController {
         Paciente patient = pacienteRepository.findById(idPaciente).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
         patient.setNomesocial(paciente.getNomesocial());
         patient.setTelefonepaciente(paciente.getTelefonepaciente());
-        patient.setSenha(paciente.getSenha());
-        patient.setEmailpaciente(paciente.getEmailpaciente());
 
         return pacienteRepository.save(patient);
     }

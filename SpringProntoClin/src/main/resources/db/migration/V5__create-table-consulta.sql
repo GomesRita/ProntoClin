@@ -9,12 +9,12 @@ CREATE TABLE IF NOT EXISTS consulta (
     nomesocial varchar(100),
 	dataconsulta timestamp with time zone NOT NULL,
 	especialidademedica varchar(100) NOT NULL,
-    CONSTRAINT idpaciente
+    CONSTRAINT fk_consulta_paciente
         FOREIGN KEY (idpaciente)
-        REFERENCES paciente(idpaciente)
+        REFERENCES paciente(iduser)
         ON DELETE CASCADE,
-    CONSTRAINT idprofissionalsaude
+    CONSTRAINT fk_consulta_profissionalsaude
         FOREIGN KEY (idprofissionalsaude)
-        REFERENCES profissionalsaude(idprofissionalsaude)
-        ON DELETE CASCADE 
+        REFERENCES profissionalsaude(iduser)
+        ON DELETE CASCADE
 );
