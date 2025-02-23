@@ -40,9 +40,9 @@ public class Usuario  implements Serializable, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.userrole == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ADMIN"));
-        if(this.userrole == UsuarioRole.PACIENTE) return List.of(new SimpleGrantedAuthority("PACIENTE"));
-        if(this.userrole == UsuarioRole.PROFSAUDE) return List.of(new SimpleGrantedAuthority("PROFSAUDE"));
+        if(this.userrole == UsuarioRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        if(this.userrole == UsuarioRole.PACIENTE) return List.of(new SimpleGrantedAuthority("ROLE_PACIENTE"));
+        if(this.userrole == UsuarioRole.PROFSAUDE) return List.of(new SimpleGrantedAuthority("ROLE_PROFSAUDE"));
         else return List.of();
     }
 

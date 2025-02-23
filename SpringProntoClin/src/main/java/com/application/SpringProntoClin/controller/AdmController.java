@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,13 +16,6 @@ public class AdmController {
 
     @Autowired
     private AdmRepository admRepository;
-
-    @PostMapping
-    public ResponseEntity<Administrador> registrarAdm(@RequestBody RequestAdministrador administrador){
-        Administrador newAdministrador = new Administrador(administrador);
-        admRepository.save(newAdministrador);
-        return new ResponseEntity<>(newAdministrador,HttpStatus.CREATED);
-    }
 
     @GetMapping("/{id}")
     public Administrador getAdm(@PathVariable Long id) {

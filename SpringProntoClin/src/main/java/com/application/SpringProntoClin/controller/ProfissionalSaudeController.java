@@ -15,18 +15,6 @@ public class ProfissionalSaudeController {
     @Autowired
     private ProfissionalSaudeRepository profissionalSaudeRepository;
 
-    @GetMapping
-    public String home() {
-        return "acessou!!";
-    }
-
-    @PostMapping
-    public ResponseEntity<ProfissionalSaude> registrarProfissionalSaude(@RequestBody RequestProfissionalSaude profissionalSaude) {
-        ProfissionalSaude newProfissionalSaude = new ProfissionalSaude(profissionalSaude);
-        profissionalSaudeRepository.save(newProfissionalSaude);
-        return new ResponseEntity<>(newProfissionalSaude, HttpStatus.CREATED);
-    }
-
     @GetMapping("/{idprofissionalSaude}")
     public ProfissionalSaude getProfissionalSaude(@PathVariable Long idprofissionalSaude) {
         return profissionalSaudeRepository.findById(idprofissionalSaude).orElseThrow(() -> new RuntimeException("Profissional de saúde não encontrado"));

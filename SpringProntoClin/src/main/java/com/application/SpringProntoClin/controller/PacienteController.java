@@ -15,13 +15,6 @@ public class PacienteController {
     @Autowired
     private PacienteRepository pacienteRepository;
 
-    @PostMapping
-    public ResponseEntity<Paciente> registrarPaciente(@RequestBody RequestPaciente paciente) {
-        Paciente newPaciente = new Paciente(paciente);
-        pacienteRepository.save(newPaciente);
-        return new ResponseEntity<>(newPaciente, HttpStatus.CREATED);
-    }
-
     @GetMapping("/{idPaciente}")
     public Paciente getPaciente(@PathVariable Long idPaciente) {
         return pacienteRepository.findById(idPaciente).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
