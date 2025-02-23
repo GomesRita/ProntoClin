@@ -26,6 +26,8 @@ public class AdmController {
     public Administrador updateAdm(@PathVariable Long id, @RequestBody Administrador adm) {
         Administrador administrador = admRepository.findById(id).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
         administrador.setNome(adm.getNome());
+        administrador.setEmail(adm.getEmail());
+        administrador.setSenha(adm.getSenha());
 
         return admRepository.save(administrador);
 

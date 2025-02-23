@@ -1,3 +1,4 @@
+-- Criação do banco de dados (se não existir)
 CREATE SEQUENCE  usuario_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE IF NOT EXISTS usuario (

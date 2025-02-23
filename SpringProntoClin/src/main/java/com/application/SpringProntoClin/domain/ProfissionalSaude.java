@@ -24,6 +24,8 @@ public class ProfissionalSaude extends Usuario {
     @Column(unique = true)
     private String CRM;
 
+    private String status;
+
     public ProfissionalSaude(RequestProfissionalSaude requestProfissionalSaude) {
         super(requestProfissionalSaude.email(), requestProfissionalSaude.senha(), requestProfissionalSaude.userrole());
         this.nomeprofissionalsaude = requestProfissionalSaude.nomeProfissionalSaude();
@@ -31,5 +33,6 @@ public class ProfissionalSaude extends Usuario {
         this.especialidademedica = requestProfissionalSaude.especialidadeMedica();
         this.telefoneprofissionalsaude = requestProfissionalSaude.telefoneProfissionalSaude();
         this.CRM = requestProfissionalSaude.CRM();
+        this.status = requestProfissionalSaude.status();
     }
 }

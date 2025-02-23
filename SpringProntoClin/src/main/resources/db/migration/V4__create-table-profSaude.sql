@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS profissionalsaude (
 	especialidademedica varchar(100) NOT NULL,
 	telefoneprofissionalsaude  varchar(100) NOT NULL,
 	CRM  varchar(100) NOT NULL,
+    status varchar(100) NOT NULL,
     CONSTRAINT fk_usuario
         FOREIGN KEY (iduser)
         REFERENCES usuario(iduser)

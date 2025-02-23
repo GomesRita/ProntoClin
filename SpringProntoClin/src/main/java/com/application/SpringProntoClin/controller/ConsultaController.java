@@ -2,11 +2,19 @@ package com.application.SpringProntoClin.controller;
 
 import com.application.SpringProntoClin.DTO.RequestConsulta;
 import com.application.SpringProntoClin.domain.Consulta;
+import com.application.SpringProntoClin.domain.Paciente;
+import com.application.SpringProntoClin.domain.ProfissionalSaude;
 import com.application.SpringProntoClin.repository.ConsultaRepository;
+import com.application.SpringProntoClin.repository.ProfissionalSaudeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/consulta")
@@ -15,17 +23,50 @@ public class ConsultaController {
     @Autowired
     private ConsultaRepository consultaRepository;
 
+    @Autowired
+    private ProfissionalSaudeRepository profissionalSaudeRepository;
+
     @PostMapping
-    public ResponseEntity<Consulta> registrarConsulta(@RequestBody RequestConsulta consulta) {
-        System.out.println("Consulta " + consulta);
-        Consulta newConsulta = new Consulta(consulta);
-        consultaRepository.save(newConsulta);
-        System.out.println("New Consulta " + newConsulta);
-        return new ResponseEntity<>(newConsulta, HttpStatus.CREATED);
+    public ResponseEntity registrarConsulta(@RequestBody RequestConsulta consulta) {
+        ProfissionalSaude profissional = profissionalSaudeRepository.findById(consulta.idProfissionalSaude()).orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+        if (!Objects.equals(profissional.getStatus(), "INATIVO")) ResponseEntity.badRequest().body( "Profissional não está ativo.");
+        if (!consultaRepository.findConsultaByIdpacienteAndDataconsulta(consulta.idPaciente(), consulta.dataConsulta()).isEmpty()){
+            ResponseEntity.badRequest().body("Paciente já possui uma consulta agendada para este dia");
+        }
+        if(!consultaRepository.findConsultaByIdprofissionalsaudeAndDataconsulta(consulta.idProfissionalSaude(), consulta.dataConsulta()).isEmpty()){
+            ResponseEntity.badRequest().body("Profissional não disponível para esta data e hora");
+        }
+        else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Object principal = authentication.getPrincipal();
+            Consulta newConsulta = new Consulta(consulta);
+            Paciente paciente = (Paciente) principal;
+            newConsulta.setIdpaciente(paciente.getIduser());
+
+
+            consultaRepository.save(newConsulta);
+
+            return new ResponseEntity<>(newConsulta, HttpStatus.CREATED);
+        }
+        return ResponseEntity.badRequest().build();
     }
-    @GetMapping("/{idconsulta}")
-    public Consulta getConsulta(@PathVariable Long idconsulta) {
-        return consultaRepository.findById(idconsulta).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+
+    @GetMapping("/profissional/{idprofissionalSaude}")
+    public ResponseEntity<List<Consulta>> getConsultasByProfissionalId(@PathVariable Long idprofissionalSaude) {
+        List<Consulta> consultas = consultaRepository.findConsultaByIdprofissionalsaude(idprofissionalSaude);
+        if (consultas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(consultas);
+    }
+
+    @GetMapping("/paciente/{idPaciente}")
+    public ResponseEntity<List<Consulta>> getConsultasByPacienteId(@PathVariable Long idPaciente) {
+        List<Consulta> consultas = consultaRepository.findConsultaByIdpaciente(idPaciente);
+        if (consultas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(consultas);
     }
 
     @PutMapping("/{idconsulta}")

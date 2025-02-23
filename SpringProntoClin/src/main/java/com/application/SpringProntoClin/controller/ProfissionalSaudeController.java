@@ -23,8 +23,18 @@ public class ProfissionalSaudeController {
     @PutMapping("/{idprofissionalSaude}")
     public ProfissionalSaude updateProfissionalSaude(@PathVariable Long idprofissionalSaude, @RequestBody ProfissionalSaude profissionalSaude) {
         ProfissionalSaude profSaude = profissionalSaudeRepository.findById(idprofissionalSaude).orElseThrow(() -> new RuntimeException("Profissional de saúde não encontrado"));
+        profSaude.setEmail(profissionalSaude.getEmail());
+        profSaude.setSenha(profissionalSaude.getSenha());
         profSaude.setEspecialidademedica(profissionalSaude.getEspecialidademedica());
         profSaude.setTelefoneprofissionalsaude(profissionalSaude.getTelefoneprofissionalsaude());
+        profSaude.setStatus("ATIVO");
+        return profissionalSaudeRepository.save(profSaude);
+    }
+
+    @DeleteMapping("/{idprofissionalSaude}")
+    public ProfissionalSaude deleteProfSaude(@PathVariable Long idprofissionalSaude) {
+        ProfissionalSaude profSaude = profissionalSaudeRepository.findById(idprofissionalSaude).orElseThrow(() -> new RuntimeException("Profissional de saúde não encontrado"));
+        profSaude.setStatus("INATIVO");
 
         return profissionalSaudeRepository.save(profSaude);
     }

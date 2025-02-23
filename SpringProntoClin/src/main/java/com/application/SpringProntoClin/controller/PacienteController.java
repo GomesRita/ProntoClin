@@ -23,6 +23,8 @@ public class PacienteController {
     @PutMapping("/{idPaciente}")
     public Paciente updatePaciente(@PathVariable Long idPaciente, @RequestBody Paciente paciente) {
         Paciente patient = pacienteRepository.findById(idPaciente).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+        patient.setEmail(paciente.getEmail());
+        patient.setSenha(paciente.getSenha());
         patient.setNomesocial(paciente.getNomesocial());
         patient.setTelefonepaciente(paciente.getTelefonepaciente());
 
