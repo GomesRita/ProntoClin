@@ -62,14 +62,7 @@ public class ConsultaController {
         }
         return ResponseEntity.ok(consultas);
     }
-    @GetMapping("/profissional/{}")
-    public ResponseEntity<List<Consulta>> getAgendaProfissional(@RequestBody nomeProfissionalSaude ) {
-        List<Consulta> consultas = consultaRepository.findConsultaByIdprofissionalsaude(profissionalSaude.getIduser());
-        if (consultas.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(consultas);
-    }
+
     @GetMapping("/paciente/consultas")
     public ResponseEntity<List<Consulta>> getConsultasByPacienteId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
