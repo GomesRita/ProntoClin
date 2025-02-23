@@ -5,8 +5,5 @@ CREATE TABLE IF NOT EXISTS prontuario (
 	idpaciente int NOT NULL,
 	datacriacao date NOT NULL,
 	dataultimaatualizacao date NOT NULL,
-    CONSTRAINT idpaciente
-        FOREIGN KEY (idpaciente)
-        REFERENCES paciente(idpaciente)
-        ON DELETE CASCADE
+    CONSTRAINT fk_consulta_paciente FOREIGN KEY (idpaciente) REFERENCES paciente(iduser) ON DELETE CASCADE
 );

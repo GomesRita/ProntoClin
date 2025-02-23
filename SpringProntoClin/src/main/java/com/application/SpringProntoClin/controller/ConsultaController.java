@@ -32,7 +32,6 @@ public class ConsultaController {
     public Consulta getConsulta(@PathVariable Long idconsulta, @RequestBody Consulta consulta) {
         Consulta Consulta = consultaRepository.findById(idconsulta).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
         Consulta.setDataconsulta(consulta.getDataconsulta());
-
         return consultaRepository.save(Consulta);
     }
 

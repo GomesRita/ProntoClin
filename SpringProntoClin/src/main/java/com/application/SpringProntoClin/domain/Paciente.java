@@ -13,13 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity(name = "paciente")
 @Table(name = "paciente")
-@EqualsAndHashCode(of = "idpaciente")
-public class Paciente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paciente_seq_generator")
-    @SequenceGenerator(name = "paciente_seq_generator", sequenceName = "paciente_SEQ", allocationSize = 1)
-    private Long idpaciente;
+@PrimaryKeyJoinColumn(name="iduser")
+public class Paciente extends Usuario {
 
     private String nomepaciente;
     private String nomesocial;
@@ -32,20 +27,16 @@ public class Paciente {
 
     private Date datanascimento;
     private String sexopaciente;
-    private String senha;
 
-    @Column(unique = true)
-    private String emailpaciente;
 
     public Paciente(RequestPaciente requestPaciente) {
-        this.idpaciente = requestPaciente.idPaciente();
+        super(requestPaciente.email(), requestPaciente.senha(), requestPaciente.userrole());
         this.nomepaciente = requestPaciente.nomePaciente();
         this.nomesocial = requestPaciente.nomeSocial();
         this.telefonepaciente = requestPaciente.telefonePaciente();
         this.cpfpaciente = requestPaciente.cpfPaciente();
         this.datanascimento = requestPaciente.dataNascimento();
         this.sexopaciente = requestPaciente.sexoPaciente();
-        this.senha = requestPaciente.senha();
-        this.emailpaciente = requestPaciente.emailPaciente();
     }
+
 }
