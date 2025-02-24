@@ -2,11 +2,16 @@ package com.application.SpringProntoClin.controller;
 
 import com.application.SpringProntoClin.DTO.RequestAdministrador;
 import com.application.SpringProntoClin.domain.Administrador;
+import com.application.SpringProntoClin.domain.Paciente;
 import com.application.SpringProntoClin.repository.AdmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,23 +21,24 @@ public class AdmController {
     @Autowired
     private AdmRepository admRepository;
 
-    @PostMapping
-    public ResponseEntity<Administrador> registrarAdm(@RequestBody RequestAdministrador administrador){
-        Administrador newAdministrador = new Administrador(administrador);
-        admRepository.save(newAdministrador);
-        return new ResponseEntity<>(newAdministrador,HttpStatus.CREATED);
+    @GetMapping("/me")
+    public Administrador getAdm() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        Administrador administrador = (Administrador) principal;
+        return admRepository.findById(administrador.getIduser()).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
     }
 
-    @GetMapping("/{id}")
-    public Administrador getAdm(@PathVariable Long id) {
-        return admRepository.findById(id).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
-    }
-
-    @PutMapping("/{id}")
-    public Administrador updateAdm(@PathVariable Long id, @RequestBody Administrador adm) {
-        Administrador administrador = admRepository.findById(id).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
+    @PutMapping("/atualiza")
+    public Administrador updateAdm(@RequestBody Administrador adm) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        Administrador admin = (Administrador) principal;
+        Administrador administrador = admRepository.findById(admin.getIduser()).orElseThrow(() -> new RuntimeException("Administrador não encontrado"));
         administrador.setNome(adm.getNome());
         administrador.setEmail(adm.getEmail());
+        String encryptPassword = new BCryptPasswordEncoder().encode(adm.getSenha());
+        administrador.setSenha(encryptPassword);
         administrador.setSenha(adm.getSenha());
 
         return admRepository.save(administrador);

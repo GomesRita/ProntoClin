@@ -22,6 +22,7 @@ public class Consulta {
 
     private Long idpaciente;
     private Long idprofissionalsaude;
+
     private String nomeprofissionalsaude;
     private String nomepaciente;
     private String nomesocial;
