@@ -29,12 +29,14 @@ public class ConsultaController {
     @PostMapping
     public ResponseEntity registrarConsulta(@RequestBody RequestConsulta consulta) {
         ProfissionalSaude profissional = profissionalSaudeRepository.findById(consulta.idProfissionalSaude()).orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
-        if (!Objects.equals(profissional.getStatus(), "INATIVO")) ResponseEntity.badRequest().body( "Profissional não está ativo.");
+        if (Objects.equals(profissional.getStatus(), "INATIVO")){
+            return ResponseEntity.badRequest().body( "Profissional não está ativo.");
+        }
         if (!consultaRepository.findConsultaByIdpacienteAndDataconsulta(consulta.idPaciente(), consulta.dataConsulta()).isEmpty()){
-            ResponseEntity.badRequest().body("Paciente já possui uma consulta agendada para este dia");
+            return ResponseEntity.badRequest().body("Paciente já possui uma consulta agendada para este dia");
         }
         if(!consultaRepository.findConsultaByIdprofissionalsaudeAndDataconsulta(consulta.idProfissionalSaude(), consulta.dataConsulta()).isEmpty()){
-            ResponseEntity.badRequest().body("Profissional não disponível para esta data e hora");
+            return ResponseEntity.badRequest().body("Profissional não disponível para esta data e hora");
         }
         else {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -48,7 +50,6 @@ public class ConsultaController {
 
             return new ResponseEntity<>(newConsulta, HttpStatus.CREATED);
         }
-        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/profissional/consultas")
