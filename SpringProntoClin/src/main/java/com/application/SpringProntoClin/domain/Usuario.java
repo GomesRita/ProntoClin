@@ -24,6 +24,7 @@ public class Usuario  implements Serializable, UserDetails {
     @SequenceGenerator(name = "usuario_seq_generator", sequenceName = "usuario_SEQ", allocationSize = 1)
     private Long iduser;
 
+    @Column(unique = true)
     private String email;
     private String senha;
 
