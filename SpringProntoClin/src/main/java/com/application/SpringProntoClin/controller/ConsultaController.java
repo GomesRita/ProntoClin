@@ -81,7 +81,7 @@ public class ConsultaController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         Paciente paciente = (Paciente) principal;
-        if (!consulta.getIdpaciente().equals(paciente.getIduser())) {
+        if (consulta.getIdpaciente().equals(paciente.getIduser())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Consulta Consulta = consultaRepository.findById(idconsulta).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
