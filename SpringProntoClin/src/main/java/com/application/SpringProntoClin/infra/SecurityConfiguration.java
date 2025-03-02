@@ -14,6 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +30,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
+        httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests( authorize -> authorize
@@ -48,8 +54,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/consulta/profissional/**").hasRole("PROFSAUDE")
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
     }
 
     @Bean
