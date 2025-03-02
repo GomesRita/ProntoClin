@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom"
 import { Button, Form, Input } from 'antd';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
+import { setToken } from "../controle/cookie";
 function Login(){
+    const navigate = useNavigate(); 
 
     const onFinish = async (values: { email: string; senha: string }) => {
         try {
-          // Envia os dados para o backend
+
           const response = await axios.post(
             'http://localhost:8081/auth/login',
             {
@@ -17,14 +19,17 @@ function Login(){
               headers: {
                 'Content-Type': 'application/json',
               },
+
               withCredentials: true 
             }
           );
-      
-          // Se a requisição for bem-sucedida
+          setToken(response.data.token);
+
+          navigate('/adm/me');
+ 
           console.log('Login bem-sucedido', response);
         } catch (error) {
-          // Se ocorrer um erro na requisição
+
           console.error('Erro no login', error);
         }
       };
@@ -32,7 +37,7 @@ function Login(){
 
     return (
         <div>
-            <h2>Login</h2>
+            <h2 style={{ color: '#262626' }}>Login</h2>
             <Form
                 name="layout-multiple-vertical"
                 layout="vertical"

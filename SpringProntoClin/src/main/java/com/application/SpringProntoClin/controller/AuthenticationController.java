@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
 
-@CrossOrigin("http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
