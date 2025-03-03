@@ -66,7 +66,7 @@ function Login(){
                     </Button>
                 </Form.Item>
             </Form>
-            <Link to="/cadastro">Não possui uma conta? Cadastre-se</Link>
+            <Link to="/cadastroPaciente">Não possui uma conta? Cadastre-se</Link>
         </div>
     )
 

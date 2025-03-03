@@ -5,13 +5,22 @@ import axios from 'axios';
 
 
 function CadastroProSaude(){
-    const [ ,setLoading] = useState(false); 
-    const [ ,setError] = useState<string | null>(null); 
+    const [ loading, setLoading] = useState(false); 
+    const [ error,setError] = useState<string | null>(null); 
 
     const onFinish = async (values: { nome: string, cpf: string, especialidadeMedica: string, telefone: string, crm: string, email: string, senha: string }) => {
         setLoading(true); 
         setError(null);
-
+        
+        if (loading) {
+            return <div>Carregando...</div>;
+        }
+        
+        
+        if (error) {
+            return <div>Erro ao carregar os dados: {error}</div>;
+        }
+    
         try {
             const token = getToken(); 
             if (token) {

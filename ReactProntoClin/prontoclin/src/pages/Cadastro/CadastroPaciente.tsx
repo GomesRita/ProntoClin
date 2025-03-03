@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useState} from 'react';
-import { Button, Form, Input, message, DatePicker, Select, } from 'antd';
+import { Button, Form, Input, message, DatePicker, Select} from 'antd';
 import { getToken } from '../controle/cookie';
 import axios from 'axios';
 
 
 function CadastroPaciente(){
-    const [ ,setLoading] = useState(false); 
-    const [ ,setError] = useState<string | null>(null); 
+    const [ loading, setLoading] = useState(false);
+    const [ error, setError] = useState<string | null>(null);
 
     const onFinish = async (values: { nome: string, nomeSocial: string, cpf: string, dataNascimento: string, telefone: string, sexo: string, email: string, senha: string }) => {
         setLoading(true); 
@@ -38,12 +38,12 @@ function CadastroPaciente(){
 
                 );
                 console.log(response.data)
-                message.success('Profissional de saude cadastrado com sucesso!'); 
+                message.success('Paciente cadastrado com sucesso!'); 
                 setError('Token não encontrado');
             }
         } catch (err) {
-            setError('Erro ao cadastrar profissional de saude');
-            message.error('Erro ao cadastrar profissional de saude'); 
+            setError('Erro ao cadastrar paciente');
+            message.error('Erro ao cadastrar paciente'); 
         } finally {
             setLoading(false); 
         }
@@ -78,9 +78,19 @@ function CadastroPaciente(){
         </Form.Item>
       );
 
+    if (loading) {
+        return <div>Carregando...</div>;
+    }
+    
+    
+    if (error) {
+        return <div>Erro ao carregar os dados: {error}</div>;
+    }
+
+
     return (
         <div>
-            <h2>Cadastro</h2>
+            <h2  style={{ color: '#262626' }}>Cadastro de Pacientes</h2>
             <Form
                 name="layout-multiple-vertical"
                 layout="vertical"
@@ -91,7 +101,7 @@ function CadastroPaciente(){
                 <Form.Item label="Nome" name="nome" rules={[{ required: true }]}>
                 <Input />
                 </Form.Item>
-                <Form.Item label="Nome Social" name="nomeSocial" rules={[{ required: true }]}>
+                <Form.Item label="Nome Social" name="nomeSocial" rules={[{ required: false }]}>
                 <Input />
                 </Form.Item>
                 <Form.Item
@@ -118,7 +128,7 @@ function CadastroPaciente(){
                 </Form.Item>
                 <Button type="dashed" htmlType="submit">Cadastrar-se</Button>
             </Form>
-            <Link to="/login">Já possui uma conta? Faça login</Link>
+            <Link to="/">Já possui uma conta? Faça login</Link>
         </div>
 
     )

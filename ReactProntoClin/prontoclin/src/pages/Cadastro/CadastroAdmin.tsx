@@ -4,8 +4,8 @@ import { getToken } from '../controle/cookie';
 import axios from 'axios';
 
 function CadastroAdmin(){
-    const [ ,setLoading] = useState(false); // Gerenciar o carregamento durante a requisição
-    const [ ,setError] = useState<string | null>(null); // Gerenciar erro de requisição
+    const [ loading ,setLoading] = useState(false); // Gerenciar o carregamento durante a requisição
+    const [ error ,setError] = useState<string | null>(null); // Gerenciar erro de requisição
 
     // Função chamada ao enviar o formulário
     const onFinish = async (values: { nome: string, cpf: string, email: string, senha: string }) => {
@@ -46,6 +46,14 @@ function CadastroAdmin(){
         }
     };
 
+    if (loading) {
+        return <div>Carregando...</div>;
+    }
+    
+    
+    if (error) {
+        return <div>Erro ao carregar os dados: {error}</div>;
+    }
 
 
     return (
