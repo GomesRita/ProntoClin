@@ -6,6 +6,7 @@ import './App.css'
 import AdmIncial from './pages/Inicial/AdmInicial'
 import Paciente from './pages/Inicial/PacienteInicial'
 import CadastroProSaude from './pages/Cadastro/CadastroProSaude'
+import CadastroPaciente from './pages/Cadastro/CadastroPaciente'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/adm/me" element={<AdmIncial />}/>
         <Route path="/paciente" element={<Paciente />}/>
         <Route path="/cadastroProSaude" element={<CadastroProSaude />}/>
+        <Route path="/cadastroPaciente" element={<CadastroPaciente />}/>
       </Routes>
     </BrowserRouter>
   )
