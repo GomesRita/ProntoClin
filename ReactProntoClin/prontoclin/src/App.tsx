@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/cadastroAdmin" element={<CadastroAdmin/>}/>
-        <Route path="/login" element={<Login />}/>
+        <Route path="/" element={<Login />}/>
         <Route path="/adm/me" element={<AdmIncial />}/>
         <Route path="/paciente" element={<Paciente />}/>
         <Route path="/cadastroProSaude" element={<CadastroProSaude />}/>
