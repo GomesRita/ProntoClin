@@ -4,13 +4,22 @@ import { getToken } from '../controle/cookie';
 import { Descriptions, Button, Flex,Space} from 'antd';
 import CadastroAdmin from '../Cadastro/CadastroAdmin'; // Formulário de cadastro de administrador
 import CadastroProSaude from '../Cadastro/CadastroProSaude';
+import ListaProfissionais from '../Listas/ProfissionaisSaude';
+import { useNavigate } from 'react-router-dom';
+import { removeToken } from '../controle/cookie'; // Importe a função removeToken que você já criou
+import EditarAdmin from '../Edit/EditAdm';
+
 
 function AdmIncial(){
     const [userData, setUserData] = useState<any>(null); 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    
-    const [conteudo, setConteudo] = useState(''); // Controle do conteúdo exibido
+    const navigate = useNavigate();
+    const [conteudo, setConteudo] = useState(''); 
+    const logout = () => {
+        removeToken();
+        navigate('/'); 
+      };
 
     const handleClick = (tipo: any) => {
       setConteudo(tipo);
@@ -54,6 +63,10 @@ function AdmIncial(){
     return (
         <>
         <Space direction="vertical" size="large" style={{ display: 'flex' }}>
+            <Space direction='horizontal' size="middle" style={{display: 'flex'}}>
+            <Button type="dashed" onClick={() => handleClick('/editAdmin')}>Editar Dados</Button>
+            <Button type="dashed" onClick={logout}>Sair</Button>
+            </Space>
             <Descriptions title="Administrador" className="description">
                 <Descriptions.Item label="Nome">{userData.nome}</Descriptions.Item>
                 <Descriptions.Item label="CPF">{userData.cpf}</Descriptions.Item>
@@ -62,7 +75,7 @@ function AdmIncial(){
             <Flex gap="small" wrap>
                 <Button type="primary" onClick={() => handleClick('/cadastroAdmin')}>Cadastrar Administrador</Button>
                 <Button type="primary" onClick={() => handleClick('/cadastroProSaude')}>Cadastrar Profissional de Saude</Button>
-                <Button type="primary">Exibir Profissionais</Button>
+                <Button type="primary" onClick={() => handleClick('/listarProfissionais')}>Exibir Profissionais</Button>
             </Flex>
             
         </Space>
@@ -71,6 +84,8 @@ function AdmIncial(){
             {/* Renderiza o conteúdo com base no estado */}
             {conteudo === '/cadastroAdmin' && <CadastroAdmin/>}
             {conteudo === '/cadastroProSaude' && <CadastroProSaude/>}
+            {conteudo === '/listarProfissionais' && <ListaProfissionais/>}
+            {conteudo === '/editAdmin' && <EditarAdmin/>}
         </div>
 
         </>

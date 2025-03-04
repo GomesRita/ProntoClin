@@ -8,6 +8,8 @@ import Paciente from './pages/Inicial/PacienteInicial'
 import CadastroProSaude from './pages/Cadastro/CadastroProSaude'
 import CadastroPaciente from './pages/Cadastro/CadastroPaciente'
 import CadastroConsulta from './pages/Cadastro/CadastrarConsulta'
+import ListaProfissionais from './pages/Listas/ProfissionaisSaude'
+import EditarAdmin from './pages/Edit/EditAdm'
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path="/cadastroProSaude" element={<CadastroProSaude />}/>
         <Route path="/cadastroPaciente" element={<CadastroPaciente />}/>
         <Route path="/cadastroConsulta" element={<CadastroConsulta />}/>
+        <Route path="/listarProfissionais" element={<ListaProfissionais/>}/>
+        <Route path="/editAdmin" element={<EditarAdmin/>}/>
       </Routes>
     </BrowserRouter>
   )
