@@ -5,6 +5,7 @@ import com.application.SpringProntoClin.domain.Administrador;
 import com.application.SpringProntoClin.domain.Paciente;
 import com.application.SpringProntoClin.domain.ProfissionalSaude;
 import com.application.SpringProntoClin.domain.Usuario;
+import com.application.SpringProntoClin.enums.UsuarioRole;
 import com.application.SpringProntoClin.infra.TokenService;
 import com.application.SpringProntoClin.repository.AdmRepository;
 import com.application.SpringProntoClin.repository.PacienteRepository;
@@ -46,8 +47,8 @@ public class AuthenticationController {
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((Usuario) auth.getPrincipal());
-
-        return ResponseEntity.ok(new RequestLogin(token));
+        Usuario usuario = (Usuario) auth.getPrincipal();
+        return ResponseEntity.ok(new RequestLogin(token, usuario.getUserrole()));
     }
 
     @PostMapping("/register/adm")

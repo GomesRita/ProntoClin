@@ -19,16 +19,19 @@ function ListaProfissionais() {
       dataIndex: 'nomeprofissionalsaude',
       key: 'nomeprofissionalsaude',
       render: (text: string) => <a>{text}</a>,
+      width: '16%'
     },
     {
       title: 'Especialidade Médica',
       dataIndex: 'especialidademedica',
       key: 'especialidademedica',
+      width: '16%'
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      width: '16%'
     },
     {
       title: 'Status',
@@ -39,6 +42,7 @@ function ListaProfissionais() {
           {status.toUpperCase()}
         </Tag>
       ),
+      width: '16%'
     },
     {
       title: 'Action',
@@ -53,6 +57,7 @@ function ListaProfissionais() {
           </Button>
         </Space>
       ),
+      width: '10%'
     },
   ];
 

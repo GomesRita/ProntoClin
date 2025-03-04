@@ -24,9 +24,15 @@ function Login(){
             }
           );
           setToken(response.data.token);
-
-          navigate('/adm/me');
- 
+          console.log(response.data)
+          const role = response.data.userrole;
+          if (role === "ADMIN") {
+            navigate('/adm/me');  // Redirecionar para a página do Administrador
+          } else if (role == 'PACIENTE') {
+            navigate('/paciente');  // Redirecionar para a página do Paciente
+          } else {
+            navigate('/profSaude/me');  // Se não for nem ADMIN nem PACIENTE, talvez redirecione para uma página padrão
+          }
           console.log('Login bem-sucedido', response);
         } catch (error) {
 

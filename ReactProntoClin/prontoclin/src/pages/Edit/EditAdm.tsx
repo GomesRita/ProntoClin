@@ -89,22 +89,23 @@ function EditarAdmin(){
 
     return(
 
-     <div>
-        <h2 style={{ color: '#262626' }}>Editar Dados Pessoais</h2>
+     <div style={{display:'flex' ,justifyContent: 'center', alignItems: 'center'}}>
         <Form
             form={form}
             name="dependencies"
             layout="vertical"
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
+            labelCol={{ span: 100 }}
+            wrapperCol={{ span: 100 }}
             initialValues={{
                 nome: userData.nome, // Preenche o campo "nome" com o valor do backend
                 email: userData.email, // Preenche o campo "email" com o valor do backend
                 senha: '', // Não exibe a senha do backend no campo
             }}
+            style={{width: '50%'}}
             onFinish={onFinish}
             onFieldsChange={onFieldsChange}
             >
+              <h2 style={{ color: '#262626' }}>Editar Dados Pessoais</h2>
             <Form.Item 
                 label="Nome" 
                 name="nome"

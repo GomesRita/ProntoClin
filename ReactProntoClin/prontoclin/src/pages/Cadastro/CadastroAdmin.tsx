@@ -57,15 +57,16 @@ function CadastroAdmin(){
 
 
     return (
-        <div>
-            <h2 style={{ color: '#262626' }}>Cadastro de Administradores</h2>
+        <div style={{display:'flex' ,justifyContent: 'center', alignItems: 'center'}}>
             <Form
                 name="layout-multiple-vertical"
                 layout="vertical"
-                labelCol={{ span: 4 }}
-                wrapperCol={{ span: 20 }}
+                labelCol={{ span: 100 }}
+                wrapperCol={{ span: 100 }}
                 onFinish={onFinish}
+                style={{width: '50%'}}
                 >
+                <h2 style={{ color: '#262626' }}>Cadastro de Administradores</h2>
                 <Form.Item 
                     label="Nome" 
                     name="nome"

@@ -62,32 +62,42 @@ function AdmIncial(){
 
     return (
         <>
-        <Space direction="vertical" size="large" style={{ display: 'flex' }}>
-            <Space direction='horizontal' size="middle" style={{display: 'flex'}}>
-            <Button type="dashed" onClick={() => handleClick('/editAdmin')}>Editar Dados</Button>
-            <Button type="dashed" onClick={logout}>Sair</Button>
+        <Space direction="vertical" size={50} style={{ 
+            display: 'flex', 
+            alignItems: 'center',
+            justifyContent: 'center', 
+            background: '#ffffff', 
+            padding: '20px', 
+            borderRadius: '10px',
+            boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+            width: '80%',
+            left: '50%', /* Centraliza horizontalmente */
+            transform: 'translate(10%,0%)'
+             }}>
+            <Space direction='horizontal' size="middle" style={{display: 'flex', justifyContent: 'center'}}>
+                <Button type="dashed" onClick={() => handleClick('/editAdmin')}>Editar Dados</Button>
+                <Button type="dashed" onClick={logout}>Sair</Button>
             </Space>
-            <Descriptions title="Administrador" className="description">
-                <Descriptions.Item label="Nome">{userData.nome}</Descriptions.Item>
-                <Descriptions.Item label="CPF">{userData.cpf}</Descriptions.Item>
-                <Descriptions.Item label="Email">{userData.email}</Descriptions.Item>
+            <div style={{justifyItems: 'center'}}>
+            <Descriptions title="Administrador" style={{ justifyItems: 'center', width: '50%'}}>
+                <Descriptions.Item label="Nome" style={{textAlign: 'center'}}>{userData.nome}</Descriptions.Item>
+                <Descriptions.Item label="CPF"  style={{textAlign: 'center'}}>{userData.cpf}</Descriptions.Item>
+                <Descriptions.Item label="Email" style={{textAlign: 'center'}}>{userData.email}</Descriptions.Item>
             </Descriptions>
-            <Flex gap="small" wrap>
+            </div>
+            <Flex gap="small" wrap style={{ justifyContent: 'center'}}>
                 <Button type="primary" onClick={() => handleClick('/cadastroAdmin')}>Cadastrar Administrador</Button>
                 <Button type="primary" onClick={() => handleClick('/cadastroProSaude')}>Cadastrar Profissional de Saude</Button>
                 <Button type="primary" onClick={() => handleClick('/listarProfissionais')}>Exibir Profissionais</Button>
             </Flex>
-            
         </Space>
-
-        <div style={{ marginTop: '20px' }}>
+        <div style={{ width: '80%', transform: 'translate(13%,5%)', textAlign: "center"}}>
             {/* Renderiza o conteúdo com base no estado */}
             {conteudo === '/cadastroAdmin' && <CadastroAdmin/>}
             {conteudo === '/cadastroProSaude' && <CadastroProSaude/>}
             {conteudo === '/listarProfissionais' && <ListaProfissionais/>}
             {conteudo === '/editAdmin' && <EditarAdmin/>}
         </div>
-
         </>
     );
 

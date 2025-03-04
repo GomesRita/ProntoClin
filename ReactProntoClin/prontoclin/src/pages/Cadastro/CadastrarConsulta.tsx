@@ -1,11 +1,12 @@
-import { useState} from 'react';
+import { useEffect, useState} from 'react';
 import { Form, message , DatePicker, Select, Button} from 'antd';
 import { getToken } from '../controle/cookie';
 import dayjs from 'dayjs';
 import axios from 'axios';
 
-function CadastroConsulta(){
 
+function CadastroConsulta(){
+    const [profissionais, setProfissionais] = useState<any[]>([]);
     const [ loading, setLoading] = useState(false); 
     const [ error,setError] = useState<string | null>(null); 
     const currentDateTime = dayjs();
@@ -52,6 +53,32 @@ function CadastroConsulta(){
         }
     };
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const token = getToken();
+            if (token) {
+              try {
+                const response = await axios.get(
+                  'http://localhost:8081/profSaude/profissionais',
+                  {
+                    headers: {
+                      'Authorization': `Bearer ${token}`,
+                    },
+                  }
+                );
+                setProfissionais(response.data);
+              } catch (error) {
+                console.error('Erro ao buscar profissionais:', error);
+                message.error('Erro ao buscar profissionais');
+              }
+            } else {
+              message.error('Token não encontrado');
+            }
+        }
+            fetchData()
+
+      }, []);
+
     return (
         <div>
             <h2 style={{ color: '#262626' }}>Cadastro de Profissionais de Saúde</h2>
@@ -62,38 +89,47 @@ function CadastroConsulta(){
                 wrapperCol={{ span: 20 }}
                 onFinish={onFinish}
                 >
-            <Form.Item
-                label="Profissional Saude"
-                name="nome"
-                rules={[{ required: true, message: 'Please input!' }]}
-            >
-            <Select />
-            </Form.Item>
-            </Form>
-            <Form.Item name="data" label="Data Consulta">
-            <DatePicker showTime format="YYYY-MM-DD HH:mm"           
-            disabledDate={(current) => current && current.isBefore(currentDateTime, 'day')}
-            disabledTime={() => ({
-                disabledHours: () => {
-                    const allowedHours = [
-                      ...Array.from({ length: 5 }, (_, i) => i + 8),
-                      ...Array.from({ length: 5 }, (_, i) => i + 14)
-                    ];
-                    return Array.from({ length: 24 }, (_, i) => i).filter(hour => !allowedHours.includes(hour));
-                  },
-                disabledMinutes: () => {
-                    return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]; // Desabilitar todos os minutos, exceto 00 e 30
-                },
-                disabledSeconds: (selectedHour, selectedMinute) => {
-                if (selectedHour === currentDateTime.hour() && selectedMinute === currentDateTime.minute()) {
-                    const currentSecond = currentDateTime.second();
-                    return Array.from({ length: currentSecond }, (_, i) => i);
-                }
-                return [];
-                },
-            })}
-         />
-            </Form.Item>
+                <Form.Item
+                    label="Profissional Saude"
+                    name="nome"
+                    rules={[{ required: true, message: 'Please input!' }]}
+                >
+                    <Select
+                    placeholder="Selecione um profissional"
+                    loading={loading} // Mostra o ícone de carregamento enquanto os dados não foram carregados
+                    >
+                        {profissionais.map((profissional) => (
+                            <Select.Option key={profissional.nomeprofissionalsaude} value={profissional.nomeprofissionalsaude}>
+                                {profissional.nomeprofissionalsaude}
+                            </Select.Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+                <Form.Item name="data" label="Data Consulta">
+                <DatePicker showTime format="YYYY-MM-DD HH:mm"           
+                disabledDate={(current) => current && current.isBefore(currentDateTime, 'day')}
+                disabledTime={() => ({
+                    disabledHours: () => {
+                        const allowedHours = [
+                        ...Array.from({ length: 5 }, (_, i) => i + 8),
+                        ...Array.from({ length: 5 }, (_, i) => i + 14)
+                        ];
+                        return Array.from({ length: 24 }, (_, i) => i).filter(hour => !allowedHours.includes(hour));
+                    },
+                    disabledMinutes: () => {
+                        return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]; // Desabilitar todos os minutos, exceto 00 e 30
+                    },
+                    disabledSeconds: (selectedHour, selectedMinute) => {
+                    if (selectedHour === currentDateTime.hour() && selectedMinute === currentDateTime.minute()) {
+                        const currentSecond = currentDateTime.second();
+                        return Array.from({ length: currentSecond }, (_, i) => i);
+                    }
+                    return [];
+                    },
+                })}
+            />
+                </Form.Item>
+                </Form>
             <Button type="dashed" htmlType="submit">Cadastrar-se</Button>
         </div>
 
