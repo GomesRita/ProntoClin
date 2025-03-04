@@ -28,7 +28,7 @@ public class ConsultaController {
 
     @PostMapping
     public ResponseEntity registrarConsulta(@RequestBody RequestConsulta consulta) {
-        ProfissionalSaude profissional = profissionalSaudeRepository.findById(consulta.idProfissionalSaude()).orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
+        ProfissionalSaude profissional = profissionalSaudeRepository.findProfissionalSaudeByNomeprofissionalsaude(consulta.nomeProfissionalSaude()).orElseThrow(() -> new RuntimeException("Profissional não encontrado"));
         if (Objects.equals(profissional.getStatus(), "INATIVO")){
             return ResponseEntity.badRequest().body( "Profissional não está ativo.");
         }
@@ -44,13 +44,16 @@ public class ConsultaController {
             Consulta newConsulta = new Consulta(consulta);
             Paciente paciente = (Paciente) principal;
             newConsulta.setIdpaciente(paciente.getIduser());
-
-
+            newConsulta.setNomepaciente(paciente.getNomepaciente());
+            newConsulta.setNomesocial(paciente.getNomesocial());
+            newConsulta.setIdprofissionalsaude(profissional.getIduser());
+            newConsulta.setEspecialidademedica(profissional.getEspecialidademedica());
             consultaRepository.save(newConsulta);
 
             return new ResponseEntity<>(newConsulta, HttpStatus.CREATED);
         }
     }
+
 
     @GetMapping("/profissional/consultas")
     public ResponseEntity<List<Consulta>> getConsultasByProfissionalId() {
