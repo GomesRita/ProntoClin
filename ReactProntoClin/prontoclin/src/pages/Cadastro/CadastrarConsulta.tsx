@@ -3,18 +3,19 @@ import { Form, message , DatePicker, Select, Button} from 'antd';
 import { getToken } from '../controle/cookie';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import moment from 'moment';
 
 
 function CadastroConsulta(){
     const [profissionais, setProfissionais] = useState<any[]>([]);
     const [ loading, setLoading] = useState(false); 
     const [ error,setError] = useState<string | null>(null); 
-    const currentDateTime = dayjs();
+
 
     const onFinish = async (values: { nome: string, data: Date }) => {
         setLoading(true); 
         setError(null);
-        
+        console.log('Nome: ' + values.nome, ' data: ' + values.data)
         if (loading) {
             return <div>Carregando...</div>;
         }
@@ -31,7 +32,7 @@ function CadastroConsulta(){
                     'http://localhost:8081/consulta',
                     {
                         nomeProfissionalSaude: values.nome,
-                        dataConsulta: values.nome
+                        dataConsulta: values.data
                     },
                     {
                         headers: {
@@ -100,37 +101,45 @@ function CadastroConsulta(){
                     >
                         {profissionais.map((profissional) => (
                             <Select.Option key={profissional.nomeprofissionalsaude} value={profissional.nomeprofissionalsaude}>
-                                {profissional.nomeprofissionalsaude}
+                                {profissional.nomeprofissionalsaude}, {profissional.especialidademedica}
                             </Select.Option>
                         ))}
                     </Select>
                 </Form.Item>
                 <Form.Item name="data" label="Data Consulta">
-                <DatePicker showTime format="YYYY-MM-DD HH:mm"           
-                disabledDate={(current) => current && current.isBefore(currentDateTime, 'day')}
-                disabledTime={() => ({
-                    disabledHours: () => {
-                        const allowedHours = [
-                        ...Array.from({ length: 5 }, (_, i) => i + 8),
-                        ...Array.from({ length: 5 }, (_, i) => i + 14)
-                        ];
-                        return Array.from({ length: 24 }, (_, i) => i).filter(hour => !allowedHours.includes(hour));
-                    },
-                    disabledMinutes: () => {
-                        return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59]; // Desabilitar todos os minutos, exceto 00 e 30
-                    },
-                    disabledSeconds: (selectedHour, selectedMinute) => {
-                    if (selectedHour === currentDateTime.hour() && selectedMinute === currentDateTime.minute()) {
-                        const currentSecond = currentDateTime.second();
-                        return Array.from({ length: currentSecond }, (_, i) => i);
-                    }
-                    return [];
-                    },
-                })}
-            />
-                </Form.Item>
+                <DatePicker 
+                    showTime 
+                    format="YYYY-MM-DD HH:mm"
+                    onChange={() => {
+                    }}
+                    disabledDate={(current) => current && current.isBefore(dayjs(), 'day')} // `moment()` garante que você compare com a data atual
+                    disabledTime={() => ({
+                        disabledHours: () => {
+                            const allowedHours = [
+                                ...Array.from({ length: 5 }, (_, i) => i + 8),
+                                ...Array.from({ length: 5 }, (_, i) => i + 14)
+                            ];
+                            return Array.from({ length: 24 }, (_, i) => i).filter(hour => !allowedHours.includes(hour));
+                        },
+                        disabledMinutes: () => {
+                            return [
+                                1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+                                24, 25, 26, 27, 28, 29, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+                                46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59
+                            ];
+                        },
+                        disabledSeconds: (selectedHour, selectedMinute) => {
+                            if (selectedHour === moment().hour() && selectedMinute === moment().minute()) {
+                                const currentSecond = moment().second();
+                                return Array.from({ length: currentSecond }, (_, i) => i);
+                            }
+                            return [];
+                        }
+                    })}
+                />
+            </Form.Item>
+                <Button type="dashed" htmlType="submit">Cadastrar-se</Button>
                 </Form>
-            <Button type="dashed" htmlType="submit">Cadastrar-se</Button>
         </div>
 
     )
