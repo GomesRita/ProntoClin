@@ -94,8 +94,9 @@ public class ConsultaController {
     }
 
     @GetMapping("/agendaprofissional")
-    public ResponseEntity<List<Agenda>> getAgendasByProfissional(@RequestBody String nomeprofissionalsaude) {
-        ProfissionalSaude profissional = profissionalSaudeRepository.findProfissionalSaudeByNomeprofissionalsaude(nomeprofissionalsaude).orElseThrow(RuntimeException::new);
+    public ResponseEntity<List<Agenda>> getAgendasByProfissional(@RequestBody ProfissionalSaude profissionalSaude) {
+        ProfissionalSaude profissional = profissionalSaudeRepository.findProfissionalSaudeByNomeprofissionalsaude(profissionalSaude.getNomeprofissionalsaude()).orElseThrow(RuntimeException::new);
+        System.out.println(profissional);
         List<Agenda> agenda = agendaRepository.findAgendaBySituacaoAndProfissionalSaude("disponivel", profissional);
         if (agenda.isEmpty()) {
             return ResponseEntity.noContent().build();

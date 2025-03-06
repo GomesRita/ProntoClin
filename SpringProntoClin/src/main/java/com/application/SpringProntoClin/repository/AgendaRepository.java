@@ -18,5 +18,6 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
 
     List<Agenda> findAgendaBySituacaoAndProfissionalSaude(String situacao, ProfissionalSaude profissionalSaude);
 
+
     Optional<Agenda> findByProfissionalSaudeAndDataconsulta(ProfissionalSaude profissional, Date date);
 }
