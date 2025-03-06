@@ -1,7 +1,9 @@
 import { useEffect, useState} from 'react';
-import { Form, message, Select, Button} from 'antd';
+import { Form, message, Select, Button, Space, Table} from 'antd';
 import { getToken } from '../controle/cookie';
 import axios from 'axios';
+import dayjs from 'dayjs';
+import { recomposeColor } from '@mui/material';
 
 
 
@@ -9,44 +11,109 @@ function CadastroConsulta(){
     const [profissionais, setProfissionais] = useState<any[]>([]);
     const [ loading, setLoading] = useState(false); 
     const [ error,setError] = useState<string | null>(null); 
+    const [data, setData] = useState<DataType[]>([]);
 
-
-    const onFinish = async (values: { nome: string, data: Date }) => {
+    interface DataType {
+        key: string;
+        nomeprofissionalsaude: string;
+        data: string;
+      }
+      
+      const columns = [
+        {
+          title: 'Nome',
+          dataIndex: 'nomeprofissionalsaude',
+          key: 'nomeprofissionalsaude',
+          render: (text: string) => <a>{text}</a>,
+          width: '16%'
+        },
+        {
+          title: 'Data',
+          dataIndex: 'data',
+          key: 'data',
+          width: '16%',
+          render: (text: string) => {
+            return <span>{dayjs(text).format('DD/MM/YYYY HH:mm')}</span>;
+          }
+      
+        },
+        {
+          title: 'Action',
+          key: 'action',
+          render: (_: any, record: DataType) => (
+            <Space size="middle">
+              <Button 
+                type="dashed"
+                onClick={() => agenda(record)} 
+              >
+                Agenda Consulta
+              </Button>
+            </Space>
+          ),
+          width: '10%'
+        },
+      ];
+    const agenda = async (record: DataType) =>{
+        setLoading(true);
+        console.log(record.nomeprofissionalsaude)
+        console.log(record.data)
+        try{
+            const token = getToken()
+            if(token){
+            await axios.post('http://localhost:8081/consulta',
+                {
+                    nomeProfissionalSaude: record.nomeprofissionalsaude,
+                    dataConsulta: record.data
+                }, 
+                {
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, 
+                }
+            });
+            message.success("Consulta cadastrada com sucesso")
+            }
+        }catch(err){
+            setError("Erro ao cadastrar consulta"),
+            message.error("Erro ao cadastrar consulta")
+        } finally{
+            setLoading(false);
+        }
+    }
+    const onFinish = async (values: { nome: string}) => {
         setLoading(true); 
         setError(null);
-        console.log('Nome: ' + values.nome, ' data: ' + values.data)
-        if (loading) {
-            return <div>Carregando...</div>;
+        console.log('Nome: ' + values.nome)
+        const token = getToken(); 
+        if (!token) {
+            console.log('token ' + token)
+            message.error('token não encontrado')
         }
-        
-        
-        if (error) {
-            return <div>Erro ao carregar os dados: {error}</div>;
-        }
-    
         try {
-            const token = getToken(); 
-            if (token) {
-                const response = await axios.post(
-                    'http://localhost:8081/consulta/agendaprofissional',
-                    {
-                        nomeProfissionalSaude: values.nome,
-                    },
-                    {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, 
-                        }
-                    }
+            console.log('token ' + token)
+            message.success('token encontrado')
+            const response = await axios.post('http://localhost:8081/consulta/agendaprofissional', 
+                {
+                    nomeprofissionalsaude: values.nome,  // Parâmetro na URL
+                },{
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`  // Token de autenticação
+                } }
+            );
 
-                );
-                console.log(response.data)
-                message.success('Consulta cadastrada com sucesso!'); 
-                setError('Token não encontrado');
-            }
+            const transformedData = response.data.map((item: any) => ({
+                key: item.idagenda,
+                nomeprofissionalsaude: item.profissionalSaude.nomeprofissionalsaude, 
+                data: item.dataconsulta
+              }));
+
+              setData(transformedData); 
+            console.log(response.data)
+            setError(null); 
         } catch (err) {
-            setError('Erro ao cadastrar consulta');
-            message.error('Erro ao cadastrar consulta'); 
+            setError('Erro ao acessar agenda');
+            message.error('Erro ao acessar agenda'); 
         } finally {
             setLoading(false); 
         }
@@ -77,6 +144,14 @@ function CadastroConsulta(){
             fetchData()
 
       }, []);
+      if (loading) {
+        return <div>Carregando...</div>;
+    }
+    
+    
+    if (error) {
+        return <div>Erro ao carregar os dados: {error}</div>;
+    }
 
     return (
         <div>
@@ -106,6 +181,9 @@ function CadastroConsulta(){
                 </Form.Item>
                 <Button type="dashed" htmlType="submit">Acessar Agenda</Button>
                 </Form>
+                {loading && <div>Carregando...</div>}
+                {error && <div>Erro ao carregar os dados: {error}</div>}
+                <Table<DataType> columns={columns} dataSource={data} />
         </div>
 
     )

@@ -73,7 +73,7 @@ function ListaProfissionais() {
             await axios.put(
                 'http://localhost:8081/profSaude/StatusProfissional',
                 {
-                  nomeprofissionalsaude: record.nomeprofissionalsaude // Se necessário, você pode enviar o status atual também
+                  nomeprofissionalsaude: record.nomeprofissionalsaude
                 },
                 {
                     headers: {

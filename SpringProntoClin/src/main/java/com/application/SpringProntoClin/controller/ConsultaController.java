@@ -93,7 +93,7 @@ public class ConsultaController {
         return ResponseEntity.ok(agenda);
     }
 
-    @GetMapping("/agendaprofissional")
+    @PostMapping("/agendaprofissional")
     public ResponseEntity<List<Agenda>> getAgendasByProfissional(@RequestBody ProfissionalSaude profissionalSaude) {
         ProfissionalSaude profissional = profissionalSaudeRepository.findProfissionalSaudeByNomeprofissionalsaude(profissionalSaude.getNomeprofissionalsaude()).orElseThrow(RuntimeException::new);
         System.out.println(profissional);

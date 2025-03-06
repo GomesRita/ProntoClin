@@ -54,7 +54,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/consulta/**").hasRole("PACIENTE")
                         .requestMatchers(HttpMethod.GET, "/profSaude/me").hasRole("PROFSAUDE")
                         .requestMatchers(HttpMethod.PUT, "/profSaude/atualiza").hasRole("PROFSAUDE")
-                        .requestMatchers(HttpMethod.GET, "/consulta/agendaprofissional").hasRole("PACIENTE")
+                        .requestMatchers(HttpMethod.POST, "/consulta/agendaprofissional").hasRole("PACIENTE")
                         .requestMatchers(HttpMethod.GET, "/consulta/profissional/consultas").hasRole("PROFSAUDE")
                         .anyRequest().authenticated()
                 )
