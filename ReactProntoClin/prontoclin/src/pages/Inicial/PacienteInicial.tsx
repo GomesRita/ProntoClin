@@ -4,6 +4,7 @@ import { getToken, removeToken } from '../controle/cookie';
 import { useNavigate } from 'react-router-dom';
 import { Button, Descriptions, Flex, Space } from 'antd';
 import CadastroConsulta from '../Cadastro/CadastrarConsulta';
+import ConsultasPaciente from '../Listas/ConsultasPaciente';
 
 function Paciente() {
 
@@ -94,11 +95,13 @@ function Paciente() {
         </div>
         <Flex gap="small" wrap style={{ justifyContent: 'center'}}>
             <Button type="primary" onClick={() => handleClick('/cadastroConsulta')}>Agendar Consulta</Button>
+            <Button type="primary" onClick={() => handleClick('/consultaPaciente')}>Minhas Consultas</Button>
         </Flex>
     </Space>
     <div style={{ width: '80%', transform: 'translate(13%,5%)', textAlign: "center"}}>
         {/* Renderiza o conteúdo com base no estado */}
         {conteudo === '/cadastroConsulta' && <CadastroConsulta/>}
+        {conteudo === '/consultaPaciente' && <ConsultasPaciente/>}
     </div>
     </>
    );

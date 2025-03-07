@@ -3,8 +3,7 @@ import { Form, message, Select, Button, Space, Table} from 'antd';
 import { getToken } from '../controle/cookie';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { recomposeColor } from '@mui/material';
-
+import utc from 'dayjs/plugin/utc'; // Para manipulação de datas em UTC
 
 
 function CadastroConsulta(){
@@ -12,6 +11,7 @@ function CadastroConsulta(){
     const [ loading, setLoading] = useState(false); 
     const [ error,setError] = useState<string | null>(null); 
     const [data, setData] = useState<DataType[]>([]);
+    dayjs.extend(utc);
 
     interface DataType {
         key: string;
@@ -21,24 +21,24 @@ function CadastroConsulta(){
       
       const columns = [
         {
-          title: 'Nome',
+          title: 'Profissional',
           dataIndex: 'nomeprofissionalsaude',
           key: 'nomeprofissionalsaude',
           render: (text: string) => <a>{text}</a>,
           width: '16%'
         },
         {
-          title: 'Data',
+          title: 'Datas Disponíveis',
           dataIndex: 'data',
           key: 'data',
           width: '16%',
           render: (text: string) => {
-            return <span>{dayjs(text).format('DD/MM/YYYY HH:mm')}</span>;
-          }
-      
+            const date = dayjs.utc(text);
+            return <span>{date.format('DD/MM/YYYY HH:mm')}</span>;
+            }
         },
         {
-          title: 'Action',
+          title: 'Agendar',
           key: 'action',
           render: (_: any, record: DataType) => (
             <Space size="middle">
@@ -46,13 +46,14 @@ function CadastroConsulta(){
                 type="dashed"
                 onClick={() => agenda(record)} 
               >
-                Agenda Consulta
+                Agendar Consulta
               </Button>
             </Space>
           ),
           width: '10%'
         },
       ];
+
     const agenda = async (record: DataType) =>{
         setLoading(true);
         console.log(record.nomeprofissionalsaude)
@@ -80,17 +81,16 @@ function CadastroConsulta(){
             setLoading(false);
         }
     }
+    
     const onFinish = async (values: { nome: string}) => {
         setLoading(true); 
         setError(null);
         console.log('Nome: ' + values.nome)
         const token = getToken(); 
         if (!token) {
-            console.log('token ' + token)
             message.error('token não encontrado')
         }
         try {
-            console.log('token ' + token)
             message.success('token encontrado')
             const response = await axios.post('http://localhost:8081/consulta/agendaprofissional', 
                 {
@@ -173,7 +173,7 @@ function CadastroConsulta(){
                     loading={loading} // Mostra o ícone de carregamento enquanto os dados não foram carregados
                     >
                         {profissionais.map((profissional) => (
-                            <Select.Option key={profissional.nomeprofissionalsaude} value={profissional.nomeprofissionalsaude}>
+                            <Select.Option key={profissional.iduser} value={profissional.nomeprofissionalsaude}>
                                 {profissional.nomeprofissionalsaude}, {profissional.especialidademedica}
                             </Select.Option>
                         ))}

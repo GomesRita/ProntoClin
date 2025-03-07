@@ -15,9 +15,9 @@ BEGIN
     WHILE data_atual <= data_fim LOOP
         -- Verifica se o dia atual é de segunda a sexta-feira (1 = segunda, 5 = sexta)
         IF EXTRACT(DOW FROM data_atual) BETWEEN 1 AND 5 THEN
-            -- Preenche horários das 8h às 12h
-            FOR i IN 0..4 LOOP
-                horario_consulta := data_atual + interval '8 hours' + interval '1 hour' * i;
+            -- Preenche horários das 8h às 12h com intervalos de 30 minutos
+            FOR i IN 0..8 LOOP
+                horario_consulta := data_atual + interval '8 hours' + interval '30 minutes' * i;
 
                 -- Verifica se o horário já existe para evitar duplicações
                 IF NOT EXISTS (
@@ -29,9 +29,9 @@ BEGIN
 END IF;
 END LOOP;
 
-            -- Preenche horários das 14h às 17h
-FOR i IN 0..3 LOOP
-                horario_consulta := data_atual + interval '14 hours' + interval '1 hour' * i;
+            -- Preenche horários das 14h às 17h com intervalos de 30 minutos
+FOR i IN 0..6 LOOP
+                horario_consulta := data_atual + interval '14 hours' + interval '30 minutes' * i;
 
                 -- Verifica se o horário já existe para evitar duplicações
                 IF NOT EXISTS (
