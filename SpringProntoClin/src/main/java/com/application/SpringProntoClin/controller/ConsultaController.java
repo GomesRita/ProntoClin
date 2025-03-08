@@ -117,17 +117,40 @@ public class ConsultaController {
         return ResponseEntity.ok(consultas);
     }
 
-    @PutMapping("/{idconsulta}")
-    public ResponseEntity<Object> getConsulta(@PathVariable Long idconsulta, @RequestBody Consulta consulta) {
+    @PutMapping("/atualizarConsulta")
+    public ResponseEntity<Object> atualizarConsulta(@RequestBody Consulta consulta) {
+        ProfissionalSaude profissional = profissionalSaudeRepository
+                .findProfissionalSaudeByNomeprofissionalsaude(consulta.getNomeprofissionalsaude())
+                .orElseThrow(() -> new RuntimeException("Profissional de Saúde não encontrado"));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        Paciente paciente = (Paciente) principal;
-        Consulta newConsulta = consultaRepository.findById(idconsulta).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
-        if (!newConsulta.getIdpaciente().equals(paciente.getIduser())) {
+        Paciente paciente = (Paciente) authentication.getPrincipal();
+
+        Consulta novaConsulta = consultaRepository.findById(consulta.getIdconsulta())
+                .orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
+        if (!novaConsulta.getIdpaciente().equals(paciente.getIduser())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        newConsulta.setDataconsulta(consulta.getDataconsulta());
-        return ResponseEntity.ok().body(consultaRepository.save(newConsulta));
+        Optional<Agenda> agendaAntiga = agendaRepository
+                .findAgendaByDataconsultaAndProfissionalSaude(novaConsulta.getDataconsulta(), profissional);
+        if (agendaAntiga.isPresent()) {
+            Agenda agenda = agendaAntiga.get();
+            if (agenda.getSituacao().equals("indisponivel")) {
+                agenda.setSituacao("disponivel");
+                agendaRepository.save(agenda);
+            }
+        }
+        Optional<Agenda> agendaNova = agendaRepository
+                .findByProfissionalSaudeAndDataconsulta(profissional, consulta.getDataconsulta());
+        if (agendaNova.isPresent()) {
+            Agenda agenda = agendaNova.get();
+            if (agenda.getSituacao().equals("disponivel")) {
+                agenda.setSituacao("indisponivel");
+                agendaRepository.save(agenda);
+            }
+        }
+        novaConsulta.setDataconsulta(consulta.getDataconsulta());
+        consultaRepository.save(novaConsulta);
+        return ResponseEntity.ok().body(novaConsulta);
     }
 
     @PutMapping("/deletarConsulta")

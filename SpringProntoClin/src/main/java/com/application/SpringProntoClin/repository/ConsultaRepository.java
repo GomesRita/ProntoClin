@@ -11,11 +11,12 @@ import java.util.Optional;
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Long>{
 
-    Optional<Consulta> findConsultaByDataconsulta(Date date);
     List<Consulta> findConsultaByIdprofissionalsaude(Long idprofissionalsaude);
     List<Consulta> findConsultaByIdpaciente(Long idpaciente);
     List<Consulta> findConsultaByIdpacienteAndDataconsulta(Long idpaciente, Date dataConsulta);
     List<Consulta> findConsultaByIdprofissionalsaudeAndDataconsulta(Long idprofissionalsaude, Date dataConsulta);
     Consulta findConsultaByDataconsultaAndIdprofissionalsaude(Date dataConsulta, Long idprofissionalsaude);
+    Consulta findConsultaByDataconsultaAndIdpaciente(Date dataconsulta, Long idpaciente);
+    Consulta findConsultaByIdconsulta(Long idconsulta);
 
 }
