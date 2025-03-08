@@ -130,16 +130,23 @@ public class ConsultaController {
         return ResponseEntity.ok().body(consultaRepository.save(newConsulta));
     }
 
-    @DeleteMapping("/{idconsulta}")
-    public ResponseEntity<Void> deleteConsulta(@PathVariable Long idconsulta) {
-        Consulta consulta = consultaRepository.findById(idconsulta).orElseThrow(() -> new RuntimeException("Consulta não encontrada"));
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object principal = authentication.getPrincipal();
-        Paciente paciente = (Paciente) principal;
-        if (!consulta.getIdpaciente().equals(paciente.getIduser())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    @PutMapping("/deletarConsulta")
+    public ResponseEntity<?> deleteConsulta(@RequestBody Consulta consulta) {
+        ProfissionalSaude profissional = profissionalSaudeRepository.findProfissionalSaudeByNomeprofissionalsaude(consulta.getNomeprofissionalsaude()).orElseThrow(RuntimeException::new);
+        Consulta newConsulta = consultaRepository.findConsultaByDataconsultaAndIdprofissionalsaude(consulta.getDataconsulta(), profissional.getIduser());
+        if (newConsulta == null) {
+            throw new RuntimeException("Consulta não encontrada.");
         }
-        consultaRepository.delete(consulta);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        Optional<Agenda> agendaExistente = agendaRepository.findByProfissionalSaudeAndDataconsulta(profissional, consulta.getDataconsulta());
+        if (agendaExistente.isPresent()) {
+            Agenda agenda = agendaExistente.get();
+            if (agenda.getSituacao().equals("indisponivel")) {
+                agenda.setSituacao("disponivel");
+                consultaRepository.delete(consulta);
+                agendaRepository.save(agenda);
+                return new ResponseEntity(HttpStatus.NO_CONTENT);
+            }
+        }
+        return ResponseEntity.badRequest().body("Erro ao deletar a consulta");
     }
 }
