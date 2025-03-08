@@ -1,9 +1,8 @@
 package com.application.SpringProntoClin.domain;
 
+import com.application.SpringProntoClin.DTO.RequestProntuario;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.Date;
 
 @Getter
 @Setter
@@ -18,7 +17,26 @@ public class Prontuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prontuario_seq_generator")
     @SequenceGenerator(name = "prontuario_seq_generator", sequenceName = "prontuario_SEQ", allocationSize = 1)
     private Long idProntuario;
-    private Long idPaciente;
-    private Date dataCriacao;
-    private Date dataUltimaAtualizacao;
+
+    @ManyToOne
+    @JoinColumn(name = "idpaciente", referencedColumnName = "iduser")
+    private Paciente paciente;
+
+    @ManyToOne
+    @JoinColumn(name = "idconsulta", referencedColumnName = "idconsulta")
+    private Consulta consulta;
+
+    private String queixaprinciapal;
+    private String diagnostico;
+    private String situacaotramento;
+    private String prescricaomedica;
+
+    public Prontuario(RequestProntuario prontuario) {
+        this.idProntuario = prontuario.idprontuario();
+        this.queixaprinciapal = prontuario.queixaprincipal();
+        this.diagnostico = prontuario.diagnostico();
+        this.situacaotramento = prontuario.situacaotratamento();
+        this.prescricaomedica = prontuario.prescricaomedica();
+    }
+
 }

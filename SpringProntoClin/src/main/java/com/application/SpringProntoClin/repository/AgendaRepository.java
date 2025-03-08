@@ -1,11 +1,8 @@
 package com.application.SpringProntoClin.repository;
 
 import com.application.SpringProntoClin.domain.Agenda;
-import com.application.SpringProntoClin.domain.AgendaId;
 import com.application.SpringProntoClin.domain.ProfissionalSaude;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 
 import java.util.Date;

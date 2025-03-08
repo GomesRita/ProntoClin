@@ -1,6 +1,6 @@
 import { useState} from 'react';
 import { Button, Form, Input, message   } from 'antd';
-import { getToken } from '../controle/cookie';
+import { getToken } from '../../controle/cookie';
 import axios from 'axios';
 
 function CadastroAdmin(){

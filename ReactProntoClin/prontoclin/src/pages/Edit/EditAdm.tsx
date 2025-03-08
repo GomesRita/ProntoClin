@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getToken } from "../controle/cookie";
+import { getToken } from "../../controle/cookie";
 import axios from "axios";
 import { Button, Form, Input, message} from 'antd';
 

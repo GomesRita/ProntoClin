@@ -55,6 +55,10 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/profSaude/atualiza").hasRole("PROFSAUDE")
                         .requestMatchers(HttpMethod.POST, "/consulta/agendaprofissional").hasRole("PACIENTE")
                         .requestMatchers(HttpMethod.GET, "/consulta/profissional/consultas").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.PUT, "/prontuario/atualizarProntuario").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.POST, "/prontuario/adicionarProntuario").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.GET, "/prontuario/prontuarioPaciente").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.GET, "/prontuario/meuprontuario").hasRole("PACIENTE")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

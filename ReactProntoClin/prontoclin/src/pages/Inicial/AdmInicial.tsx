@@ -1,12 +1,12 @@
 import  { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getToken } from '../controle/cookie';
+import { getToken } from '../../controle/cookie';
 import { Descriptions, Button, Flex,Space} from 'antd';
 import CadastroAdmin from '../Cadastro/CadastroAdmin'; // Formulário de cadastro de administrador
 import CadastroProSaude from '../Cadastro/CadastroProSaude';
 import ListaProfissionais from '../Listas/ProfissionaisSaude';
 import { useNavigate } from 'react-router-dom';
-import { removeToken } from '../controle/cookie'; // Importe a função removeToken que você já criou
+import { removeToken } from '../../controle/cookie'; // Importe a função removeToken que você já criou
 import EditarAdmin from '../Edit/EditAdm';
 
 

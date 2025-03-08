@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form, Input, message, DatePicker, Select } from 'antd';
 
 import axios from 'axios';
-import { setToken } from '../controle/cookie';
+import { setToken } from '../../controle/cookie';
 
 function CadastroPaciente() {
 

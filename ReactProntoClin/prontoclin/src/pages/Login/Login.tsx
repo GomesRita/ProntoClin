@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { Button, Form, Input } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { setToken } from "../controle/cookie";
+import { setToken } from "../../controle/cookie";
 function Login(){
     const navigate = useNavigate(); 
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getToken, removeToken } from '../controle/cookie';
+import { getToken, removeToken } from '../../controle/cookie';
 import { useNavigate } from 'react-router-dom';
 import { Button, Descriptions, Flex, Space } from 'antd';
 import CadastroConsulta from '../Cadastro/CadastrarConsulta';

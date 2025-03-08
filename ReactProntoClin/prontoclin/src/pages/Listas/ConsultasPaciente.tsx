@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, Space, message, Button, Form, Input, Select } from 'antd';
-import { getToken } from '../controle/cookie';
+import { Table, Space, message, Button, Form, Select } from 'antd';
+import { getToken } from '../../controle/cookie';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
@@ -12,6 +12,7 @@ function ConsultasPaciente() {
   const [tableData, setTableData] = useState<DataType[]>([]); // Estado para a tabela
   const [availableDates, setAvailableDates] = useState<{ value: string; label: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [refreshData, setRefreshData] = useState(false);
   const [form] = Form.useForm();
   dayjs.extend(utc);
 
@@ -54,12 +55,71 @@ function ConsultasPaciente() {
           <Button type="dashed" onClick={() => handleReagendarClick(record)}>
             Reagendar
           </Button>
-          <Button type="dashed">Excluir</Button>
+          <Button type="dashed" onClick={() => excluirConsulta(record)}>Excluir</Button>
         </Space>
       ),
       width: '10%',
     },
   ];
+
+  //FUNÇÂO PARA DELETAR UMA CONSULTA
+  const excluirConsulta = async (record: DataType) =>{
+        setLoading(true);
+        console.log(record.nomeprofissionalsaude)
+        console.log(record.data)
+        try{
+            const token = getToken()
+            if(token){
+            await axios.put('http://localhost:8081/consulta/deletarConsulta',
+                {
+                    nomeprofissionalsaude: record.nomeprofissionalsaude,
+                    dataconsulta: record.data
+                }, 
+                {
+                headers:{
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`, 
+                }
+            });
+            message.success("Consulta excluída")
+            setRefreshData(prev => !prev); 
+            }
+
+        }catch(err){
+            setError("Erro ao excluir consulta"),
+            message.error("Erro ao excluir consulta")
+        } finally{
+            setLoading(false);
+        }
+    }
+
+    const atualizarConsulta = async (values: any) =>{
+      setLoading(true);
+      try{
+          const token = getToken()
+          if(token){
+          await axios.put('http://localhost:8081/consulta/atualizarConsulta',
+              {
+                idconsulta: formData?.key, // Certifique-se de passar o ID correto da consulta
+                nomeprofissionalsaude: formData?.nomeprofissionalsaude, // Pega o nome do profissional do formulário
+                dataconsulta: values.data, // Pega a data selecionada do formulário
+              }, 
+              {
+              headers:{
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`, 
+              }
+          });
+          message.success("Consulta reagendada com sucesso")
+          setRefreshData(prev => !prev); 
+          }
+      }catch(err){
+          setError("Erro ao reagendar consulta"),
+          message.error("Erro ao reagendar consulta")
+      } finally{
+          setLoading(false);
+      }
+  }
 
   // FUNÇÃO PARA PEGAR AS DATAS DISPONÍVEIS PARA O SELECT
   const handleReagendarClick = async (record: DataType) => {
@@ -105,7 +165,7 @@ function ConsultasPaciente() {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
-
+  
       try {
         const token = getToken();
         if (token) {
@@ -114,17 +174,31 @@ function ConsultasPaciente() {
               'Authorization': `Bearer ${token}`,
             },
           });
+  
+          // Verifica se a resposta é um array e se está vazia
+          if (Array.isArray(response.data)) {
+            if (response.data.length === 0) {
+              // Se não houver consultas, limpa a tabela e exibe uma mensagem
+              setTableData([]);
+              message.info('Nenhuma consulta agendada.');
+            } else {
+              // Se houver consultas, transforma os dados e atualiza a tabela
+              const transformedTableData = response.data.map((item: any) => ({
+                key: item.idconsulta,
+                nomeprofissionalsaude: item.nomeprofissionalsaude,
+                especialidademedica: item.especialidademedica,
+                data: item.dataconsulta,
+              }));
+              setTableData(transformedTableData);
+            }
+          } else {
+            // Se a resposta não for um array, define tableData como vazio
+            setTableData([]);
 
-          const transformedTableData = response.data.map((item: any) => ({
-            key: item.idconsulta,
-            nomeprofissionalsaude: item.nomeprofissionalsaude,
-            especialidademedica: item.especialidademedica,
-            data: item.dataconsulta,
-          }));
-
-          setTableData(transformedTableData); // Atualiza apenas a tabela
+          }
         } else {
           setError('Token não encontrado');
+          message.error('Token não encontrado.');
         }
       } catch (err) {
         setError('Erro ao carregar os dados');
@@ -133,9 +207,9 @@ function ConsultasPaciente() {
         setLoading(false);
       }
     };
-
+  
     fetchData();
-  }, []);
+  }, [refreshData]);
 
   useEffect(() => {
     if (formData) {
@@ -145,6 +219,7 @@ function ConsultasPaciente() {
       });
     }
   }, [formData, form]);
+  
 
   return (
     <div>
@@ -156,17 +231,14 @@ function ConsultasPaciente() {
           labelCol={{ span: 100 }}
           wrapperCol={{ span: 100 }}
           style={{ width: '50%' }}
+          onFinish={atualizarConsulta}
         >
           <h2 style={{ color: '#262626' }}>Reagendar Consulta</h2>
-
-          <Form.Item
-            label="Profissional"
-            name="nomeprofissionalsaude"
-            rules={[{ required: true, message: 'Por favor, insira um nome!' }]}
-          >
-            <Input readOnly style={{ textAlign: 'center' }} />
-          </Form.Item>
-
+          <p>
+            {formData && formData.nomeprofissionalsaude && formData.data ? 
+              `Reagendar consulta com ${formData.nomeprofissionalsaude} no dia ${dayjs.utc(formData.data).format('DD/MM/YYYY HH:mm')}` 
+              : 'Carregando informações da consulta...'}
+          </p>
           <Form.Item
             label="Data da consulta"
             name="data"
@@ -182,7 +254,7 @@ function ConsultasPaciente() {
           <Button
             type="dashed"
             htmlType="submit"
-            disabled={loading || availableDates.length === 0} // Desabilita o botão se não houver datas
+            disabled={loading || availableDates.length === 0}
           >
             Salvar
           </Button>

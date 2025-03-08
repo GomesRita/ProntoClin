@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ConsultaRepository extends JpaRepository<Consulta, Long>{
 
-    List<Consulta> findConsultaByIdprofissionalsaude(Long idprofissionalsaude);
+    List<Consulta> findConsultaByIdconsultaAndIdprofissionalsaude(Long idconsulta, Long iduser);
     List<Consulta> findConsultaByIdpaciente(Long idpaciente);
     List<Consulta> findConsultaByIdpacienteAndDataconsulta(Long idpaciente, Date dataConsulta);
     List<Consulta> findConsultaByIdprofissionalsaudeAndDataconsulta(Long idprofissionalsaude, Date dataConsulta);

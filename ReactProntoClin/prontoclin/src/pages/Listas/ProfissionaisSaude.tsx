@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Tag, Space, message, Button } from 'antd';
-import { getToken } from '../controle/cookie';
+import { getToken } from '../../controle/cookie';
 
 
 function ListaProfissionais() {

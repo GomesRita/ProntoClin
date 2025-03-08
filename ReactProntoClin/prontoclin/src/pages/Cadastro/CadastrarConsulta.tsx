@@ -1,10 +1,9 @@
 import { useEffect, useState} from 'react';
 import { Form, message, Select, Button, Space, Table} from 'antd';
-import { getToken } from '../controle/cookie';
+import { getToken } from '../../controle/cookie';
 import axios from 'axios';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc'; // Para manipulação de datas em UTC
-
 
 function CadastroConsulta(){
     const [profissionais, setProfissionais] = useState<any[]>([]);
@@ -56,8 +55,6 @@ function CadastroConsulta(){
 
     const agenda = async (record: DataType) =>{
         setLoading(true);
-        console.log(record.nomeprofissionalsaude)
-        console.log(record.data)
         try{
             const token = getToken()
             if(token){
@@ -83,41 +80,41 @@ function CadastroConsulta(){
     }
     
     const onFinish = async (values: { nome: string}) => {
-        setLoading(true); 
-        setError(null);
-        console.log('Nome: ' + values.nome)
-        const token = getToken(); 
-        if (!token) {
-            message.error('token não encontrado')
-        }
-        try {
-            message.success('token encontrado')
-            const response = await axios.post('http://localhost:8081/consulta/agendaprofissional', 
-                {
-                    nomeprofissionalsaude: values.nome,  // Parâmetro na URL
-                },{
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`  // Token de autenticação
-                } }
-            );
+      setLoading(true); 
+      setError(null);
+      console.log('Nome: ' + values.nome)
+      const token = getToken(); 
+      if (!token) {
+          message.error('token não encontrado')
+      }
+      try {
+          message.success('token encontrado')
+          const response = await axios.post('http://localhost:8081/consulta/agendaprofissional', 
+              {
+                  nomeprofissionalsaude: values.nome,  // Parâmetro na URL
+              },{
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`  // Token de autenticação
+              } }
+          );
 
-            const transformedData = response.data.map((item: any) => ({
-                key: item.idagenda,
-                nomeprofissionalsaude: item.profissionalSaude.nomeprofissionalsaude, 
-                data: item.dataconsulta
-              }));
+          const transformedData = response.data.map((item: any) => ({
+              key: item.idagenda,
+              nomeprofissionalsaude: item.profissionalSaude.nomeprofissionalsaude, 
+              data: item.dataconsulta
+            }));
 
-              setData(transformedData); 
-            console.log(response.data)
-            setError(null); 
-        } catch (err) {
-            setError('Erro ao acessar agenda');
-            message.error('Erro ao acessar agenda'); 
-        } finally {
-            setLoading(false); 
-        }
-    };
+            setData(transformedData); 
+          console.log(response.data)
+          setError(null); 
+      } catch (err) {
+          setError('Erro ao acessar agenda');
+          message.error('Erro ao acessar agenda'); 
+      } finally {
+          setLoading(false); 
+      }
+  };
 
     useEffect(() => {
         const fetchData = async () => {

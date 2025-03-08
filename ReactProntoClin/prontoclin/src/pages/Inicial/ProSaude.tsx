@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { getToken } from '../controle/cookie';
+import { getToken } from '../../controle/cookie';
 
 function ProSaude() {
 

@@ -10,12 +10,14 @@ import CadastroConsulta from './pages/Cadastro/CadastrarConsulta'
 import ListaProfissionais from './pages/Listas/ProfissionaisSaude'
 import EditarAdmin from './pages/Edit/EditAdm'
 import ConsultasPaciente from './pages/Listas/ConsultasPaciente'
+import { DataProvider } from './controle/datacontext';
 
 function App() {
   return (
+    <DataProvider>
     <BrowserRouter>
       <Routes>
-        <Route path="/cadastroAdmin" element={<CadastroAdmin/>}/>
+      <Route path="/cadastroAdmin" element={<CadastroAdmin/>}/>
         <Route path="/" element={<Login />}/>
         <Route path="/adm/me" element={<AdmIncial />}/>
         <Route path="/paciente" element={<PacienteInicial/>}/>
@@ -27,6 +29,7 @@ function App() {
         <Route path="/consultasPaciente" element={<ConsultasPaciente/>}/>
       </Routes>
     </BrowserRouter>
+    </DataProvider>
   )
 }
 
