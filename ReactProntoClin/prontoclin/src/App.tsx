@@ -11,6 +11,7 @@ import ListaProfissionais from './pages/Listas/ProfissionaisSaude'
 import EditarAdmin from './pages/Edit/EditAdm'
 import ConsultasPaciente from './pages/Listas/ConsultasPaciente'
 import { DataProvider } from './controle/datacontext';
+import MeuProntuario from './pages/Listas/MeuProntuario'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/listarProfissionais" element={<ListaProfissionais/>}/>
         <Route path="/editAdmin" element={<EditarAdmin/>}/>
         <Route path="/consultasPaciente" element={<ConsultasPaciente/>}/>
+        <Route path="/meuProntuario" element={<MeuProntuario/>}/>
       </Routes>
     </BrowserRouter>
     </DataProvider>

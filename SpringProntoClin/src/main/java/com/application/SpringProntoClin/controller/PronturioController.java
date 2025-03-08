@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,22 +29,21 @@ public class PronturioController {
 
     @PostMapping("/adicionarProntuario")
     public ResponseEntity<?> registerProntuario(@RequestBody Prontuario prontuario) {
-        // Verifica se o paciente existe
         Paciente paciente = pacienteRepository.findPacienteByIduser(prontuario.getPaciente().getIduser());
         if (paciente == null) {
             return ResponseEntity.badRequest().body("Paciente não encontrado");
         }
-
-        // Verifica se a consulta existe
         Consulta consulta = consultaRepository.findConsultaByIdconsulta(prontuario.getConsulta().getIdconsulta());
         if (consulta == null) {
             return ResponseEntity.badRequest().body("Consulta não encontrada");
         }
 
-        // Cria um novo prontuário com os dados recebidos e os objetos encontrados
         Prontuario newProntuario = new Prontuario();
         newProntuario.setPaciente(paciente);  // Associa o paciente
         newProntuario.setConsulta(consulta);  // Associa a consulta
+        newProntuario.setHistoricomedico(prontuario.getHistoricomedico());
+        newProntuario.setAlergias(prontuario.getAlergias());
+        newProntuario.setUltimaAtualizacao(prontuario.getUltimaAtualizacao());
         newProntuario.setQueixaprinciapal(prontuario.getQueixaprinciapal());
         newProntuario.setDiagnostico(prontuario.getDiagnostico());
         newProntuario.setSituacaotramento(prontuario.getSituacaotramento());

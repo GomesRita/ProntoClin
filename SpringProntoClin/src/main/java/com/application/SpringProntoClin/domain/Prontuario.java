@@ -4,6 +4,9 @@ import com.application.SpringProntoClin.DTO.RequestProntuario;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,13 +29,19 @@ public class Prontuario {
     @JoinColumn(name = "idconsulta", referencedColumnName = "idconsulta")
     private Consulta consulta;
 
+    private String historicomedico;
+    private String alergias;
+    private Date ultimaAtualizacao;
     private String queixaprinciapal;
     private String diagnostico;
     private String situacaotramento;
     private String prescricaomedica;
 
-    public Prontuario(RequestProntuario prontuario) {
+    public Prontuario(RequestProntuario prontuario ) {
         this.idProntuario = prontuario.idprontuario();
+        this.historicomedico = prontuario.historicomedico();
+        this.alergias = prontuario.alergias();
+        this.ultimaAtualizacao = prontuario.ultimaatualziacao();
         this.queixaprinciapal = prontuario.queixaprincipal();
         this.diagnostico = prontuario.diagnostico();
         this.situacaotramento = prontuario.situacaotratamento();
