@@ -134,6 +134,9 @@ public class ConsultaController {
     public ResponseEntity<?> deleteConsulta(@RequestBody Consulta consulta) {
         ProfissionalSaude profissional = profissionalSaudeRepository.findProfissionalSaudeByNomeprofissionalsaude(consulta.getNomeprofissionalsaude()).orElseThrow(RuntimeException::new);
         Consulta newConsulta = consultaRepository.findConsultaByDataconsultaAndIdprofissionalsaude(consulta.getDataconsulta(), profissional.getIduser());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        Paciente paciente = (Paciente) principal;
         if (newConsulta == null) {
             throw new RuntimeException("Consulta não encontrada.");
         }
@@ -142,7 +145,13 @@ public class ConsultaController {
             Agenda agenda = agendaExistente.get();
             if (agenda.getSituacao().equals("indisponivel")) {
                 agenda.setSituacao("disponivel");
-                consultaRepository.delete(consulta);
+                newConsulta.setIdpaciente(paciente.getIduser());
+                newConsulta.setIdprofissionalsaude(profissional.getIduser());
+                newConsulta.setNomeprofissionalsaude(profissional.getNomeprofissionalsaude());
+                newConsulta.setNomepaciente(paciente.getNomepaciente());
+                newConsulta.setNomesocial(paciente.getNomesocial());
+                newConsulta.setEspecialidademedica(profissional.getEspecialidademedica());
+                consultaRepository.delete(newConsulta);
                 agendaRepository.save(agenda);
                 return new ResponseEntity(HttpStatus.NO_CONTENT);
             }
