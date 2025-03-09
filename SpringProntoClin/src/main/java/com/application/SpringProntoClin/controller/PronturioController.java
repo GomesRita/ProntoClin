@@ -117,8 +117,12 @@ public class PronturioController {
             return ResponseEntity.badRequest().body("Prontuário não encontrado");
         }
         Prontuario antigoProntuario = prontuarioOpt.get();
+        Consulta consulta = consultaRepository.findConsultaByDataconsultaAndIdprofissionalsaude(prontuario.getConsulta().getDataconsulta(), profissionalSaude.getIduser());
+        if (consulta == null) {
+            return ResponseEntity.badRequest().body("Consulta não encontrada");
+        }
         List<Consulta> consultas = consultaRepository.findConsultaByIdconsultaAndIdprofissionalsaude(
-                prontuario.getConsulta().getIdconsulta(),
+                consulta.getIdconsulta(),
                 profissionalSaude.getIduser()
         );
         if (consultas == null || consultas.isEmpty()) {
@@ -128,10 +132,7 @@ public class PronturioController {
         if (paciente == null) {
             return ResponseEntity.badRequest().body("Paciente não encontrado");
         }
-        Consulta consulta = consultaRepository.findConsultaByDataconsultaAndIdprofissionalsaude(prontuario.getConsulta().getDataconsulta(), profissionalSaude.getIduser());
-        if (consulta == null) {
-            return ResponseEntity.badRequest().body("Consulta não encontrada");
-        }
+
         Prontuario newProntuario = new Prontuario();
         newProntuario.setPaciente(paciente);
         newProntuario.setConsulta(consulta);

@@ -140,8 +140,8 @@ function ProntuarioPaciente() {
     try {
       const token = getToken();
       if (token) {
-        const response = await axios.put(
-          `http://localhost:8081/prontuario/prontuarioPaciente`,
+        const response = await axios.post(
+          `http://localhost:8081/prontuario/atualizarProntuario`,
           editedData, // Enviar os dados editados
           {
             headers: {
