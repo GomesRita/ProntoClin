@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -39,11 +40,11 @@ public class PronturioController {
         }
 
         Prontuario newProntuario = new Prontuario();
-        newProntuario.setPaciente(paciente);  // Associa o paciente
-        newProntuario.setConsulta(consulta);  // Associa a consulta
+        newProntuario.setPaciente(paciente);
+        newProntuario.setConsulta(consulta);
         newProntuario.setHistoricomedico(prontuario.getHistoricomedico());
         newProntuario.setAlergias(prontuario.getAlergias());
-        newProntuario.setUltimaAtualizacao(prontuario.getUltimaAtualizacao());
+        newProntuario.setUltimaatualizacao(prontuario.getUltimaatualizacao());
         newProntuario.setQueixaprinciapal(prontuario.getQueixaprinciapal());
         newProntuario.setDiagnostico(prontuario.getDiagnostico());
         newProntuario.setSituacaotramento(prontuario.getSituacaotramento());
@@ -62,7 +63,7 @@ public class PronturioController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         Paciente paciente = (Paciente) principal;
-        Prontuario prontuario = prontuarioRepository.findProntuarioByPaciente_Iduser(paciente.getIduser());
+        Prontuario prontuario = prontuarioRepository.findTopByPaciente_IduserOrderByUltimaatualizacaoDesc(paciente.getIduser());
         if(prontuario == null) {
             return ResponseEntity.badRequest().body("Prontuário não encontrado");
         }
@@ -78,7 +79,7 @@ public class PronturioController {
         if (newPaciente == null) {
             return ResponseEntity.badRequest().body("Paciente não encontrado");
         }
-        Prontuario newProntuario = prontuarioRepository.findProntuarioByPaciente_Iduser(newPaciente.getIduser());
+        Prontuario newProntuario = prontuarioRepository.findTopByPaciente_IduserOrderByUltimaatualizacaoDesc(newPaciente.getIduser());
         if (newProntuario == null) {
             return ResponseEntity.badRequest().body("Prontuário não encontrado");
         }
@@ -103,7 +104,7 @@ public class PronturioController {
         if(newPaciente == null) {
             return ResponseEntity.badRequest().body("Paciente não encontrado");
         }
-        Prontuario newProntuario = prontuarioRepository.findProntuarioByPaciente_Iduser(newPaciente.getIduser());
+        Prontuario newProntuario = prontuarioRepository.findTopByPaciente_IduserOrderByUltimaatualizacaoDesc(newPaciente.getIduser());
         if(newProntuario == null) {
             return ResponseEntity.badRequest().body("Prontuário não encontrado");
         }

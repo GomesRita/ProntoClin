@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getToken } from "../../controle/cookie";
 import axios from "axios";
-import { Badge, Col, Descriptions, DescriptionsProps, Row } from "antd";
+import { Badge, Col, Descriptions, Row } from "antd";
 
 function MeuProntuario(){
     const [, setUserData] = useState<any>(null); 
@@ -106,7 +106,7 @@ function MeuProntuario(){
 
          return(
             <>
-                  <Descriptions title="Detalhes do Paciente" bordered layout="vertical">
+        <Descriptions title="Detalhes do Paciente" bordered layout="vertical">
         <Descriptions.Item label="Nome">
           {items[0].children}
         </Descriptions.Item>

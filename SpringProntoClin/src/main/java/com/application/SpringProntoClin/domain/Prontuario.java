@@ -31,7 +31,7 @@ public class Prontuario {
 
     private String historicomedico;
     private String alergias;
-    private Date ultimaAtualizacao;
+    private Date ultimaatualizacao;
     private String queixaprinciapal;
     private String diagnostico;
     private String situacaotramento;
@@ -41,7 +41,7 @@ public class Prontuario {
         this.idProntuario = prontuario.idprontuario();
         this.historicomedico = prontuario.historicomedico();
         this.alergias = prontuario.alergias();
-        this.ultimaAtualizacao = prontuario.ultimaatualziacao();
+        this.ultimaatualizacao = prontuario.ultimaatualizacao();
         this.queixaprinciapal = prontuario.queixaprincipal();
         this.diagnostico = prontuario.diagnostico();
         this.situacaotramento = prontuario.situacaotratamento();
