@@ -2,6 +2,7 @@ CREATE  SEQUENCE prontuario_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE IF NOT EXISTS prontuario (
     idprontuario bigint DEFAULT nextval('prontuario_seq') PRIMARY KEY,
+    numeroprontuario bigint NOT NULL,
     idpaciente bigint NOT NULL,
     idconsulta bigint NOT NULL,
     queixaprinciapal text NOT NULL,

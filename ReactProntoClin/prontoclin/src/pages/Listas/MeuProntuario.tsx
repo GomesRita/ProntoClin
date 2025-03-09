@@ -1,162 +1,138 @@
 import { useEffect, useState } from "react";
 import { getToken } from "../../controle/cookie";
 import axios from "axios";
-import { Badge, Col, Descriptions, Row } from "antd";
+import { Badge, Descriptions, DescriptionsProps, Spin, Alert } from "antd";
+import dayjs from "dayjs";
+import utc from 'dayjs/plugin/utc';
 
-function MeuProntuario(){
-    const [, setUserData] = useState<any>(null); 
-    const [, setLoading] = useState(true);
-    const [, setError] = useState<string | null>(null);
-    
-    const items = [
-        {
-          key: '1',
-          label: 'Nome',
-          children: 'João Silva',
-        },
-        {
-          key: '2',
-          label: 'Nome Social',
-          children: 'Joãozinho',
-        },
-        {
-          key: '3',
-          label: 'Data Nascimento',
-          children: '01/01/1990',
-        },
-        {
-          key: '7',
-          label: 'Sexo',
-          children: 'Masculino',
-        },
-        {
-          key: '8',
-          label: 'CPF',
-          children: '123.456.789-00',
-        },
-        {
-          key: '9',
-          label: 'Telefone',
-          children: '(11) 98765-4321',
-        },
-        {
-          key: '10',
-          label: 'Queixa principal',
-          children: 'Dor de cabeça',
-        },
-        {
-          key: '11',
-          label: 'Diagnóstico',
-          children: 'Enxaqueca',
-        },
-        {
-          key: '12',
-          label: 'Situação Tratamento',
-          span: 3,
-          children: <Badge status="processing" text="Em andamento" />,
-        },
-        {
-          key: '13',
-          label: 'Histórico Médico',
-          children: (
-            <>
-              <p>Histórico de doenças: Nenhum</p>
-              <p>Medicamentos em uso: Nenhum</p>
-            </>
-          ),
-        },
-        {
-          key: '14',
-          label: 'Alergias',
-          children: 'Nenhuma conhecida',
-        },
-        {
-          key: '15',
-          label: 'Prescrição médica',
-          children: 'Paracetamol 500mg - 3x ao dia',
-        },
-      ];
-      
-      
-      
-    useEffect(() => {
-   
-        const fetchData = async () => {
-           try {
-               const token = getToken(); // Recupera o token do cookie
-               if (token) {
-                 const response = await axios.get('http://localhost:8081/paciente/me', {
-                   headers: {
-                     'Authorization': `Bearer ${token}`, 
-                   },
-                   withCredentials: true,
-                 });
-                 setUserData(response.data);
-               } else {
-                 setError('Token não encontrado');
-               }
-               setLoading(false);
-             } catch (err) {
-               setError('Erro ao carregar os dados');
-               setLoading(false);
-             }
-           };
-           fetchData();
-         }, []);
+function MeuProntuario() {
+  const [userData, setUserData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-         return(
-            <>
-        <Descriptions title="Detalhes do Paciente" bordered layout="vertical">
-        <Descriptions.Item label="Nome">
-          {items[0].children}
-        </Descriptions.Item>
-        <Descriptions.Item label="Nome Social">
-          {items[1].children}
-        </Descriptions.Item>
-        <Descriptions.Item label="Data Nascimento">
-          {items[2].children}
-        </Descriptions.Item>
-        {/* Sexo, CPF, Telefone em uma linha */}
-        <Row>
-          <Col span={8}>
-            <Descriptions.Item label="Sexo">{items[3].children}</Descriptions.Item>
-          </Col>
-          <Col span={8}>
-            <Descriptions.Item label="CPF">{items[4].children}</Descriptions.Item>
-          </Col>
-          <Col span={8}>
-            <Descriptions.Item label="Telefone">{items[5].children}</Descriptions.Item>
-          </Col>
-        </Row>
-        {/* Queixa principal e Diagnóstico na mesma linha */}
-        <Row>
-          <Col span={12}>
-            <Descriptions.Item label="Queixa principal">
-              {items[6].children}
-            </Descriptions.Item>
-          </Col>
-          <Col span={12}>
-            <Descriptions.Item label="Diagnóstico">
-              {items[7].children}
-            </Descriptions.Item>
-          </Col>
-        </Row>
-        {/* Situação, Histórico Médico, Alergias, Prescrição médica em linhas separadas */}
-        <Descriptions.Item label="Situação Tratamento" span={24}>
-          {items[8].children}
-        </Descriptions.Item>
-        <Descriptions.Item label="Histórico Médico" span={24}>
-          {items[9].children}
-        </Descriptions.Item>
-        <Descriptions.Item label="Alergias" span={24}>
-          {items[10].children}
-        </Descriptions.Item>
-        <Descriptions.Item label="Prescrição médica" span={24}>
-          {items[11].children}
-        </Descriptions.Item>
-      </Descriptions>
-            </>
-         );
+  dayjs.extend(utc);
+
+  const formatDate = (date: string | Date | undefined) => {
+    if (date) {
+      return dayjs(date).format('DD/MM/YYYY'); 
+    }
+    return 'Não disponível';
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = getToken();
+        if (token) {
+          const response = await axios.get('http://localhost:8081/prontuario/meuprontuario', {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+            withCredentials: true,
+          });
+          setUserData(response.data);
+        } else {
+          setError('Token não encontrado');
+        }
+        setLoading(false);
+      } catch (err) {
+        setError('Erro ao carregar os dados');
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const items: DescriptionsProps['items'] = userData ? [
+    {
+      key: '1',
+      label: 'Número prontuário',
+      children: userData.numeroprontuario|| 'Não disponível',
+      span: 1
+    },
+    {
+      key: '2',
+      label: 'Última atualização',
+      children: formatDate(userData.ultimaatualizacao) || 'Não disponível',
+      span: 3
+    },
+    {
+      key: '3',
+      label: 'Paciente',
+      children: userData.paciente.nomepaciente || 'Não disponível',
+    },
+    {
+      key: '4',
+      label: 'Nome Social',
+      children: userData.paciente.nomesocial || 'Não disponível',
+    },
+    {
+      key: '5',
+      label: 'CPF',
+      children: userData.paciente.cpfpaciente || 'Não disponível',
+    },
+    {
+      key: '6',
+      label: 'Data Nascimento',
+      children: formatDate(userData.paciente.datanascimento),
+    },
+    {
+      key: '7',
+      label: 'Sexo',
+      children: userData.paciente.sexopaciente || 'Não disponível',
+    },
+    {
+      key: '9',
+      label: 'Telefone',
+      children: userData.paciente.telefonepaciente || 'Não disponível',
+    },
+    {
+      key: '10',
+      label: 'Situação Tratamento',
+      children: <Badge
+        status={
+          userData.situacaotramento === "Em andamento" ? "processing" :
+          userData.situacaotramento === "Finalizado" ? "success" : "default"
+        }
+        text={userData.situacaotramento || 'Não disponível'}
+      />,
+      span: 4,
+    },
+    {
+      key: '11',
+      label: 'Historico Médico',
+      children: userData.historicomedico || 'Não disponível',
+      span: 4,
+    },
+    {
+      key: '12',
+      label: 'Alergias',
+      children: userData.alergias || 'Não disponível',
+      span: 4,
+    },
+    {
+      key: '13',
+      label: 'Prescrição Médica',
+      children: userData.prescricaomedica || 'Não disponível',
+      span: 4,
+    },
+  ] : [];
+
+  if (loading) {
+    return <Spin size="large" />; 
+  }
+
+  if (error) {
+    return <Alert message="Erro" description={error} type="error" showIcon />;
+  }
+
+  return (
+    <>
+      <h4 style={{ color: '#262626' }}>Prontuário Clínico</h4>
+      <Descriptions bordered items={items} />
+    </>
+  );
 }
 
 export default MeuProntuario;

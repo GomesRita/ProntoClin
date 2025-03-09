@@ -14,4 +14,5 @@ public interface ProntuarioRepository extends JpaRepository<Prontuario, Long> {
     Prontuario findProntuarioByConsulta(Consulta consulta);
     List<Prontuario> findProntuarioByPaciente_Cpfpaciente(String cpfpaciente);
     Prontuario findTopByPaciente_IduserOrderByUltimaatualizacaoDesc(Long iduser);
+    Prontuario findProntuarioByNumeroprontuario(Long numeroprontuario);
 }

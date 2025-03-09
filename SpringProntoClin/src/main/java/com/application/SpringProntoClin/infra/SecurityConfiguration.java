@@ -59,6 +59,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/prontuario/adicionarProntuario").hasRole("PROFSAUDE")
                         .requestMatchers(HttpMethod.GET, "/prontuario/prontuarioPaciente").hasRole("PROFSAUDE")
                         .requestMatchers(HttpMethod.GET, "/prontuario/meuprontuario").hasRole("PACIENTE")
+                        .requestMatchers(HttpMethod.GET, "/prontuario/pacientes").hasRole("PROFSAUDE")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

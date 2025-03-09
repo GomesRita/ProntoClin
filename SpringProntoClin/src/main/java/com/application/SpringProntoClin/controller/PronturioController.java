@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +29,11 @@ public class PronturioController {
     @Autowired
     private ConsultaRepository consultaRepository;
 
+    public Long gerarCodigoIdentificacao(Paciente paciente) {
+        long timestamp = System.currentTimeMillis();
+        return Long.parseLong(paciente.getIduser() + String.valueOf(timestamp).substring(5));
+    }
+
     @PostMapping("/adicionarProntuario")
     public ResponseEntity<?> registerProntuario(@RequestBody Prontuario prontuario) {
         Paciente paciente = pacienteRepository.findPacienteByIduser(prontuario.getPaciente().getIduser());
@@ -38,10 +44,15 @@ public class PronturioController {
         if (consulta == null) {
             return ResponseEntity.badRequest().body("Consulta não encontrada");
         }
-
+        List<Prontuario> verificaProntuario = prontuarioRepository.findProntuarioByPaciente_Cpfpaciente(paciente.getCpfpaciente());
+        if (!verificaProntuario.isEmpty()) {
+            return ResponseEntity.badRequest().body("Este paciente já possui um prontuário");
+        }
+        Long codigoIdentificacao = gerarCodigoIdentificacao(paciente);
         Prontuario newProntuario = new Prontuario();
         newProntuario.setPaciente(paciente);
         newProntuario.setConsulta(consulta);
+        newProntuario.setNumeroprontuario(codigoIdentificacao);
         newProntuario.setHistoricomedico(prontuario.getHistoricomedico());
         newProntuario.setAlergias(prontuario.getAlergias());
         newProntuario.setUltimaatualizacao(prontuario.getUltimaatualizacao());
@@ -100,11 +111,7 @@ public class PronturioController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         ProfissionalSaude profissionalSaude = (ProfissionalSaude) principal;
-        Paciente newPaciente = pacienteRepository.findPacienteByIduser(prontuario.getPaciente().getIduser());
-        if(newPaciente == null) {
-            return ResponseEntity.badRequest().body("Paciente não encontrado");
-        }
-        Prontuario newProntuario = prontuarioRepository.findTopByPaciente_IduserOrderByUltimaatualizacaoDesc(newPaciente.getIduser());
+        Prontuario newProntuario = prontuarioRepository.findProntuarioByNumeroprontuario(prontuario.getNumeroprontuario());
         if(newProntuario == null) {
             return ResponseEntity.badRequest().body("Prontuário não encontrado");
         }

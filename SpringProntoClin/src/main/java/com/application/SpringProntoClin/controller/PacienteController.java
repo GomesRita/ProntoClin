@@ -12,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/paciente")
 public class PacienteController {
@@ -40,5 +42,14 @@ public class PacienteController {
         patient.setTelefonepaciente(paciente.getTelefonepaciente());
 
         return pacienteRepository.save(patient);
+    }
+    
+    @GetMapping("/pacientes")
+    public ResponseEntity<?> getPacientes() {
+        List<Paciente> pacientes = pacienteRepository.findAll();
+        if (pacientes.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Nenhum paciente encontrado");
+        }
+        return ResponseEntity.ok(pacientes);
     }
 }

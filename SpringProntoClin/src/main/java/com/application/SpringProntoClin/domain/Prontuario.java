@@ -29,6 +29,7 @@ public class Prontuario {
     @JoinColumn(name = "idconsulta", referencedColumnName = "idconsulta")
     private Consulta consulta;
 
+    private Long numeroprontuario;
     private String historicomedico;
     private String alergias;
     private Date ultimaatualizacao;
@@ -39,6 +40,7 @@ public class Prontuario {
 
     public Prontuario(RequestProntuario prontuario ) {
         this.idProntuario = prontuario.idprontuario();
+        this.numeroprontuario = prontuario.numeroprontuario();
         this.historicomedico = prontuario.historicomedico();
         this.alergias = prontuario.alergias();
         this.ultimaatualizacao = prontuario.ultimaatualizacao();
