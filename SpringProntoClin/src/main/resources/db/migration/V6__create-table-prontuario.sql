@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS prontuario (
     numeroprontuario bigint NOT NULL,
     idpaciente bigint NOT NULL,
     idconsulta bigint NOT NULL,
+    cpfpaciente varchar(100) NOT NULL,
     queixaprinciapal text NOT NULL,
     historicomedico text,
     alergias text,

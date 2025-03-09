@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/prontuario")
@@ -36,23 +37,24 @@ public class PronturioController {
 
     @PostMapping("/adicionarProntuario")
     public ResponseEntity<?> registerProntuario(@RequestBody Prontuario prontuario) {
-        Paciente paciente = pacienteRepository.findPacienteByIduser(prontuario.getPaciente().getIduser());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        ProfissionalSaude profissionalSaude = (ProfissionalSaude) principal;
+        Paciente paciente = pacienteRepository.findPacienteByCpfpaciente(prontuario.getCpfpaciente());
         if (paciente == null) {
             return ResponseEntity.badRequest().body("Paciente não encontrado");
         }
-        Consulta consulta = consultaRepository.findConsultaByIdconsulta(prontuario.getConsulta().getIdconsulta());
+        Consulta consulta = consultaRepository.findConsultaByDataconsultaAndIdprofissionalsaude(prontuario.getConsulta().getDataconsulta(), profissionalSaude.getIduser());
         if (consulta == null) {
             return ResponseEntity.badRequest().body("Consulta não encontrada");
         }
-        List<Prontuario> verificaProntuario = prontuarioRepository.findProntuarioByPaciente_Cpfpaciente(paciente.getCpfpaciente());
-        if (!verificaProntuario.isEmpty()) {
-            return ResponseEntity.badRequest().body("Este paciente já possui um prontuário");
-        }
+
         Long codigoIdentificacao = gerarCodigoIdentificacao(paciente);
         Prontuario newProntuario = new Prontuario();
         newProntuario.setPaciente(paciente);
         newProntuario.setConsulta(consulta);
         newProntuario.setNumeroprontuario(codigoIdentificacao);
+        newProntuario.setCpfpaciente(paciente.getCpfpaciente());
         newProntuario.setHistoricomedico(prontuario.getHistoricomedico());
         newProntuario.setAlergias(prontuario.getAlergias());
         newProntuario.setUltimaatualizacao(prontuario.getUltimaatualizacao());
@@ -87,19 +89,15 @@ public class PronturioController {
         Object principal = authentication.getPrincipal();
         ProfissionalSaude profissionalSaude = (ProfissionalSaude) principal;
 
-        // Busca o prontuário pelo número
-        Prontuario prontuario = prontuarioRepository.findProntuarioByNumeroprontuario(numeroprontuario);
-
-        if (prontuario == null) {
+        Optional<Prontuario> prontuarioOpt = prontuarioRepository.findFirstByNumeroprontuarioOrderByUltimaatualizacaoDesc(numeroprontuario);
+        if (!prontuarioOpt.isPresent()) {
             return ResponseEntity.badRequest().body("Prontuário não encontrado");
         }
-
-        // Verifica se existe alguma consulta agendada para esse paciente com o profissional
+        Prontuario prontuario = prontuarioOpt.get();
         List<Consulta> consultas = consultaRepository.findConsultaByIdpacienteAndIdprofissionalsaude(
-                prontuario.getPaciente().getIduser(), // Você pode ter que adaptar dependendo da estrutura
+                prontuario.getPaciente().getIduser(),
                 profissionalSaude.getIduser()
         );
-
         if (consultas == null || consultas.isEmpty()) {
             return ResponseEntity.badRequest().body("Você não tem acesso a este prontuário, nenhuma consulta encontrada.");
         }
@@ -109,15 +107,16 @@ public class PronturioController {
 
 
 
-    @PutMapping("/atualizarProntuario")
+    @PostMapping("/atualizarProntuario")
     public ResponseEntity<?> atualizarProntuario(@RequestBody Prontuario prontuario) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         ProfissionalSaude profissionalSaude = (ProfissionalSaude) principal;
-        Prontuario newProntuario = prontuarioRepository.findProntuarioByNumeroprontuario(prontuario.getNumeroprontuario());
-        if(newProntuario == null) {
+        Optional<Prontuario> prontuarioOpt = prontuarioRepository.findFirstByNumeroprontuarioOrderByUltimaatualizacaoDesc(prontuario.getNumeroprontuario());
+        if (!prontuarioOpt.isPresent()) {
             return ResponseEntity.badRequest().body("Prontuário não encontrado");
         }
+        Prontuario antigoProntuario = prontuarioOpt.get();
         List<Consulta> consultas = consultaRepository.findConsultaByIdconsultaAndIdprofissionalsaude(
                 prontuario.getConsulta().getIdconsulta(),
                 profissionalSaude.getIduser()
@@ -125,6 +124,19 @@ public class PronturioController {
         if (consultas == null || consultas.isEmpty()) {
             return ResponseEntity.badRequest().body("Você não tem acesso a este prontuário");
         }
+        Paciente paciente = pacienteRepository.findPacienteByCpfpaciente(prontuario.getPaciente().getCpfpaciente());
+        if (paciente == null) {
+            return ResponseEntity.badRequest().body("Paciente não encontrado");
+        }
+        Consulta consulta = consultaRepository.findConsultaByDataconsultaAndIdprofissionalsaude(prontuario.getConsulta().getDataconsulta(), profissionalSaude.getIduser());
+        if (consulta == null) {
+            return ResponseEntity.badRequest().body("Consulta não encontrada");
+        }
+        Prontuario newProntuario = new Prontuario();
+        newProntuario.setPaciente(paciente);
+        newProntuario.setConsulta(consulta);
+        newProntuario.setNumeroprontuario(antigoProntuario.getNumeroprontuario());
+        newProntuario.setCpfpaciente(paciente.getCpfpaciente());
         newProntuario.setHistoricomedico(prontuario.getHistoricomedico());
         newProntuario.setAlergias(prontuario.getAlergias());
         newProntuario.setUltimaatualizacao(prontuario.getUltimaatualizacao());

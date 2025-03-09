@@ -11,4 +11,6 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long>{
 
     Paciente findPacienteByIduser(Long iduser);
     List<Paciente> findAll();
+
+    Paciente findPacienteByCpfpaciente(String cpfpaciente);
 }

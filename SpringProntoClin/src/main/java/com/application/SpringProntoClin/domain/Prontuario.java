@@ -30,6 +30,7 @@ public class Prontuario {
     private Consulta consulta;
 
     private Long numeroprontuario;
+    private String cpfpaciente;
     private String historicomedico;
     private String alergias;
     private Date ultimaatualizacao;
@@ -40,6 +41,7 @@ public class Prontuario {
 
     public Prontuario(RequestProntuario prontuario ) {
         this.idProntuario = prontuario.idprontuario();
+        this.cpfpaciente = prontuario.cpfpaciente();
         this.numeroprontuario = prontuario.numeroprontuario();
         this.historicomedico = prontuario.historicomedico();
         this.alergias = prontuario.alergias();
