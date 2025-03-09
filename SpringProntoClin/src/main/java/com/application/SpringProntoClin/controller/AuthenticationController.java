@@ -5,6 +5,7 @@ import com.application.SpringProntoClin.domain.Administrador;
 import com.application.SpringProntoClin.domain.Paciente;
 import com.application.SpringProntoClin.domain.ProfissionalSaude;
 import com.application.SpringProntoClin.domain.Usuario;
+import com.application.SpringProntoClin.enums.UsuarioRole;
 import com.application.SpringProntoClin.infra.TokenService;
 import com.application.SpringProntoClin.repository.AdmRepository;
 import com.application.SpringProntoClin.repository.PacienteRepository;
@@ -15,12 +16,8 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-
 
 @RestController
 @RequestMapping("/auth")
@@ -50,8 +47,8 @@ public class AuthenticationController {
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
         var token = tokenService.generateToken((Usuario) auth.getPrincipal());
-
-        return ResponseEntity.ok(new RequestLogin(token));
+        Usuario usuario = (Usuario) auth.getPrincipal();
+        return ResponseEntity.ok(new RequestLogin(token, usuario.getUserrole()));
     }
 
     @PostMapping("/register/adm")

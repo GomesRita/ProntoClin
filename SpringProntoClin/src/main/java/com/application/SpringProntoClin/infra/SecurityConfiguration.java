@@ -14,6 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +30,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
+        httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests( authorize -> authorize
@@ -38,18 +44,25 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.PUT, "/adm/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "auth/register/adm").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "auth/register/prosaude").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/profSaude/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/profSaude/profissionais").hasRole("PACIENTE")
+                        .requestMatchers(HttpMethod.GET, "/profSaude/AllProfissionais").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/profSaude/StatusProfissional").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/consulta/paciente/**").hasRole("PACIENTE")
+                        //.requestMatchers(HttpMethod.GET, "/consulta/paciente/**").hasRole("PACIENTE")
                         .requestMatchers(HttpMethod.POST, "/consulta/**").hasRole("PACIENTE")
                         .requestMatchers(HttpMethod.PUT, "/consulta/**").hasRole("PACIENTE")
-                        .requestMatchers(HttpMethod.DELETE, "/consulta/**").hasRole("PACIENTE")
-                        .requestMatchers(HttpMethod.GET, "/profSaude/**").hasRole("PROFSAUDE")
-                        .requestMatchers(HttpMethod.PUT, "/profSaude/**").hasRole("PROFSAUDE")
-                        .requestMatchers(HttpMethod.GET, "/consulta/profissional/**").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.GET, "/profSaude/me").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.PUT, "/profSaude/atualiza").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.POST, "/consulta/agendaprofissional").hasRole("PACIENTE")
+                        .requestMatchers(HttpMethod.GET, "/consulta/profissional/consultas").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.PUT, "/prontuario/atualizarProntuario").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.POST, "/prontuario/adicionarProntuario").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.GET, "/prontuario/prontuarioPaciente").hasRole("PROFSAUDE")
+                        .requestMatchers(HttpMethod.GET, "/prontuario/meuprontuario").hasRole("PACIENTE")
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
     }
 
     @Bean
