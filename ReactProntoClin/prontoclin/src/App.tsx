@@ -17,6 +17,7 @@ import ProSaude from './pages/Inicial/ProSaude'
 import AgendaProfissional from './pages/Listas/agendaProfissional'
 import EditarProfissional from './pages/Edit/EditProfissional'
 import ProntuarioPaciente from './pages/Listas/Prontuario'
+import CadastrarProntuario from './pages/Cadastro/CadastroProntuario'
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route path="/agendaProfissional" element={<AgendaProfissional/>}/>
         <Route path="/editProfissional" element={<EditarProfissional/>}/>
         <Route path="/prontuarioPaciente" element={<ProntuarioPaciente/>}/>
+        <Route path="/cadastroProntuario" element={<CadastrarProntuario/>}/>
       </Routes>
     </BrowserRouter>
     </DataProvider>

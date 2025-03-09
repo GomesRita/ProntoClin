@@ -6,6 +6,7 @@ import { Button, Descriptions, Flex, Space } from 'antd';
 import AgendaProfissional from '../Listas/agendaProfissional';
 import EditarProfissional from '../Edit/EditProfissional';
 import ProntuarioPaciente from '../Listas/Prontuario';
+import CadastrarProntuario from '../Cadastro/CadastroProntuario';
 
 function ProSaude() {
 
@@ -93,6 +94,7 @@ function ProSaude() {
               <Flex gap="small" wrap style={{ justifyContent: 'center'}}>
                   <Button type="primary" onClick={() => handleClick('/AgendaProfissional')}>Minha Agenda</Button>
                   <Button type="primary" onClick={() => handleClick('/prontuarioPaciente')}>Prontuários</Button>
+                  <Button type="primary" onClick={() => handleClick('/cadastroProntuario')}>Novo Prontuário</Button>
               </Flex>
           </Space>
           <div style={{ width: '80%', transform: 'translate(13%,5%)', textAlign: "center"}}>
@@ -100,6 +102,7 @@ function ProSaude() {
             {conteudo === '/AgendaProfissional' && <AgendaProfissional/>}
             {conteudo === '/editProfissional' && <EditarProfissional/>}
             {conteudo === '/prontuarioPaciente' && <ProntuarioPaciente/>}
+            {conteudo === '/cadastroProntuario' && <CadastrarProntuario/>}
         </div>
           </>
    );

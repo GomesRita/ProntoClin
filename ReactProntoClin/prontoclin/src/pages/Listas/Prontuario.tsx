@@ -10,7 +10,6 @@ function ProntuarioPaciente() {
   const [userData, setUserData] = useState<any>(null);
   const [, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false); // Estado para controlar quando o formulário de edição está aberto
-  const [editedData, setEditedData] = useState<any>(null); // Estado para armazenar os dados editados
 
   const formatDate = (date: string | Date | undefined) => {
     if (date) {
@@ -116,8 +115,7 @@ function ProntuarioPaciente() {
             withCredentials: true,
           }
         );
-        setUserData(response.data);
-        setEditedData(response.data); // Armazenar dados para edição
+        setUserData(response.data); // Armazenar dados para exibição e edição
       } else {
         setError("Token não encontrado");
       }
@@ -140,16 +138,44 @@ function ProntuarioPaciente() {
     try {
       const token = getToken();
       if (token) {
+        const {
+          dataconsulta,
+          cpfpaciente,
+          historicomedico,
+          alergias,
+          queixaprinciapal,
+          diagnostico,
+          situacaotramento,
+          prescricaomedica,
+        } = userData; // Pega os campos diretamente de userData
+        const dataconsultaFormatted = dayjs(dataconsulta).format('YYYY-MM-DDTHH:mm:ss');
+        // Aqui você cria o objeto para enviar na requisição
         const response = await axios.post(
-          `http://localhost:8081/prontuario/atualizarProntuario`,
-          editedData, // Enviar os dados editados
+          `http://localhost:8081/prontuario/atualizarProntuario`, // URL da API para atualizar prontuário
+          {
+            numeroprontuario: userData.numeroprontuario,
+            consulta: {
+              dataconsulta: dataconsultaFormatted
+            },
+            paciente: { 
+              cpfpaciente: cpfpaciente
+            },
+            historicomedico, 
+            alergias, 
+            queixaprinciapal, 
+            diagnostico, 
+            situacaotramento, 
+            prescricaomedica, 
+            ultimaatualizacao: dayjs(dataconsulta).toISOString()
+          },
           {
             headers: {
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
             },
-            withCredentials: true,
           }
         );
+
         setUserData(response.data); // Atualizar os dados exibidos após salvar
         message.success("Prontuário atualizado com sucesso!");
         setIsEditing(false); // Desativar o modo de edição
@@ -166,10 +192,10 @@ function ProntuarioPaciente() {
 
   // Função para lidar com mudanças nos campos editáveis
   const handleChange = (field: string, value: any) => {
-    setEditedData({
-      ...editedData,
-      [field]: value, // Atualiza o campo editado
-    });
+    setUserData((prevState: any) => ({
+      ...prevState,
+      [field]: value, // Atualiza o campo editado diretamente no estado userData
+    }));
   };
 
   return (
@@ -184,34 +210,46 @@ function ProntuarioPaciente() {
       {/* Exibição de dados ou campos editáveis */}
       {isEditing ? (
         <Form layout="vertical">
-          <Form.Item label="Historico">
+          <Form.Item label="Data consulta">
             <Input
-              value={editedData.historicomedico}
-              onChange={(e) => handleChange("numeroprontuario", e.target.value)}
+              value={userData.dataconsulta}
+              onChange={(e) => handleChange("dataconsulta", e.target.value)} // Atualiza o campo editado
+            />
+          </Form.Item>
+          <Form.Item label="CPF Paciente">
+            <Input
+              value={userData.paciente.cpfpaciente}
+              readOnly // CPF do paciente não será editável
+            />
+          </Form.Item>
+          <Form.Item label="Histórico Médico">
+            <Input
+              value={userData.historicomedico}
+              onChange={(e) => handleChange("historicomedico", e.target.value)} // Atualiza o campo editado
             />
           </Form.Item>
           <Form.Item label="Alergias">
             <Input
-              value={editedData.alergias}
-              onChange={(e) => handleChange("alergias", e.target.value)}
+              value={userData.alergias}
+              onChange={(e) => handleChange("alergias", e.target.value)} // Atualiza o campo editado
             />
           </Form.Item>
           <Form.Item label="Queixa Principal">
             <Input.TextArea
-              value={editedData.queixaprincipal}
-              onChange={(e) => handleChange("queixaprincipal", e.target.value)}
+              value={userData.queixaprinciapal}
+              onChange={(e) => handleChange("queixaprincipal", e.target.value)} // Atualiza o campo editado
             />
           </Form.Item>
-          <Form.Item label="Diagnostico">
+          <Form.Item label="Diagnóstico">
             <Input.TextArea
-              value={editedData.diagnostico}
-              onChange={(e) => handleChange("diagnostico", e.target.value)}
+              value={userData.diagnostico}
+              onChange={(e) => handleChange("diagnostico", e.target.value)} // Atualiza o campo editado
             />
           </Form.Item>
           <Form.Item label="Situação Tratamento">
             <Select
-              value={editedData.situacaotramento}
-              onChange={(value) => handleChange("situacaotramento", value)}
+              value={userData.situacaotramento}
+              onChange={(value) => handleChange("situacaotramento", value)} // Atualiza o campo editado
             >
               <Select.Option value="Em andamento">Em andamento</Select.Option>
               <Select.Option value="Finalizado">Finalizado</Select.Option>
@@ -219,11 +257,13 @@ function ProntuarioPaciente() {
           </Form.Item>
           <Form.Item label="Prescrição Médica">
             <Input.TextArea
-              value={editedData.prescricaomedica}
-              onChange={(e) => handleChange("prescricaomedica", e.target.value)}
+              value={userData.prescricaomedica}
+              onChange={(e) => handleChange("prescricaomedica", e.target.value)} // Atualiza o campo editado
             />
           </Form.Item>
-          <Button type="primary" onClick={handleSave}>Salvar Alterações</Button>
+          <Button type="primary" onClick={handleSave}>
+            Salvar Alterações
+          </Button>
         </Form>
       ) : (
         <Descriptions bordered items={items} />
