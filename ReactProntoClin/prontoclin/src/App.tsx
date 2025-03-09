@@ -12,6 +12,11 @@ import EditarAdmin from './pages/Edit/EditAdm'
 import ConsultasPaciente from './pages/Listas/ConsultasPaciente'
 import { DataProvider } from './controle/datacontext';
 import MeuProntuario from './pages/Listas/MeuProntuario'
+import EditarPaciente from './pages/Edit/EditPaciente'
+import ProSaude from './pages/Inicial/ProSaude'
+import AgendaProfissional from './pages/Listas/agendaProfissional'
+import EditarProfissional from './pages/Edit/EditProfissional'
+import ProntuarioPaciente from './pages/Listas/Prontuario'
 
 function App() {
   return (
@@ -22,6 +27,7 @@ function App() {
         <Route path="/" element={<Login />}/>
         <Route path="/adm/me" element={<AdmIncial />}/>
         <Route path="/paciente" element={<PacienteInicial/>}/>
+        <Route path="/profSaude/me" element={<ProSaude/>}/>
         <Route path="/cadastroProSaude" element={<CadastroProSaude />}/>
         <Route path="/cadastroPaciente" element={<CadastroPaciente />}/>
         <Route path="/cadastroConsulta" element={<CadastroConsulta />}/>
@@ -29,6 +35,10 @@ function App() {
         <Route path="/editAdmin" element={<EditarAdmin/>}/>
         <Route path="/consultasPaciente" element={<ConsultasPaciente/>}/>
         <Route path="/meuProntuario" element={<MeuProntuario/>}/>
+        <Route path="/editPaciente" element={<EditarPaciente/>}/>
+        <Route path="/agendaProfissional" element={<AgendaProfissional/>}/>
+        <Route path="/editProfissional" element={<EditarProfissional/>}/>
+        <Route path="/prontuarioPaciente" element={<ProntuarioPaciente/>}/>
       </Routes>
     </BrowserRouter>
     </DataProvider>

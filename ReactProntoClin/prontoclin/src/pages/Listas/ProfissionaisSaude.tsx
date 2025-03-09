@@ -5,6 +5,10 @@ import { getToken } from '../../controle/cookie';
 
 
 function ListaProfissionais() {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<DataType[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  
   interface DataType {
     key: string;
     nomeprofissionalsaude: string;
@@ -60,10 +64,6 @@ function ListaProfissionais() {
       width: '10%'
     },
   ];
-
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<DataType[]>([]);
-  const [error, setError] = useState<string | null>(null);
 
   const onFinish = async (record: DataType) => {
     setLoading(true);

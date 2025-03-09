@@ -50,7 +50,6 @@ public class ProfissionalSaudeController {
         profSaude.setEmail(profissionalSaude.getEmail());
         String encryptPassword = new BCryptPasswordEncoder().encode(profissionalSaude.getSenha());
         profSaude.setSenha(encryptPassword);
-        profSaude.setEspecialidademedica(profissionalSaude.getEspecialidademedica());
         profSaude.setTelefoneprofissionalsaude(profissionalSaude.getTelefoneprofissionalsaude());
         profSaude.setStatus("ATIVO");
         return profissionalSaudeRepository.save(profSaude);

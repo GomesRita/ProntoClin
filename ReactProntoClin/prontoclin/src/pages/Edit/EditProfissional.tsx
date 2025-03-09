@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { getToken } from "../../controle/cookie";
 import axios from "axios";
-import { Button, Form, Input, message} from 'antd';
+import { Button, Form, Input, message, Select} from 'antd';
 
-function EditarPaciente(){
+function EditarProfissional(){
     const [userData, setUserData] = useState<any>(null); 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -16,18 +16,17 @@ function EditarPaciente(){
     };
     
 
-    const onFinish = async (values: { nome: string, nomesocial: string, telefone: string, email: string, senha: string}) => {
+    const onFinish = async (values: { prefix: string,telefone: string, email: string, senha: string}) => {
         setLoading(true);
         setError(null);
+        const telefoneCompleto = `${values.prefix}${values.telefone}`;
         try {
             const token = getToken(); // Recupera o token do cookie
             if (token) {
                 const response = await axios.put(
-                    'http://localhost:8081/paciente/atualiza', // Endereço da API para cadastrar administrador
+                    'http://localhost:8081/profSaude/atualiza', // Endereço da API para cadastrar administrador
                     {
-                        nomepaciente: values.nome,
-                        nomesocial: values.nomesocial,
-                        telefonepaciente: values.telefone,
+                        telefoneprofissionalsaude: telefoneCompleto,
                         email: values.email,
                         senha: values.senha,
                     },
@@ -41,7 +40,7 @@ function EditarPaciente(){
                 );
                 console.log(response.data)
                 // Se a requisição for bem-sucedida
-                message.success('Dados atualizados'); // Exibe mensagem de sucesso
+                message.success('Dados atualizados com sucesso!'); // Exibe mensagem de sucesso
             } else {
                 setError('Login não encontrado');
             }
@@ -59,7 +58,7 @@ function EditarPaciente(){
             try {
                 const token = getToken(); // Recupera o token do cookie
                 if (token) {
-                const response = await axios.get('http://localhost:8081/paciente/me', {
+                const response = await axios.get('http://localhost:8081/profSaude/me', {
                     headers: {
                     'Authorization': `Bearer ${token}`, 
                     },
@@ -88,7 +87,35 @@ function EditarPaciente(){
     if (error) {
         return <div>Erro ao carregar os dados: {error}</div>;
     }
-
+    const { Option } = Select;
+    const prefixSelector = (
+        <Form.Item name="prefix" noStyle>
+          <Select style={{ width: 70 }}>
+            <Option value="71">+71</Option>
+            <Option value="73">+73</Option>
+            <Option value="74">+74</Option>
+            <Option value="75">+75</Option>
+            <Option value="77">+77</Option>
+            <Option value="79">+79</Option>
+            <Option value="81">+81</Option>
+            <Option value="82">+82</Option>
+            <Option value="83">+83</Option>
+            <Option value="84">+84</Option>
+            <Option value="85">+85</Option>
+            <Option value="86">+86</Option>
+            <Option value="87">+87</Option>
+            <Option value="88">+88</Option>
+            <Option value="89">+89</Option>
+            <Option value="91">+91</Option>
+            <Option value="92">+92</Option>
+            <Option value="93">+93</Option>
+            <Option value="94">+94</Option>
+            <Option value="95">+95</Option>
+            <Option value="98">+98</Option>
+            <Option value="99">+99</Option>
+          </Select>
+        </Form.Item>
+    );
     return(
 
      <div style={{display:'flex' ,justifyContent: 'center', alignItems: 'center'}}>
@@ -99,35 +126,22 @@ function EditarPaciente(){
             labelCol={{ span: 100 }}
             wrapperCol={{ span: 100 }}
             initialValues={{
-                nome: userData.nomepaciente,
-                nomesocial: userData.nomesocial,
-                telefone: userData.telefonepaciente,
-                email: userData.email,
-                senha: '',
+                telefone: userData.telefoneprofissionalsaude, // Preenche o campo "nome" com o valor do backend
+                email: userData.email, // Preenche o campo "email" com o valor do backend
+                senha: '', // Não exibe a senha do backend no campo
             }}
             style={{width: '50%'}}
             onFinish={onFinish}
             onFieldsChange={onFieldsChange}
             >
               <h2 style={{ color: '#262626' }}>Editar Dados Pessoais</h2>
-            <Form.Item 
-                label="Nome" 
-                name="nome"
-                rules={[{ required: true, message: 'Por favor, insira um nome!' }]}>
-            <Input />
-            </Form.Item>
-            <Form.Item 
-                label="Nome Social" 
-                name="nomesocial"
-                rules={[{ required: true, message: 'Por favor, insira um nome!' }]}>
-            <Input />
-            </Form.Item>
-            <Form.Item 
-                label="Telefone" 
+              <Form.Item
                 name="telefone"
-                rules={[{ required: true, message: 'Por favor, insira um nome!' }]}>
-            <Input />
-            </Form.Item>
+                label="Telefone"
+                rules={[{ required: true, message: 'Por favor, informe seu telefone' }]}
+                >
+                <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+                </Form.Item>
             <Form.Item 
                 label="Email"
                 name="email"
@@ -168,4 +182,4 @@ function EditarPaciente(){
     );
 }
 
-export default EditarPaciente;
+export default EditarProfissional;

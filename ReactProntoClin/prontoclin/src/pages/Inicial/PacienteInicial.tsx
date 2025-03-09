@@ -6,6 +6,7 @@ import { Button, Descriptions, Flex, Space } from 'antd';
 import CadastroConsulta from '../Cadastro/CadastrarConsulta';
 import ConsultasPaciente from '../Listas/ConsultasPaciente';
 import MeuProntuario from '../Listas/MeuProntuario';
+import EditarPaciente from '../Edit/EditPaciente';
 
 function Paciente() {
 
@@ -80,7 +81,7 @@ function Paciente() {
         transform: 'translate(10%,0%)'
          }}>
         <Space direction='horizontal' size="middle" style={{display: 'flex', justifyContent: 'center'}}>
-            <Button type="dashed" onClick={() => handleClick('/')}>Editar Dados</Button>
+            <Button type="dashed" onClick={() => handleClick('/editPaciente')}>Editar Dados</Button>
             <Button type="dashed" onClick={logout}>Sair</Button>
         </Space>
         <div style={{justifyItems: 'center'}}>
@@ -105,6 +106,7 @@ function Paciente() {
         {conteudo === '/cadastroConsulta' && <CadastroConsulta/>}
         {conteudo === '/consultaPaciente' && <ConsultasPaciente/>}
         {conteudo === '/meuProntuario' && <MeuProntuario/>}
+        {conteudo === '/editPaciente' && <EditarPaciente/>}
     </div>
     </>
    );

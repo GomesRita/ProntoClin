@@ -35,6 +35,7 @@ public class PacienteController {
         Object principal = authentication.getPrincipal();
         Paciente userpaciente = (Paciente) principal;
         Paciente patient = pacienteRepository.findById(userpaciente.getIduser()).orElseThrow(() -> new RuntimeException("Paciente não encontrado"));
+        patient.setNomepaciente(paciente.getNomepaciente());
         patient.setEmail(paciente.getEmail());
         String encryptPassword = new BCryptPasswordEncoder().encode(paciente.getSenha());
         patient.setSenha(encryptPassword);

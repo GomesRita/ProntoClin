@@ -82,28 +82,31 @@ public class PronturioController {
     }
 
     @GetMapping("/prontuarioPaciente")
-    public ResponseEntity<?> getProntuarioPaciente(@RequestParam Long idpaciente) {
+    public ResponseEntity<?> getProntuarioPaciente(@RequestParam Long numeroprontuario) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         ProfissionalSaude profissionalSaude = (ProfissionalSaude) principal;
-        Paciente newPaciente = pacienteRepository.findPacienteByIduser(idpaciente);
-        if (newPaciente == null) {
-            return ResponseEntity.badRequest().body("Paciente não encontrado");
-        }
-        Prontuario newProntuario = prontuarioRepository.findTopByPaciente_IduserOrderByUltimaatualizacaoDesc(newPaciente.getIduser());
-        if (newProntuario == null) {
+
+        // Busca o prontuário pelo número
+        Prontuario prontuario = prontuarioRepository.findProntuarioByNumeroprontuario(numeroprontuario);
+
+        if (prontuario == null) {
             return ResponseEntity.badRequest().body("Prontuário não encontrado");
         }
-        List<Consulta> consultas = consultaRepository.findConsultaByIdconsultaAndIdprofissionalsaude(
-                newProntuario.getConsulta().getIdconsulta(),
+
+        // Verifica se existe alguma consulta agendada para esse paciente com o profissional
+        List<Consulta> consultas = consultaRepository.findConsultaByIdpacienteAndIdprofissionalsaude(
+                prontuario.getPaciente().getIduser(), // Você pode ter que adaptar dependendo da estrutura
                 profissionalSaude.getIduser()
         );
+
         if (consultas == null || consultas.isEmpty()) {
-            return ResponseEntity.badRequest().body("Você não tem acesso a este prontuário");
+            return ResponseEntity.badRequest().body("Você não tem acesso a este prontuário, nenhuma consulta encontrada.");
         }
-        List<Prontuario> listaProntuario = prontuarioRepository.findProntuarioByPaciente_Cpfpaciente(newPaciente.getCpfpaciente());
-        return ResponseEntity.ok().body(listaProntuario);
+
+        return ResponseEntity.ok().body(prontuario);
     }
+
 
 
     @PutMapping("/atualizarProntuario")
@@ -122,6 +125,9 @@ public class PronturioController {
         if (consultas == null || consultas.isEmpty()) {
             return ResponseEntity.badRequest().body("Você não tem acesso a este prontuário");
         }
+        newProntuario.setHistoricomedico(prontuario.getHistoricomedico());
+        newProntuario.setAlergias(prontuario.getAlergias());
+        newProntuario.setUltimaatualizacao(prontuario.getUltimaatualizacao());
         newProntuario.setQueixaprinciapal(prontuario.getQueixaprinciapal());
         newProntuario.setDiagnostico(prontuario.getDiagnostico());
         newProntuario.setPrescricaomedica(prontuario.getPrescricaomedica());

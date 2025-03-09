@@ -3,13 +3,16 @@ import axios from 'axios';
 import { getToken, removeToken } from '../../controle/cookie';
 import { useNavigate } from 'react-router-dom';
 import { Button, Descriptions, Flex, Space } from 'antd';
+import AgendaProfissional from '../Listas/agendaProfissional';
+import EditarProfissional from '../Edit/EditProfissional';
+import ProntuarioPaciente from '../Listas/Prontuario';
 
 function ProSaude() {
 
    const [userData, setUserData] = useState<any>(null); 
    const [loading, setLoading] = useState(true);
    const [error, setError] = useState<string | null>(null);
-   const [, setConteudo] = useState(''); 
+   const [conteudo, setConteudo] = useState(''); 
    const navigate = useNavigate();
     const logout = () => {
         removeToken();
@@ -25,7 +28,7 @@ function ProSaude() {
    
      const fetchData = async () => {
         try {
-            const token = getToken(); // Recupera o token do cookie
+            const token = getToken();
             if (token) {
               const response = await axios.get('http://localhost:8081/profSaude/me', {
                 headers: {
@@ -73,27 +76,31 @@ function ProSaude() {
               transform: 'translate(10%,0%)'
               }}>
               <Space direction='horizontal' size="middle" style={{display: 'flex', justifyContent: 'center'}}>
-                  <Button type="dashed" onClick={() => handleClick('/')}>Editar Dados</Button>
+                  <Button type="dashed" onClick={() => handleClick('/editProfissional')}>Editar Dados</Button>
                   <Button type="dashed" onClick={logout}>Sair</Button>
               </Space>
               <div style={{justifyItems: 'center'}}>
-              <Descriptions title="Paciente" style={{ justifyItems: 'center', width: '50%'}}>
-                  <Descriptions.Item label="Nome" style={{textAlign: 'center'}}>{userData.nomepaciente}</Descriptions.Item>
-                  <Descriptions.Item label="Nome Social"  style={{textAlign: 'center'}}>{userData.nomesocial}</Descriptions.Item>
-                  <Descriptions.Item label="Sexo"  style={{textAlign: 'center'}}>{userData.sexopaciente}</Descriptions.Item>
-                  <Descriptions.Item label="CPF"  style={{textAlign: 'center'}}>{userData.cpfpaciente}</Descriptions.Item>
-                  <Descriptions.Item label="Telefone"  style={{textAlign: 'center'}}>{userData.telefonepaciente}</Descriptions.Item>
+              <Descriptions title="Profissional de Saúde" style={{ justifyItems: 'center', width: '70%'}}>
+                  <Descriptions.Item label="Nome" style={{textAlign: 'center'}}>{userData.nomeprofissionalsaude}</Descriptions.Item>
+                  <Descriptions.Item label="CPF"  style={{textAlign: 'center'}}>{userData.cpfprofissionalsaude}</Descriptions.Item>
+                  <Descriptions.Item label="CRM"  style={{textAlign: 'center'}}>{userData.crm}</Descriptions.Item>
+                  <Descriptions.Item label="Especialidade Médica"  style={{textAlign: 'center'}}>{userData.especialidademedica}</Descriptions.Item>
+                  <Descriptions.Item label="Telefone"  style={{textAlign: 'center'}}>{userData.telefoneprofissionalsaude}</Descriptions.Item>
                   <Descriptions.Item label="Email" style={{textAlign: 'center'}}>{userData.email}</Descriptions.Item>
+                  <Descriptions.Item label="Status"  style={{textAlign: 'center'}}>{userData.status}</Descriptions.Item>
               </Descriptions>
               </div>
               <Flex gap="small" wrap style={{ justifyContent: 'center'}}>
-                  <Button type="primary" onClick={() => handleClick('/cadastroConsulta')}>Agendar Consulta</Button>
-                  <Button type="primary" onClick={() => handleClick('/consultaPaciente')}>Minhas Consultas</Button>
-                  <Button type="primary" onClick={() => handleClick('/meuProntuario')}>Meu Prontuario</Button>
+                  <Button type="primary" onClick={() => handleClick('/AgendaProfissional')}>Minha Agenda</Button>
+                  <Button type="primary" onClick={() => handleClick('/prontuarioPaciente')}>Prontuários</Button>
               </Flex>
           </Space>
           <div style={{ width: '80%', transform: 'translate(13%,5%)', textAlign: "center"}}>
-          </div>
+            {/* Renderiza o conteúdo com base no estado */}
+            {conteudo === '/AgendaProfissional' && <AgendaProfissional/>}
+            {conteudo === '/editProfissional' && <EditarProfissional/>}
+            {conteudo === '/prontuarioPaciente' && <ProntuarioPaciente/>}
+        </div>
           </>
    );
 }

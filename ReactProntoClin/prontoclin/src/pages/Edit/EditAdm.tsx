@@ -39,13 +39,13 @@ function EditarAdmin(){
                 );
                 console.log(response.data)
                 // Se a requisição for bem-sucedida
-                message.success('Administrador cadastrado com sucesso!'); // Exibe mensagem de sucesso
+                message.success('Dados atualizados com sucesso!'); // Exibe mensagem de sucesso
             } else {
-                setError('Token não encontrado');
+                setError('Login não encontrado');
             }
         } catch (err) {
-            setError('Erro ao cadastrar administrador');
-            message.error('Erro ao cadastrar administrador'); // Exibe mensagem de erro
+            setError('Erro ao atualizar dados');
+            message.error('Erro ao atualizar dados'); // Exibe mensagem de erro
         } finally {
             setLoading(false); // Finaliza o carregamento
         }
