@@ -73,7 +73,7 @@ function ProSaude() {
               borderRadius: '10px',
               boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
               width: '80%',
-              left: '50%', /* Centraliza horizontalmente */
+              left: '50%',
               transform: 'translate(10%,0%)'
               }}>
               <Space direction='horizontal' size="middle" style={{display: 'flex', justifyContent: 'center'}}>
@@ -83,8 +83,7 @@ function ProSaude() {
               <div style={{justifyItems: 'center'}}>
               <Descriptions title="Profissional de Saúde" style={{ justifyItems: 'center', width: '70%'}}>
                   <Descriptions.Item label="Nome" style={{textAlign: 'center'}}>{userData.nomeprofissionalsaude}</Descriptions.Item>
-                  <Descriptions.Item label="CPF"  style={{textAlign: 'center'}}>{userData.cpfprofissionalsaude}</Descriptions.Item>
-                  <Descriptions.Item label="CRM"  style={{textAlign: 'center'}}>{userData.crm}</Descriptions.Item>
+                  <Descriptions.Item label="Registro"  style={{textAlign: 'center'}}>{userData.registro}</Descriptions.Item>
                   <Descriptions.Item label="Especialidade Médica"  style={{textAlign: 'center'}}>{userData.especialidademedica}</Descriptions.Item>
                   <Descriptions.Item label="Telefone"  style={{textAlign: 'center'}}>{userData.telefoneprofissionalsaude}</Descriptions.Item>
                   <Descriptions.Item label="Email" style={{textAlign: 'center'}}>{userData.email}</Descriptions.Item>

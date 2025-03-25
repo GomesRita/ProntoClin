@@ -4,19 +4,18 @@ import { getToken } from '../../controle/cookie';
 import axios from 'axios';
 
 function CadastroAdmin(){
-    const [ loading ,setLoading] = useState(false); // Gerenciar o carregamento durante a requisição
-    const [ error ,setError] = useState<string | null>(null); // Gerenciar erro de requisição
+    const [ loading ,setLoading] = useState(false);
+    const [ error ,setError] = useState<string | null>(null); 
 
-    // Função chamada ao enviar o formulário
     const onFinish = async (values: { nome: string, cpf: string, email: string, senha: string }) => {
-        setLoading(true); // Inicia o carregamento
-        setError(null); // Limpa o erro
+        setLoading(true); 
+        setError(null);
 
         try {
-            const token = getToken(); // Recupera o token do cookie
+            const token = getToken(); 
             if (token) {
-                const response = await axios.post(
-                    'http://localhost:8081/auth/register/adm', // Endereço da API para cadastrar administrador
+                await axios.post(
+                    'http://localhost:8081/auth/register/adm',
                     {
                         nome: values.nome,
                         cpf: values.cpf,
@@ -27,22 +26,19 @@ function CadastroAdmin(){
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, // Adicionando token no cabeçalho
+                            'Authorization': `Bearer ${token}`,
                         }
                     }
 
                 );
-                console.log(response.data)
-                // Se a requisição for bem-sucedida
-                message.success('Administrador cadastrado com sucesso!'); // Exibe mensagem de sucesso
-            } else {
+                message.success('Administrador cadastrado com sucesso!'); 
                 setError('Token não encontrado');
             }
         } catch (err) {
             setError('Erro ao cadastrar administrador');
-            message.error('Erro ao cadastrar administrador'); // Exibe mensagem de erro
+            message.error('Erro ao cadastrar administrador'); 
         } finally {
-            setLoading(false); // Finaliza o carregamento
+            setLoading(false); 
         }
     };
 
@@ -73,23 +69,63 @@ function CadastroAdmin(){
                     rules={[{ required: true, message: 'Por favor, insira um nome!' }]}>
                 <Input />
                 </Form.Item>
-                <Form.Item 
-                    label="CPF"
-                    name="cpf"
-                    rules={[{ required: true, message: 'Por favor, insira um CPF!' }]}>
+                <Form.Item label="CPF" name="cpf" rules={[
+                    { required: true },
+                    {
+                        pattern: /^(\d{3})\.(\d{3})\.(\d{3})\-(\d{2})$/,
+                        message: 'O CPF deve conter 11 dígitos. Ex.: XXX.XXX.XXX-XX',
+                    },
+                    ]}>
                 <Input />
                 </Form.Item>
                 <Form.Item 
                     label="Email"
                     name="email"
-                    rules={[{ required: true, message: 'Por favor, insira um email!' }]}>
+                    rules={[
+                        {   type: 'email',
+                            message: 'Tipo de email inválido'
+                        },
+                        { required: true, message: 'Por favor, insira um email!' }]}>
                 <Input />
                 </Form.Item>
-                <Form.Item 
-                    label="Senha" 
-                    name="senha"
-                    rules={[{ required: true, message: 'Por favor, insira uma senha!' }]}>
-                <Input />
+                <Form.Item label="Senha" name="senha" rules={[
+                    { required: true },
+                    {
+                    pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{6,}$/,
+                    message:  
+                    <div style={{textAlign: 'left'}}>
+                    <p><strong>A senha deve atender aos seguintes requisitos:</strong></p>
+                    <ol>
+                        <li>Pelo menos 6 caracteres.</li>
+                        <li>Deve conter pelo menos uma letra minúscula.</li>
+                        <li>Deve conter pelo menos uma letra maiúscula.</li>
+                        <li>Deve conter pelo menos um número.</li>
+                        <li>Deve conter pelo menos um caractere especial: $, *, &, @, ou #.</li>
+                    </ol>
+                    </div>,
+                    }
+                    ]}>
+                    <Input />
+                    </Form.Item>
+                    <Form.Item
+                    label="Confirmar senha"
+                    name="password2"
+                    dependencies={['senha']}
+                    rules={[
+                    {
+                        required: true,
+                    },
+                    ({ getFieldValue }) => ({
+                        validator(_, value) {
+                        if (!value || getFieldValue('senha') === value) {
+                            return Promise.resolve();
+                        }
+                        return Promise.reject(new Error('Senhas incompatíveis '));
+                        },
+                    }),
+                    ]}
+                >
+                    <Input />
                 </Form.Item>
                 <Button type="dashed" htmlType="submit">Cadastrar</Button>
             </Form>

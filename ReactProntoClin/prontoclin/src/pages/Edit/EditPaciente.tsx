@@ -10,9 +10,9 @@ function EditarPaciente(){
     const [formChanged, setFormChanged] = useState(false);
     const [form] = Form.useForm();
 
-    // Detecta alterações no formulário e ativa/desativa o botão de submit
+   
     const onFieldsChange = () => {
-        setFormChanged(true); // Quando o usuário alterar algum campo, habilita o botão de submit
+        setFormChanged(true); 
     };
     
 
@@ -20,10 +20,10 @@ function EditarPaciente(){
         setLoading(true);
         setError(null);
         try {
-            const token = getToken(); // Recupera o token do cookie
+            const token = getToken(); 
             if (token) {
-                const response = await axios.put(
-                    'http://localhost:8081/paciente/atualiza', // Endereço da API para cadastrar administrador
+                await axios.put(
+                    'http://localhost:8081/paciente/atualiza',
                     {
                         nomepaciente: values.nome,
                         nomesocial: values.nomesocial,
@@ -34,22 +34,20 @@ function EditarPaciente(){
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, // Adicionando token no cabeçalho
+                            'Authorization': `Bearer ${token}`, 
                         }
                     }
 
                 );
-                console.log(response.data)
-                // Se a requisição for bem-sucedida
-                message.success('Dados atualizados'); // Exibe mensagem de sucesso
+                message.success('Dados atualizados');
             } else {
                 setError('Login não encontrado');
             }
         } catch (err) {
             setError('Erro ao atualizar dados');
-            message.error('Erro ao atualizar dados'); // Exibe mensagem de erro
+            message.error('Erro ao atualizar dados');
         } finally {
-            setLoading(false); // Finaliza o carregamento
+            setLoading(false);
         }
     };
 
@@ -57,7 +55,7 @@ function EditarPaciente(){
     
         const fetchData = async () => {
             try {
-                const token = getToken(); // Recupera o token do cookie
+                const token = getToken();
                 if (token) {
                 const response = await axios.get('http://localhost:8081/paciente/me', {
                     headers: {
@@ -122,23 +120,53 @@ function EditarPaciente(){
                 rules={[{ required: true, message: 'Por favor, insira um nome!' }]}>
             <Input />
             </Form.Item>
-            <Form.Item 
-                label="Telefone" 
+            <Form.Item
                 name="telefone"
-                rules={[{ required: true, message: 'Por favor, insira um nome!' }]}>
-            <Input />
+                label="Telefone"
+                rules={[
+                { required: true, message: 'Por favor, informe seu telefone' },
+                {
+                    pattern:/^\(\d{2}\) \d{5}\d{4}$/, 
+                    message: 'O telefone deve estar no formato 9XXXXXXXX',
+                },
+                ]}
+                >
+                <Input
+                style={{ width: '100%' }}
+                placeholder="Insira seu telefone (ex: 11 987654321)"
+                maxLength={15} 
+                />
             </Form.Item>
             <Form.Item 
                 label="Email"
                 name="email"
-                rules={[{ required: true, message: 'Por favor, insira um email!' }]}>
+                rules={[
+                    { 
+                        type: 'email',
+                        message: 'Tipo de email inválido'
+                    },
+                    { required: true, message: 'Por favor, insira um email!' }
+                    ]}>
             <Input />
             </Form.Item>
-            <Form.Item 
-                label="Senha" 
-                name="senha"
-                rules={[{ required: true, message: 'Por favor, insira uma senha!' }]}>
-            <Input />
+            <Form.Item label="Senha" name="senha" rules={[
+                { required: true },
+                {
+                pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{6,}$/,
+                message:  
+                <div style={{textAlign: 'left'}}>
+                <p><strong>A senha deve atender aos seguintes requisitos:</strong></p>
+                <ol>
+                    <li>Pelo menos 6 caracteres.</li>
+                    <li>Deve conter pelo menos uma letra minúscula.</li>
+                    <li>Deve conter pelo menos uma letra maiúscula.</li>
+                    <li>Deve conter pelo menos um número.</li>
+                    <li>Deve conter pelo menos um caractere especial: $, *, &, @, ou #.</li>
+                </ol>
+                </div>,
+                }
+                ]}>
+                <Input />
             </Form.Item>
             <Form.Item
                 label="Confirmar senha"

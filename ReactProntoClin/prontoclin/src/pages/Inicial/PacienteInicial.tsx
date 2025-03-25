@@ -28,7 +28,7 @@ function Paciente() {
    
      const fetchData = async () => {
         try {
-            const token = getToken(); // Recupera o token do cookie
+            const token = getToken(); 
             if (token) {
               const response = await axios.get('http://localhost:8081/paciente/me', {
                 headers: {
@@ -77,7 +77,7 @@ function Paciente() {
         borderRadius: '10px',
         boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
         width: '80%',
-        left: '50%', /* Centraliza horizontalmente */
+        left: '50%', 
         transform: 'translate(10%,0%)'
          }}>
         <Space direction='horizontal' size="middle" style={{display: 'flex', justifyContent: 'center'}}>
@@ -102,7 +102,6 @@ function Paciente() {
         </Flex>
     </Space>
     <div style={{ width: '80%', transform: 'translate(13%,5%)', textAlign: "center"}}>
-        {/* Renderiza o conteúdo com base no estado */}
         {conteudo === '/cadastroConsulta' && <CadastroConsulta/>}
         {conteudo === '/consultaPaciente' && <ConsultasPaciente/>}
         {conteudo === '/meuProntuario' && <MeuProntuario/>}

@@ -2,11 +2,11 @@ import  { useState, useEffect } from 'react';
 import axios from 'axios';
 import { getToken } from '../../controle/cookie';
 import { Descriptions, Button, Flex,Space} from 'antd';
-import CadastroAdmin from '../Cadastro/CadastroAdmin'; // Formulário de cadastro de administrador
+import CadastroAdmin from '../Cadastro/CadastroAdmin'; 
 import CadastroProSaude from '../Cadastro/CadastroProSaude';
 import ListaProfissionais from '../Listas/ProfissionaisSaude';
 import { useNavigate } from 'react-router-dom';
-import { removeToken } from '../../controle/cookie'; // Importe a função removeToken que você já criou
+import { removeToken } from '../../controle/cookie'; 
 import EditarAdmin from '../Edit/EditAdm';
 
 
@@ -28,7 +28,7 @@ function AdmIncial(){
     
         const fetchData = async () => {
             try {
-                const token = getToken(); // Recupera o token do cookie
+                const token = getToken(); 
                 if (token) {
                 const response = await axios.get('http://localhost:8081/adm/me', {
                     headers: {
@@ -71,7 +71,7 @@ function AdmIncial(){
             borderRadius: '10px',
             boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
             width: '80%',
-            left: '50%', /* Centraliza horizontalmente */
+            left: '50%',
             transform: 'translate(10%,0%)'
              }}>
             <Space direction='horizontal' size="middle" style={{display: 'flex', justifyContent: 'center'}}>
@@ -92,7 +92,6 @@ function AdmIncial(){
             </Flex>
         </Space>
         <div style={{ width: '80%', transform: 'translate(13%,5%)', textAlign: "center"}}>
-            {/* Renderiza o conteúdo com base no estado */}
             {conteudo === '/cadastroAdmin' && <CadastroAdmin/>}
             {conteudo === '/cadastroProSaude' && <CadastroProSaude/>}
             {conteudo === '/listarProfissionais' && <ListaProfissionais/>}

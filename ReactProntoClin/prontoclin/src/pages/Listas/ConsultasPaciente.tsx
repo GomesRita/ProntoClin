@@ -9,7 +9,7 @@ function ConsultasPaciente() {
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState<DataType | null>(null);
   const [loading, setLoading] = useState(false);
-  const [tableData, setTableData] = useState<DataType[]>([]); // Estado para a tabela
+  const [tableData, setTableData] = useState<DataType[]>([]); 
   const [availableDates, setAvailableDates] = useState<{ value: string; label: string }[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [refreshData, setRefreshData] = useState(false);
@@ -100,9 +100,9 @@ function ConsultasPaciente() {
           if(token){
           await axios.put('http://localhost:8081/consulta/atualizarConsulta',
               {
-                idconsulta: formData?.key, // Certifique-se de passar o ID correto da consulta
-                nomeprofissionalsaude: formData?.nomeprofissionalsaude, // Pega o nome do profissional do formulário
-                dataconsulta: values.data, // Pega a data selecionada do formulário
+                idconsulta: formData?.key, 
+                nomeprofissionalsaude: formData?.nomeprofissionalsaude,
+                dataconsulta: values.data, 
               }, 
               {
               headers:{
@@ -125,8 +125,7 @@ function ConsultasPaciente() {
   const handleReagendarClick = async (record: DataType) => {
     setFormData(record);
     setShowForm(true);
-    form.resetFields();  // Limpa os campos do formulário ao abrir
-
+    form.resetFields();  
     const token = getToken();
     if (token) {
       try {
@@ -143,14 +142,14 @@ function ConsultasPaciente() {
         );
 
         const transformedDates = response.data.map((item: any) => {
-          const utcDate = dayjs.utc(item.dataconsulta); // Mantém a data em UTC
+          const utcDate = dayjs.utc(item.dataconsulta); 
           return {
-            value: utcDate.format('YYYY-MM-DDTHH:mm:ssZ'), // Valor em UTC no formato ISO
-            label: utcDate.format('DD/MM/YYYY HH:mm'), // Exibe data amigável para o usuário
+            value: utcDate.format('YYYY-MM-DDTHH:mm:ssZ'), 
+            label: utcDate.format('DD/MM/YYYY HH:mm'), 
           };
         });
 
-        // Atualiza as datas disponíveis para reagendamento
+    
         setAvailableDates(transformedDates);
       } catch (err) {
         message.error('Erro ao carregar as datas disponíveis');
@@ -175,14 +174,11 @@ function ConsultasPaciente() {
             },
           });
   
-          // Verifica se a resposta é um array e se está vazia
           if (Array.isArray(response.data)) {
             if (response.data.length === 0) {
-              // Se não houver consultas, limpa a tabela e exibe uma mensagem
               setTableData([]);
               message.info('Nenhuma consulta agendada.');
             } else {
-              // Se houver consultas, transforma os dados e atualiza a tabela
               const transformedTableData = response.data.map((item: any) => ({
                 key: item.idconsulta,
                 nomeprofissionalsaude: item.nomeprofissionalsaude,
@@ -192,7 +188,6 @@ function ConsultasPaciente() {
               setTableData(transformedTableData);
             }
           } else {
-            // Se a resposta não for um array, define tableData como vazio
             setTableData([]);
 
           }
@@ -215,7 +210,7 @@ function ConsultasPaciente() {
     if (formData) {
       form.setFieldsValue({
         nomeprofissionalsaude: formData.nomeprofissionalsaude,
-        data: undefined,  // Mantém o campo data sem valor selecionado inicialmente
+        data: undefined,
       });
     }
   }, [formData, form]);
@@ -247,7 +242,7 @@ function ConsultasPaciente() {
             <Select
               placeholder="Selecione uma data"
               loading={loading}
-              options={availableDates} // Passa as datas como opções
+              options={availableDates} 
             />
           </Form.Item>
 

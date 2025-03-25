@@ -10,9 +10,8 @@ function EditarAdmin(){
     const [formChanged, setFormChanged] = useState(false);
     const [form] = Form.useForm();
 
-    // Detecta alterações no formulário e ativa/desativa o botão de submit
     const onFieldsChange = () => {
-        setFormChanged(true); // Quando o usuário alterar algum campo, habilita o botão de submit
+        setFormChanged(true);
     };
     
 
@@ -20,10 +19,10 @@ function EditarAdmin(){
         setLoading(true);
         setError(null);
         try {
-            const token = getToken(); // Recupera o token do cookie
+            const token = getToken();
             if (token) {
-                const response = await axios.put(
-                    'http://localhost:8081/adm/atualiza', // Endereço da API para cadastrar administrador
+                await axios.put(
+                    'http://localhost:8081/adm/atualiza', 
                     {
                         nome: values.nome,
                         email: values.email,
@@ -32,22 +31,20 @@ function EditarAdmin(){
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, // Adicionando token no cabeçalho
+                            'Authorization': `Bearer ${token}`, 
                         }
                     }
 
                 );
-                console.log(response.data)
-                // Se a requisição for bem-sucedida
-                message.success('Dados atualizados com sucesso!'); // Exibe mensagem de sucesso
+                message.success('Dados atualizados com sucesso!'); 
             } else {
                 setError('Login não encontrado');
             }
         } catch (err) {
             setError('Erro ao atualizar dados');
-            message.error('Erro ao atualizar dados'); // Exibe mensagem de erro
+            message.error('Erro ao atualizar dados'); 
         } finally {
-            setLoading(false); // Finaliza o carregamento
+            setLoading(false); 
         }
     };
 
@@ -55,7 +52,7 @@ function EditarAdmin(){
     
         const fetchData = async () => {
             try {
-                const token = getToken(); // Recupera o token do cookie
+                const token = getToken(); 
                 if (token) {
                 const response = await axios.get('http://localhost:8081/adm/me', {
                     headers: {
@@ -97,9 +94,9 @@ function EditarAdmin(){
             labelCol={{ span: 100 }}
             wrapperCol={{ span: 100 }}
             initialValues={{
-                nome: userData.nome, // Preenche o campo "nome" com o valor do backend
-                email: userData.email, // Preenche o campo "email" com o valor do backend
-                senha: '', // Não exibe a senha do backend no campo
+                nome: userData.nome, 
+                email: userData.email, 
+                senha: '',
             }}
             style={{width: '50%'}}
             onFinish={onFinish}
@@ -115,14 +112,32 @@ function EditarAdmin(){
             <Form.Item 
                 label="Email"
                 name="email"
-                rules={[{ required: true, message: 'Por favor, insira um email!' }]}>
+                rules={[
+                    {   type: 'email',
+                        message: 'Tipo de email inválido'
+                    },
+                    { required: true, message: 'Por favor, insira um email!' }
+                    ]}>
             <Input />
             </Form.Item>
-            <Form.Item 
-                label="Senha" 
-                name="senha"
-                rules={[{ required: true, message: 'Por favor, insira uma senha!' }]}>
-            <Input />
+            <Form.Item label="Senha" name="senha" rules={[
+                { required: true },
+                {
+                pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{6,}$/,
+                message:  
+                <div style={{textAlign: 'left'}}>
+                <p><strong>A senha deve atender aos seguintes requisitos:</strong></p>
+                <ol>
+                    <li>Pelo menos 6 caracteres.</li>
+                    <li>Deve conter pelo menos uma letra minúscula.</li>
+                    <li>Deve conter pelo menos uma letra maiúscula.</li>
+                    <li>Deve conter pelo menos um número.</li>
+                    <li>Deve conter pelo menos um caractere especial: $, *, &, @, ou #.</li>
+                </ol>
+                </div>,
+                }
+                ]}>
+                <Input />
             </Form.Item>
             <Form.Item
                 label="Confirmar senha"

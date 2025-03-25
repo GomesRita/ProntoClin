@@ -9,13 +9,13 @@ function AgendaProfissional() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<DataType[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [filterSituacao, setFilterSituacao] = useState<string>(''); // Filtro de situação
-  const [searchText, setSearchText] = useState<string>(''); // Filtro de data e hora
+  const [filterSituacao, setFilterSituacao] = useState<string>(''); 
+  const [searchText, setSearchText] = useState<string>(''); 
   dayjs.extend(utc);
 
 
   const onSearch2 = (value: string) => {
-    setSearchText(value); // Atualiza o estado de pesquisa
+    setSearchText(value);
   };
 
   const { Search } = Input;
@@ -50,14 +50,12 @@ function AgendaProfissional() {
     }
   ];
 
-  // Filtra os dados com base na situação e na pesquisa de data/hora
   const filteredData = data.filter(item => {
     const isSituacaoMatch = filterSituacao ? item.situacao === filterSituacao : true;
-
-    // Verifica se a data/hora da consulta contém o texto de busca
-    const isDateMatch = searchText
-      ? dayjs.utc(item.dataconsulta).format('DD/MM/YYYY HH:mm').includes(searchText)
-      : true;
+   
+  const isDateMatch = searchText
+    ? dayjs.utc(item.dataconsulta).format('DD/MM/YYYY HH:mm').includes(searchText)
+    : true;
 
     return isSituacaoMatch && isDateMatch;
   });
@@ -97,7 +95,7 @@ function AgendaProfissional() {
     fetchData();
   }, []);
 
-  // Função para alterar o filtro
+
   const handleFilterChange = (value: string) => {
     setFilterSituacao(value);
   };
@@ -114,7 +112,7 @@ function AgendaProfissional() {
           showSearch
           placeholder="Selecione uma situação"
           optionFilterProp="label"
-          onChange={handleFilterChange} // Alterando o filtro aqui
+          onChange={handleFilterChange}
           options={[
             {
               value: 'disponivel',
@@ -129,7 +127,7 @@ function AgendaProfissional() {
       </Space>
       {loading && <div>Carregando...</div>}
       {error && <div>Erro ao carregar os dados: {error}</div>}
-      <Table<DataType> columns={columns} dataSource={filteredData} /> {/* Usando filteredData aqui */}
+      <Table<DataType> columns={columns} dataSource={filteredData} />
     </>
   );
 }

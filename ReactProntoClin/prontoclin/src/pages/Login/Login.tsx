@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { setToken } from "../../controle/cookie";
@@ -24,19 +24,16 @@ function Login(){
             }
           );
           setToken(response.data.token);
-          console.log(response.data)
           const role = response.data.userrole;
           if (role === "ADMIN") {
-            navigate('/adm/me');  // Redirecionar para a página do Administrador
+            navigate('/adm/me');  
           } else if (role == 'PACIENTE') {
-            navigate('/paciente');  // Redirecionar para a página do Paciente
+            navigate('/paciente'); 
           } else {
-            navigate('/profSaude/me');  // Se não for nem ADMIN nem PACIENTE, talvez redirecione para uma página padrão
+            navigate('/profSaude/me');
           }
-          console.log('Login bem-sucedido', response);
         } catch (error) {
-
-          console.error('Erro no login', error);
+          message.error('Erro no login');
         }
       };
       

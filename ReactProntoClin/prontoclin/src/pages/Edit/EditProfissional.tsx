@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getToken } from "../../controle/cookie";
 import axios from "axios";
-import { Button, Form, Input, message, Select} from 'antd';
+import { Button, Form, Input, message} from 'antd';
 
 function EditarProfissional(){
     const [userData, setUserData] = useState<any>(null); 
@@ -10,45 +10,45 @@ function EditarProfissional(){
     const [formChanged, setFormChanged] = useState(false);
     const [form] = Form.useForm();
 
-    // Detecta alterações no formulário e ativa/desativa o botão de submit
+   
     const onFieldsChange = () => {
-        setFormChanged(true); // Quando o usuário alterar algum campo, habilita o botão de submit
+        setFormChanged(true); 
     };
     
 
     const onFinish = async (values: { prefix: string,telefone: string, email: string, senha: string}) => {
         setLoading(true);
         setError(null);
-        const telefoneCompleto = `${values.prefix}${values.telefone}`;
+        if(values.senha == null){
+            values.senha = userData.senha
+        }
         try {
-            const token = getToken(); // Recupera o token do cookie
+            const token = getToken(); 
             if (token) {
-                const response = await axios.put(
-                    'http://localhost:8081/profSaude/atualiza', // Endereço da API para cadastrar administrador
+                await axios.put(
+                    'http://localhost:8081/profSaude/atualiza', 
                     {
-                        telefoneprofissionalsaude: telefoneCompleto,
+                        telefoneprofissionalsaude: values.telefone,
                         email: values.email,
                         senha: values.senha,
                     },
                     {
                         headers: {
                             'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`, // Adicionando token no cabeçalho
+                            'Authorization': `Bearer ${token}`, 
                         }
                     }
 
                 );
-                console.log(response.data)
-                // Se a requisição for bem-sucedida
-                message.success('Dados atualizados com sucesso!'); // Exibe mensagem de sucesso
+                message.success('Dados atualizados com sucesso!'); 
             } else {
                 setError('Login não encontrado');
             }
         } catch (err) {
             setError('Erro ao atualizar dados');
-            message.error('Erro ao atualizar dados'); // Exibe mensagem de erro
+            message.error('Erro ao atualizar dados'); 
         } finally {
-            setLoading(false); // Finaliza o carregamento
+            setLoading(false); 
         }
     };
 
@@ -56,7 +56,7 @@ function EditarProfissional(){
     
         const fetchData = async () => {
             try {
-                const token = getToken(); // Recupera o token do cookie
+                const token = getToken(); 
                 if (token) {
                 const response = await axios.get('http://localhost:8081/profSaude/me', {
                     headers: {
@@ -87,35 +87,7 @@ function EditarProfissional(){
     if (error) {
         return <div>Erro ao carregar os dados: {error}</div>;
     }
-    const { Option } = Select;
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-          <Select style={{ width: 70 }}>
-            <Option value="71">+71</Option>
-            <Option value="73">+73</Option>
-            <Option value="74">+74</Option>
-            <Option value="75">+75</Option>
-            <Option value="77">+77</Option>
-            <Option value="79">+79</Option>
-            <Option value="81">+81</Option>
-            <Option value="82">+82</Option>
-            <Option value="83">+83</Option>
-            <Option value="84">+84</Option>
-            <Option value="85">+85</Option>
-            <Option value="86">+86</Option>
-            <Option value="87">+87</Option>
-            <Option value="88">+88</Option>
-            <Option value="89">+89</Option>
-            <Option value="91">+91</Option>
-            <Option value="92">+92</Option>
-            <Option value="93">+93</Option>
-            <Option value="94">+94</Option>
-            <Option value="95">+95</Option>
-            <Option value="98">+98</Option>
-            <Option value="99">+99</Option>
-          </Select>
-        </Form.Item>
-    );
+
     return(
 
      <div style={{display:'flex' ,justifyContent: 'center', alignItems: 'center'}}>
@@ -126,9 +98,9 @@ function EditarProfissional(){
             labelCol={{ span: 100 }}
             wrapperCol={{ span: 100 }}
             initialValues={{
-                telefone: userData.telefoneprofissionalsaude, // Preenche o campo "nome" com o valor do backend
-                email: userData.email, // Preenche o campo "email" com o valor do backend
-                senha: '', // Não exibe a senha do backend no campo
+                telefone: userData.telefoneprofissionalsaude,
+                email: userData.email,
+                senha: '', 
             }}
             style={{width: '50%'}}
             onFinish={onFinish}
@@ -138,21 +110,50 @@ function EditarProfissional(){
               <Form.Item
                 name="telefone"
                 label="Telefone"
-                rules={[{ required: true, message: 'Por favor, informe seu telefone' }]}
+                rules={[
+                { required: true, message: 'Por favor, informe seu telefone' },
+                {
+                    pattern:/^\(\d{2}\) \d{5}\d{4}$/, 
+                    message: 'O telefone deve estar no formato 9XXXXXXXX',
+                },
+                ]}
                 >
-                <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-                </Form.Item>
+                <Input
+                style={{ width: '100%' }}
+                placeholder="Insira seu telefone (ex: 11 987654321)"
+                maxLength={15}
+                />
+            </Form.Item>
             <Form.Item 
                 label="Email"
                 name="email"
-                rules={[{ required: true, message: 'Por favor, insira um email!' }]}>
+                rules={[
+                    { 
+                        type: 'email',
+                        message: 'Tipo de email inválido'
+                    },
+                    { required: true, message: 'Por favor, insira um email!' }
+                    ]}>
             <Input />
             </Form.Item>
-            <Form.Item 
-                label="Senha" 
-                name="senha"
-                rules={[{ required: true, message: 'Por favor, insira uma senha!' }]}>
-            <Input />
+            <Form.Item label="Senha" name="senha" rules={[
+                { required: true },
+                {
+                pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{6,}$/,
+                message:  
+                <div style={{textAlign: 'left'}}>
+                <p><strong>A senha deve atender aos seguintes requisitos:</strong></p>
+                <ol>
+                    <li>Pelo menos 6 caracteres.</li>
+                    <li>Deve conter pelo menos uma letra minúscula.</li>
+                    <li>Deve conter pelo menos uma letra maiúscula.</li>
+                    <li>Deve conter pelo menos um número.</li>
+                    <li>Deve conter pelo menos um caractere especial: $, *, &, @, ou #.</li>
+                </ol>
+                </div>,
+                }
+                ]}>
+                <Input />
             </Form.Item>
             <Form.Item
                 label="Confirmar senha"

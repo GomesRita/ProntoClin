@@ -10,13 +10,13 @@ function CadastroPaciente() {
 
   const onFinish = async (values: { nome: string, nomeSocial: string, cpf: string, dataNascimento: string, prefix: string,telefone: string, sexo: string, email: string, senha: string }) => {
     try {
-        const telefoneCompleto = `${values.prefix}${values.telefone}`;
+      const telefoneCompleto = `(${values.prefix}) ${values.telefone}`;
       const response = await axios.post(
         'http://localhost:8081/auth/register/paciente',
         {
             nomePaciente: values.nome,
             nomeSocial: values.nomeSocial,
-            telefonePaciente: telefoneCompleto, // Aqui já vem o telefone completo com prefixo
+            telefonePaciente: telefoneCompleto, 
             cpfPaciente: values.cpf,
             dataNascimento: values.dataNascimento,
             sexoPaciente: values.sexo,
@@ -111,7 +111,7 @@ function CadastroPaciente() {
           addonBefore={prefixSelector}
           style={{ width: '100%' }}
           placeholder="Insira seu telefone (ex: 11 987654321)"
-          maxLength={15} // Limita o campo de entrada a 14 caracteres (sem o hífen)
+          maxLength={15}
         />
         </Form.Item>
         <Form.Item label="CPF" name="cpf" rules={[

@@ -23,19 +23,17 @@ function CadastroProSaude(){
     
         try {
             const token = getToken();
-            const telefoneCompleto = `${values.prefix}${values.telefone}`;
-            console.log(telefoneCompleto)
-            const crm = values.tipoRegistro+'-'+values.numeroRegistro+'-'+values.estadoRegistro
-            console.log(crm)
+            const telefoneCompleto = `(${values.prefix}) ${values.telefone}`;
+            const registroProSaude = values.tipoRegistro+'-'+values.numeroRegistro+'-'+values.estadoRegistro
             if (token) {
-                const response = await axios.post(
+                await axios.post(
                     'http://localhost:8081/auth/register/prosaude',
                     {
                         nomeProfissionalSaude: values.nome,
                         cpfProfissionalSaude: values.cpf,
                         especialidadeMedica: values.especialidadeMedica,
                         telefoneProfissionalSaude: telefoneCompleto,
-                        registro: crm,
+                        registro: registroProSaude,
                         status: "ATIVO",
                         email: values.email,
                         senha: values.senha,
@@ -49,7 +47,7 @@ function CadastroProSaude(){
                     }
 
                 );
-                console.log(response.data)
+
                 message.success('Profissional de saude cadastrado com sucesso!'); 
                 setError('Token não encontrado');
             }
@@ -131,8 +129,8 @@ function CadastroProSaude(){
                     <Input
                     addonBefore={prefixSelector}
                     style={{ width: '100%' }}
-                    placeholder="Insira seu telefone (ex: 11 987654321)"
-                    maxLength={15} // Limita o campo de entrada a 14 caracteres (sem o hífen)
+                    placeholder="Insira seu telefone (ex: (XX) XXXXXXXXX)"
+                    maxLength={15}
                     />
                 </Form.Item>
                 <Form.Item label="Tipo de Resgistro" name="tipoRegistro" rules={[{ required: true }]}>

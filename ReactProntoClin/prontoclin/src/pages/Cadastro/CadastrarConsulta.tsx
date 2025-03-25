@@ -3,7 +3,7 @@ import { Form, message, Select, Button, Space, Table} from 'antd';
 import { getToken } from '../../controle/cookie';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc'; // Para manipulação de datas em UTC
+import utc from 'dayjs/plugin/utc'; 
 
 function CadastroConsulta(){
     const [profissionais, setProfissionais] = useState<any[]>([]);
@@ -91,11 +91,11 @@ function CadastroConsulta(){
           message.success('token encontrado')
           const response = await axios.post('http://localhost:8081/consulta/agendaprofissional', 
               {
-                  nomeprofissionalsaude: values.nome,  // Parâmetro na URL
+                  nomeprofissionalsaude: values.nome,  
               },{
               headers: {
                   'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${token}`  // Token de autenticação
+                  'Authorization': `Bearer ${token}`  
               } }
           );
 
@@ -167,7 +167,7 @@ function CadastroConsulta(){
                 >
                     <Select
                     placeholder="Selecione um profissional"
-                    loading={loading} // Mostra o ícone de carregamento enquanto os dados não foram carregados
+                    loading={loading} 
                     >
                         {profissionais.map((profissional) => (
                             <Select.Option key={profissional.iduser} value={profissional.nomeprofissionalsaude}>
