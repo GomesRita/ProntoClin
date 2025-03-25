@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form, Input, message, DatePicker, Select } from 'antd';
-
 import axios from 'axios';
 import { setToken } from '../../controle/cookie';
 
@@ -89,25 +88,78 @@ function CadastroPaciente() {
           <Input />
         </Form.Item>
         <Form.Item
-          name="telefone"
-          label="Telefone"
-          rules={[{ required: true, message: 'Por favor, informe seu telefone' }]}
-        >
-          <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+        name="telefone"
+        label="Telefone"
+        rules={[
+          { required: true, message: 'Por favor, informe seu telefone' },
+          {
+            pattern:/^(\d{5})(\d{4})$/, // Expressão regular sem hífen
+            message: 'O telefone deve estar no formato 9XXXXXXXX',
+          },
+          ({ getFieldValue }) => ({
+            validator(_,_value) {
+              const prefixoSelecionado = getFieldValue('prefix'); // Recupera o prefixo
+              if (!prefixoSelecionado) {
+                return Promise.reject(new Error('Por favor, selecione um prefixo'));
+              }
+              return Promise.resolve();
+            },
+          }),
+        ]}
+      >
+        <Input
+          addonBefore={prefixSelector}
+          style={{ width: '100%' }}
+          placeholder="Insira seu telefone (ex: 11 987654321)"
+          maxLength={15} // Limita o campo de entrada a 14 caracteres (sem o hífen)
+        />
         </Form.Item>
-        <Form.Item label="CPF" name="cpf" rules={[{ required: true }]}>
+        <Form.Item label="CPF" name="cpf" rules={[
+          { required: true },
+          {
+            pattern: /^(\d{3})\.(\d{3})\.(\d{3})\-(\d{2})$/,
+            message: 'O CPF deve conter 11 dígitos. Ex.: XXX.XXX.XXX-XX',
+          },
+        ]}>
           <Input />
         </Form.Item>
         <Form.Item name="dataNascimento" label="Data nascimento">
           <DatePicker />
         </Form.Item>
         <Form.Item label="Sexo" name="sexo" rules={[{ required: true }]}>
+        <Select  style={{ width: '100%' }} >
+          <Select.Option value="Feminino">Feminino</Select.Option>
+          <Select.Option value="Masculino">Masculino</Select.Option>
+        </Select>
+        </Form.Item>
+          <Form.Item label="Email" name="email" rules={[
+            { type: 'email',
+              message: 'Tipo de email inválido'
+
+            },
+            { required: true, 
+              message: 'Insira um email' 
+            }
+          ]}>
           <Input />
         </Form.Item>
-        <Form.Item label="Email" name="email" rules={[{ required: true }]}>
-          <Input />
-        </Form.Item>
-        <Form.Item label="Senha" name="senha" rules={[{ required: true }]}>
+        <Form.Item label="Senha" name="senha" rules={[
+          { required: true },
+          {
+            pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{6,}$/,
+            message:  
+            <div>
+              <p><strong>A senha deve atender aos seguintes requisitos:</strong></p>
+              <ol>
+                <li>Pelo menos 6 caracteres.</li>
+                <li>Deve conter pelo menos uma letra minúscula.</li>
+                <li>Deve conter pelo menos uma letra maiúscula.</li>
+                <li>Deve conter pelo menos um número.</li>
+                <li>Deve conter pelo menos um caractere especial: $, *, &, @, ou #.</li>
+              </ol>
+            </div>,
+          }
+          ]}>
           <Input />
         </Form.Item>
         <Form.Item

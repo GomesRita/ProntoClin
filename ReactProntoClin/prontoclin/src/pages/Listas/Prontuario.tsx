@@ -147,7 +147,7 @@ function ProntuarioPaciente() {
           diagnostico,
           situacaotramento,
           prescricaomedica,
-        } = userData; // Pega os campos diretamente de userData
+        } = userData; 
         const dataconsultaFormatted = dayjs(dataconsulta).format('YYYY-MM-DDTHH:mm:ss');
         // Aqui você cria o objeto para enviar na requisição
         const response = await axios.post(

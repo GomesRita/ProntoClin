@@ -10,7 +10,6 @@ import CadastroConsulta from './pages/Cadastro/CadastrarConsulta'
 import ListaProfissionais from './pages/Listas/ProfissionaisSaude'
 import EditarAdmin from './pages/Edit/EditAdm'
 import ConsultasPaciente from './pages/Listas/ConsultasPaciente'
-import { DataProvider } from './controle/datacontext';
 import MeuProntuario from './pages/Listas/MeuProntuario'
 import EditarPaciente from './pages/Edit/EditPaciente'
 import ProSaude from './pages/Inicial/ProSaude'
@@ -21,7 +20,6 @@ import CadastrarProntuario from './pages/Cadastro/CadastroProntuario'
 
 function App() {
   return (
-    <DataProvider>
     <BrowserRouter>
       <Routes>
       <Route path="/cadastroAdmin" element={<CadastroAdmin/>}/>
@@ -43,7 +41,6 @@ function App() {
         <Route path="/cadastroProntuario" element={<CadastrarProntuario/>}/>
       </Routes>
     </BrowserRouter>
-    </DataProvider>
   )
 }
 
