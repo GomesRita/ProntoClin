@@ -93,12 +93,12 @@ function CadastroPaciente() {
         rules={[
           { required: true, message: 'Por favor, informe seu telefone' },
           {
-            pattern:/^(\d{5})(\d{4})$/, // Expressão regular sem hífen
+            pattern:/^(\d{5})(\d{4})$/, 
             message: 'O telefone deve estar no formato 9XXXXXXXX',
           },
           ({ getFieldValue }) => ({
             validator(_,_value) {
-              const prefixoSelecionado = getFieldValue('prefix'); // Recupera o prefixo
+              const prefixoSelecionado = getFieldValue('prefix');
               if (!prefixoSelecionado) {
                 return Promise.reject(new Error('Por favor, selecione um prefixo'));
               }
@@ -135,7 +135,6 @@ function CadastroPaciente() {
           <Form.Item label="Email" name="email" rules={[
             { type: 'email',
               message: 'Tipo de email inválido'
-
             },
             { required: true, 
               message: 'Insira um email' 
