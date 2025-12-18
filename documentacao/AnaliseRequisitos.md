@@ -79,15 +79,8 @@ Desenvolvimento:
 
 * Spring Boot  
 * React  
-* PostgreSQL  
-* Python  
-* RabbitMQ  
+* PostgreSQL    
 * Docker
-
-	Desenvolvimento de testes:
-
-* JUnit  
-* Mockito
 
 # **Impactos Esperados** {#impactos-esperados}
 
